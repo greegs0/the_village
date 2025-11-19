@@ -1,25 +1,82 @@
-<h2>Sign up</h2>
+<div class="auth-page">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card border rounded-4 shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <!-- Logo -->
+            <div class="text-center mb-4">
+              <div class="logo-gradient rounded mx-auto mb-3"></div>
+              <h1 class="h4 mb-2">Bienvenue sur The Village</h1>
+              <p class="text-secondary">Créez votre compte pour rejoindre votre communauté</p>
+            </div>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= f.error_notification %>
+            <!-- Tabs -->
+            <ul class="nav nav-pills nav-fill bg-light rounded-3 p-1 mb-4">
+              <li class="nav-item">
+                <%= link_to "Connexion", new_user_session_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link active">Inscription</button>
+              </li>
+            </ul>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" }%>
-    <%= f.input :password,
-                required: true,
-                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: true,
-                input_html: { autocomplete: "new-password" } %>
+            <!-- Signup Form -->
+            <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+              <%= f.error_notification %>
+
+              <div class="mb-3">
+                <%= f.input :email,
+                            required: true,
+                            autofocus: true,
+                            label: "Email",
+                            input_html: {
+                              autocomplete: "email",
+                              placeholder: "votreemail@exemple.com",
+                              class: "form-control"
+                            } %>
+              </div>
+
+              <div class="mb-3">
+                <%= f.input :password,
+                            required: true,
+                            label: "Mot de passe",
+                            hint: (@minimum_password_length ? "#{@minimum_password_length} caractères minimum" : ""),
+                            input_html: {
+                              autocomplete: "new-password",
+                              placeholder: "••••••••",
+                              class: "form-control"
+                            } %>
+              </div>
+
+              <div class="mb-3">
+                <%= f.input :password_confirmation,
+                            required: true,
+                            label: "Confirmation du mot de passe",
+                            input_html: {
+                              autocomplete: "new-password",
+                              placeholder: "••••••••",
+                              class: "form-control"
+                            } %>
+              </div>
+
+              <%= f.button :submit, "Créer mon compte", class: "btn btn-dark w-100" %>
+            <% end %>
+
+            <!-- Divider -->
+            <div class="position-relative my-4">
+              <hr>
+              <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted">ou</span>
+            </div>
+
+            <!-- Social Login -->
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-secondary" disabled>Continuer avec Google</button>
+              <button class="btn btn-outline-secondary" disabled>Continuer avec Facebook</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
