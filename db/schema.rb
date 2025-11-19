@@ -20,6 +20,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_121841) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.string "name"
+    t.boolean "status"
+    t.date "created_date"
+    t.date "target_date"
+    t.string "description"
+    t.string "time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
