@@ -30,7 +30,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/families-tasks.html">Tâches</a></li>
-              <li><a class="dropdown-item" href="/families-calendar.html">Calendrier</a></li>
+              <li><%= link_to "Calendrier", families_calendar_path, class: "dropdown-item" %></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -205,7 +205,7 @@
               <span class="badge bg-danger">Important</span>
             </div>
 
-            <a href="/families-calendar.html" class="btn btn-outline-secondary w-100">Voir tout le calendrier</a>
+            <%= link_to "Voir tout le calendrier", families_calendar_path, class: "btn btn-outline-secondary w-100" %>
           </div>
         </div>
       </div>

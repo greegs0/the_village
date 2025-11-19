@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_19_121841) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_19_150356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,40 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_121841) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "family_calendars", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "family_events", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.string "title"
+    t.string "event_type"
+    t.text "description"
+    t.string "location"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string "assigned_to"
+    t.boolean "enable_reminders"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_family_events_on_family_id"
+  end
+
+  create_table "unavailabilities", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.bigint "user_id", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_unavailabilities_on_family_id"
+    t.index ["user_id"], name: "index_unavailabilities_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -36,5 +70,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_121841) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "family_events", "families"
+  add_foreign_key "unavailabilities", "families"
+  add_foreign_key "unavailabilities", "users"
   add_foreign_key "users", "families"
 end
