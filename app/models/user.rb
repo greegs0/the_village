@@ -4,4 +4,17 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  belongs_to :family, optional: true # Important car la création de l'user se fait avant la famille.
+  enum status: { member: "member", helper: "helper" }
+
+  # Sert à pouvoir faire current_user.member? ou .helper? plus tard dans les autorisations etc
+  def member?
+    status == "member"
+  end
+
+  def helper?
+    status == "helper"
+  end
+
 end

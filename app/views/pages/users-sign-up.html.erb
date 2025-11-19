@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <title>Inscription - The Village</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="globals.css" />
+  <link rel="stylesheet" href="style-responsive.css" />
+</head>
+<body class="bg-gradient">
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+    <div class="container-fluid px-4 px-lg-5">
+      <a class="navbar-brand d-flex align-items-center" href="/index.html">
+        <div class="logo-gradient rounded me-2"></div>
+        <span class="fw-normal fs-5">The Village</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Signup Form -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+        <div class="card border rounded-4 shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <!-- Logo -->
+            <div class="text-center mb-4">
+              <div class="logo-gradient rounded mx-auto mb-3" style="width: 48px; height: 48px;"></div>
+              <h1 class="h4 mb-2">Bienvenue sur The Village</h1>
+              <p class="text-secondary">Connectez-vous pour rejoindre votre communauté</p>
+            </div>
+
+            <!-- Tabs -->
+            <ul class="nav nav-pills nav-fill bg-light rounded-3 p-1 mb-4" role="tablist">
+              <li class="nav-item" role="presentation">
+                <a class="nav-link" href="/users-sign-in.html">
+                  Connexion
+                </a>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#signup" type="button">
+                  Inscription
+                </button>
+              </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="signup">
+                <form action="/families.html" method="get">
+                  <!-- Choice -->
+                  <div class="mb-4">
+                    <label class="form-label fw-medium">Je souhaite</label>
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <div class="border rounded-3 p-3">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="choice" id="create" checked>
+                            <label class="form-check-label d-flex align-items-start" for="create">
+                              <span class="fs-4 me-2">🏘️</span>
+                              <div>
+                                <div class="fw-medium">Créer mon village</div>
+                                <small class="text-muted">Commencer avec une nouvelle famille</small>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="border rounded-3 p-3">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="choice" id="join">
+                            <label class="form-check-label d-flex align-items-start" for="join">
+                              <span class="fs-4 me-2">👥</span>
+                              <div>
+                                <div class="fw-medium">Rejoindre une famille</div>
+                                <small class="text-muted">Utiliser un code d'invitation</small>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Village Name -->
+                  <div class="mb-3">
+                    <label for="villageName" class="form-label fw-medium">Nom de votre village</label>
+                    <input type="text" class="form-control" id="villageName" placeholder="Famille Dupont">
+                    <small class="text-muted">Ce nom sera visible par les familles avec lesquelles vous vous connecterez</small>
+                  </div>
+
+                  <!-- Full Name -->
+                  <div class="mb-3">
+                    <label for="fullName" class="form-label fw-medium">Votre nom complet</label>
+                    <input type="text" class="form-control" id="fullName" placeholder="Jean Dupont">
+                  </div>
+
+                  <!-- Email -->
+                  <div class="mb-3">
+                    <label for="signupEmail" class="form-label fw-medium">Email</label>
+                    <input type="email" class="form-control" id="signupEmail" placeholder="votreemail@exemple.com">
+                  </div>
+
+                  <!-- Password -->
+                  <div class="mb-4">
+                    <label for="signupPassword" class="form-label fw-medium">Mot de passe</label>
+                    <input type="password" class="form-control" id="signupPassword" placeholder="••••••••">
+                  </div>
+
+                  <button type="submit" class="btn btn-dark w-100">Créer mon Village</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="position-relative my-4">
+              <hr>
+              <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted">ou</span>
+            </div>
+
+            <!-- Social Login -->
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-secondary">Continuer avec Google</button>
+              <button class="btn btn-outline-secondary">Continuer avec Facebook</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

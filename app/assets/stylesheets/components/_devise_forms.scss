@@ -1,0 +1,114 @@
+// Devise forms customization to work with our custom design
+
+// Logo gradient styling
+.logo-gradient {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(43, 127, 255, 1) 0%, rgba(152, 16, 250, 1) 100%);
+}
+
+.users-sign-in, .users-sign-up {
+  // Hide simple_form default wrappers and errors styling
+  .form-inputs {
+    margin: 0;
+    padding: 0;
+  }
+
+  .error_notification {
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    color: #c33;
+    font-size: 14px;
+  }
+
+  .field_with_errors {
+    display: contents;
+
+    input {
+      border-color: #dc3545 !important;
+    }
+  }
+
+  .invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  // Remove simple_form labels since we have custom ones
+  .form-label {
+    display: none;
+  }
+
+  // Style submit buttons
+  button[type="submit"],
+  .button-12 {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: #1a1a2e;
+    }
+
+    &:focus {
+      outline: 2px solid #4a90e2;
+      outline-offset: 2px;
+    }
+  }
+
+  // Fix for sign-up form specific styles
+  .login-page-7 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .text-muted {
+    color: #697282;
+    font-size: 12px;
+  }
+
+  // Fix button text alignment
+  .text-wrapper-32,
+  .text-wrapper-17 {
+    position: static !important;
+    margin: 0 !important;
+  }
+
+  // Button styles
+  .button-4,
+  .button-12 {
+    text-align: center;
+
+    &:not([type="submit"]) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  // Fix form layout
+  .login-page-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  // Social buttons
+  .button-6,
+  .button-13 {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

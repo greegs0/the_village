@@ -1,0 +1,336 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+/* Reset and Base Styles */
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #0a0a0a;
+}
+
+/* Logo Gradient */
+.logo-gradient {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, rgba(43, 127, 255, 1) 0%, rgba(152, 16, 250, 1) 100%);
+  border-radius: 10px;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(180deg, rgba(239, 246, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
+.bg-primary-light {
+  background-color: #dbeafe !important;
+}
+
+.text-primary {
+  color: #1347e5 !important;
+}
+
+/* Hero Image */
+.hero-image-wrapper {
+  position: relative;
+  aspect-ratio: 4/3;
+  background-color: #ffffff;
+}
+
+.hero-image-wrapper img {
+  object-fit: cover;
+  height: 100%;
+}
+
+/* Blur Circles */
+.blur-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.blur-circle-1 {
+  width: 96px;
+  height: 96px;
+  background-color: #bedbff;
+  top: -16px;
+  left: -16px;
+}
+
+.blur-circle-2 {
+  width: 128px;
+  height: 128px;
+  background-color: #e9d4ff;
+  bottom: 16px;
+  right: 16px;
+}
+
+/* Features Section */
+.features-section {
+  background-color: #ffffff;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background-color: #ffffff;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #ececf0;
+}
+
+/* Buttons */
+.btn {
+  font-weight: 500;
+  letter-spacing: -0.15px;
+  transition: all 0.2s ease;
+}
+
+.btn-dark {
+  background-color: #030213;
+  border-color: #030213;
+}
+
+.btn-dark:hover {
+  background-color: #1a1a2e;
+  border-color: #1a1a2e;
+}
+
+.btn-outline-dark:hover {
+  background-color: #f5f5f5;
+  color: #0a0a0a;
+  border-color: #0a0a0a;
+}
+
+.btn:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Navbar */
+.navbar {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  letter-spacing: -0.45px;
+}
+
+/* Responsive Typography */
+@media (max-width: 991.98px) {
+  .display-3 {
+    font-size: 3rem;
+  }
+
+  .display-6 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .display-3 {
+    font-size: 2.5rem;
+  }
+
+  .display-6 {
+    font-size: 1.75rem;
+  }
+
+  .hero-section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .display-3 {
+    font-size: 2rem;
+  }
+
+  .display-6 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Border Utilities */
+.border {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.rounded-4 {
+  border-radius: 14px !important;
+}
+
+/* Shadow Utilities */
+.shadow-lg {
+  box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Text Colors */
+.text-secondary {
+  color: #495565 !important;
+}
+
+/* Spacing Adjustments */
+.py-5 {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+@media (max-width: 767.98px) {
+  .py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+}
+
+/* Card Body Padding */
+.card-body {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .card-body {
+    padding: 2rem;
+  }
+}
+
+/* Blockquote Styling */
+blockquote {
+  margin: 0;
+}
+
+blockquote p {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+/* Image Responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Focus Visible */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline-offset: 2px;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Container Max Width */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Background Gradient */
+.bg-gradient {
+  background: linear-gradient(180deg, rgba(239, 246, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  min-height: 100vh;
+}
+
+/* Calendar Specific Styles */
+.bg-pink {
+  background-color: #f6339a !important;
+}
+
+.bg-gradient-light {
+  background: linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(250, 245, 255, 1) 100%);
+}
+
+/* Community Cards */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Event Trigger Buttons in Calendar */
+.event-trigger {
+  width: 100%;
+  text-align: left;
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 0.25rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.event-trigger:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.event-trigger:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Custom Styles for Auth Pages */
+.nav-pills .nav-link {
+  color: #717182;
+  font-weight: 500;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #fff;
+  color: #0a0a0a;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Controls */
+.form-control {
+  background-color: #f3f3f5;
+  border: 1px solid transparent;
+  padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus {
+  background-color: #fff;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+/* Badges */
+.badge {
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+}
