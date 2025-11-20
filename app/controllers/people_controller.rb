@@ -5,7 +5,7 @@ class PeopleController < ApplicationController
   before_action :set_person, only: [:edit, :update, :destroy]
 
   def new
-    @person = Person.new(family_id: @family.id) # Anciennement @person = @family.people.new -> crée un fantôme
+    @person = Person.new(family: @family) # Anciennement @person = @family.people.new -> crée un fantôme
   end
 
   def create
