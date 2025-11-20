@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_19_164133) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_20_155046) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_164133) do
     t.bigint "family_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.time "time"
+    t.string "location"
+    t.string "assigned_to"
+    t.string "event_icon"
+    t.string "badge_class"
+    t.boolean "reminders_enabled"
     t.index ["family_id"], name: "index_family_events_on_family_id"
   end
 
