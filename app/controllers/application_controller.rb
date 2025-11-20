@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   # Redirect to families page after sign in
   def after_sign_in_path_for(resource)
-    family_path
+    root_path
   end
 
   # Redirect to families page after sign up

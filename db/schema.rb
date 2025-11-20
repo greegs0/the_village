@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_19_134727) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_20_133321) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_134727) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "family_events", force: :cascade do |t|
+    t.string "title"
+    t.string "event_type"
+    t.text "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.bigint "family_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_family_events_on_family_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -62,8 +74,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_134727) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "events", "users"
+  add_foreign_key "family_events", "families"
   add_foreign_key "tasks", "users"
   add_foreign_key "tasks", "users", column: "assignee_id"
-  add_foreign_key "events", "users"
   add_foreign_key "users", "families"
 end
