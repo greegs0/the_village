@@ -8,6 +8,46 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 User.destroy_all
+Task.destroy_all
+
+# Création des familles
+
+family1 = Family.create!(name: "Famille Alpha")
+
+# Création des utilisateurs
+
+lois = User.create!(
+email: "alice@example.com",
+password: "password",
+name: "Alice",
+status: "member",
+family: family1
+)
+
+al = User.create!(
+email: "bob@example.com",
+password: "password",
+name: "Bob",
+status: "member",
+family: family1
+)
+
+# Liste des utilisateurs pour assignation aléatoire
+
+users = [lois, al]
+
+# Création des tâches
+
+Task.create!(
+name: "Rv Pédiatre",
+status: false,
+created_date: Date.new(2025, 11, 19),
+target_date: Date.new(2025, 12, 5),
+description: "Rendez-vous de contrôle",
+time: "09:30",
+user: lois,
+assignee: al
+)
 Event.destroy_all
 
 puts "créating 2 users"
