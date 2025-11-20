@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <title>Gestion Famille - The Village</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="globals.css" />
+  <link rel="stylesheet" href="style-responsive.css" />
+</head>
+<body>
+ <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+      <div class="container-fluid px-4 px-lg-5">
+        <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+          <div class="logo-gradient rounded me-2"></div>
+          <span class="fw-normal fs-5">The Village</span>
+        <% end %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <%= link_to "Tableau de bord", new_person_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Déconnexion", destroy_user_session_path, method: :delete, class: "nav-link" %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4 py-md-5">
+      <!-- Header -->
+      <div class="mb-4">
+        <h1 class="h2 mb-2">Mon Profil</h1>
+        <p class="text-secondary">Gérez vos informations personnelles et familiales</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Profile Card -->
+        <div class="col-lg-4">
+          <div class="card border rounded-4 h-100">
+            <div class="card-body text-center p-4">
+              <div class="position-relative d-inline-block mb-3">
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto"
+                    style="width: 128px; height: 128px;">
+                  <span class="fs-1 fw-normal"><%= current_user.name[0..1].upcase %></span>
+                </div>
+              </div>
+
+              <h2 class="h5 mb-1"><%= current_user.name %></h2>
+              <p class="text-secondary mb-4"><%= current_user.status.capitalize %></p>
+
+              <div class="text-start border-top pt-3">
+                <div class="d-flex align-items-center mb-2">
+                  <span class="me-2">📧</span>
+                  <small class="text-secondary"><%= current_user.email %></small>
+                </div>
+                <% if @family.present? %>
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="me-2">📍</span>
+                    <small class="text-secondary"><%= current_user.zipcode %></small>
+                  </div>
+                <% end %>
+                <div class="d-flex align-items-center mb-3">
+                  <span class="me-2">📅</span>
+                  <small class="text-secondary">Membre depuis <%= l(current_user.created_at, format: :short) rescue 'récemment' %></small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Family Management -->
+        <div class="col-lg-8">
+          <div class="card border rounded-4">
+            <div class="card-body p-4">
+              <h3 class="h5 mb-1">Informations du profil</h3>
+              <p class="text-secondary mb-4">Mettez à jour vos informations personnelles</p>
+
+              <!-- Tabs -->
+              <ul class="nav nav-pills bg-light rounded-3 p-1 mb-4" role="tablist">
+                <li class="nav-item flex-fill" role="presentation">
+                  <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#personal" type="button">
+                    Personnel
+                  </button>
+                </li>
+                <li class="nav-item flex-fill" role="presentation">
+                  <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#family" type="button">
+                    Famille
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Tab Content -->
+              <div class="tab-content">
+                <!-- Family Tab -->
+                <div class="tab-pane fade show active" id="family">
+                  <!-- Family Members -->
+                  <div class="mb-4">
+                    <% if @family.people.any? %>
+                      <!-- Liste des membres existants -->
+                      <% @family.people.each do |person| %>
+                        <div class="d-flex align-items-center justify-content-between bg-light rounded-3 p-3 mb-3">
+                          <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center me-3"
+                                style="width: 40px; height: 40px;">
+                              <span class="fw-medium"><%= person.name&.first&.upcase || '?' %></span>
+                            </div>
+                            <div>
+                              <div class="fw-medium"><%= person.name %></div>
+                              <small class="text-secondary">
+                                <% if person.birthday.present? %>
+                                  <%= ((Date.today - person.birthday).to_i / 365.25).floor %> ans
+                                <% else %>
+                                  Âge non renseigné
+                                <% end %>
+                              </small>
+                            </div>
+                          </div>
+                          <%= link_to "Modifier", edit_person_path(person), class: "btn btn-sm btn-outline-secondary" if person.persisted? %>
+                        </div>
+                      <% end %>
+                    <% else %>
+                      <!-- Message si aucun membre -->
+                      <div class="alert alert-info">
+                        <strong>Aucun membre ajouté pour le moment.</strong>
+                        <p class="mb-0">Commencez par ajouter les membres de votre famille (conjoint, enfants, etc.)</p>
+                      </div>
+                    <% end %>
+
+                    <!-- Bouton pour ajouter un membre (ouvre la modale) -->
+                    <button class="btn btn-outline-secondary w-100" data-bs-toggle="modal" data-bs-target="#addMemberModal">
+                      Ajouter un membre de la famille
+                    </button>
+                  </div>
+
+                  <!-- Family Info -->
+                  <div class="border-top pt-4">
+                    <h4 class="h6 mb-3">Informations familiales</h4>
+
+                    <%= simple_form_for @family, url: families_path(@family), method: :patch do |f| %>
+                      <div class="mb-3">
+                        <%= f.input :name, label: "Nom de famille", wrapper_html: { class: 'mb-3' } %>
+                      </div>
+
+                      <%= f.button :submit, "Sauvegarder", class: "btn btn-dark" %>
+                    <% end %>
+                  </div>
+                </div>
+
+                <!-- Personal Tab -->
+                <div class="tab-pane fade" id="personal">
+                  <div class="alert alert-info">
+                    <strong>Informations personnelles</strong>
+                    <p class="mb-0">Les modifications du profil utilisateur seront disponibles prochainement.</p>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-medium">Email (non modifiable)</label>
+                    <input type="email" class="form-control" value="<%= current_user.email %>" disabled>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-medium">Statut</label>
+                    <input type="text" class="form-control" value="<%= current_user.status.capitalize %>" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal pour ajouter un membre -->
+      <div class="modal fade" id="addMemberModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addMemberModalLabel">Ajouter un membre de la famille</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <%= simple_form_for @person, url: people_path do |f| %>
+              <%= f.input :name, label: "Nom complet", placeholder: "Ex: Sophie Dupont", required: true %>
+              <%= f.input :birthday, as: :date, label: "Date de naissance",
+                          start_year: Date.today.year - 100,
+                          end_year: Date.today.year,
+                          order: [:day, :month, :year] %>
+              <%= f.input :zipcode, label: "Code postal (optionnel)", placeholder: "Ex: 75001" %>
+
+              <div class="modal-footer px-0 pb-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <%= f.button :submit, "Ajouter ce membre", class: "btn btn-dark" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   # Pages routes
-  resource :family, only: [:show, :new, :create, :edit, :update]
+  resource :families, only: [:show, :new, :create, :edit, :update]
+  resources :people, only: [:new, :create, :edit, :update, :destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -1,0 +1,50 @@
+<div>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card border rounded-4 shadow-sm">
+          <div class="card-body p-4 p-md-5">
+
+            <!-- Header -->
+            <div class="text-center mb-4">
+              <div class="logo-gradient rounded mx-auto mb-3"></div>
+              <h1 class="h4 mb-2">Créer votre famille</h1>
+              <p class="text-secondary">Donnez un nom à votre foyer pour commencer l’aventure</p>
+            </div>
+
+            <!-- Form -->
+            <%= simple_form_for @family do |f| %>
+
+              <%= f.error_notification %>
+
+              <div class="mb-3">
+                <%= f.input :name,
+                            label: "Nom de la famille",
+                            required: true,
+                            input_html: {
+                              class: "form-control",
+                              placeholder: "Famille Dupont"
+                            } %>
+              </div>
+
+              <%= f.button :submit, "Créer la famille", class: "btn btn-dark w-100 mt-2" %>
+
+            <% end %>
+
+            <!-- Divider -->
+            <div class="position-relative my-4">
+              <hr>
+              <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted">ou</span>
+            </div>
+
+            <!-- Retour -->
+            <div class="text-center">
+              <%= link_to "Retour au dashboard", families_path, class: "text-secondary" %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
