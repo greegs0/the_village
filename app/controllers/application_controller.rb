@@ -1,13 +1,23 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Redirect to families page after sign in
   def after_sign_in_path_for(resource)
-    root_path
+    family_path(current_user.family)
   end
 
   # Redirect to families page after sign up
   def after_sign_up_path_for(resource)
-    family_path
+    new_families_path
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    # Autorise name et zipcode lors de l'inscription
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :zipcode])
+    # Autorise aussi pour la mise à jour du profil
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :zipcode])
   end
 end

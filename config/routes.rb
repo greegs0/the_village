@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :families, only: [:show, :new, :create, :edit, :update] do
     resources :family_events
   end
+  resources :people, only: [:new, :create, :edit, :update, :destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
