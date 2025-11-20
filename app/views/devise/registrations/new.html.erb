@@ -25,18 +25,33 @@
             <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
               <%= f.error_notification %>
 
-            <% if resource.errors.any? %>
-              <ul>
-                <% resource.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
-                <% end %>
-              </ul>
-            <% end %>
+              <% if resource.errors.any? %>
+                <div class="alert alert-danger">
+                  <ul class="mb-0">
+                    <% resource.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
 
+              <!-- Nom complet -->
+              <div class="mb-3">
+                <%= f.input :name,
+                            required: true,
+                            autofocus: true,
+                            label: "Nom complet",
+                            input_html: {
+                              autocomplete: "name",
+                              placeholder: "Jean Dupont",
+                              class: "form-control"
+                            } %>
+              </div>
+
+              <!-- Email -->
               <div class="mb-3">
                 <%= f.input :email,
                             required: true,
-                            autofocus: true,
                             label: "Email",
                             input_html: {
                               autocomplete: "email",
@@ -45,6 +60,20 @@
                             } %>
               </div>
 
+              <!-- Code postal -->
+              <div class="mb-3">
+                <%= f.input :zipcode,
+                            required: true,
+                            label: "Code postal",
+                            input_html: {
+                              autocomplete: "postal-code",
+                              placeholder: "75001",
+                              class: "form-control",
+                              maxlength: 5
+                            } %>
+              </div>
+
+              <!-- Mot de passe -->
               <div class="mb-3">
                 <%= f.input :password,
                             required: true,
@@ -57,6 +86,7 @@
                             } %>
               </div>
 
+              <!-- Confirmation mot de passe -->
               <div class="mb-3">
                 <%= f.input :password_confirmation,
                             required: true,
