@@ -34,10 +34,10 @@ class FamiliesController < ApplicationController
     end
   end
 
-  # def regenerate_invitation_code
-  #   @family.regenerate_invitation_code
-  #   redirect_to edit_families_path, notice: "Nouveau code d'invitation généré."
-  # end
+  def regenerate_invitation_code
+    @family.regenerate_invitation_code
+    redirect_to edit_families_path, notice: "Nouveau code d'invitation généré."
+  end
 
   def destroy
     @family.destroy
