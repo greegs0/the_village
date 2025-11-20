@@ -14,6 +14,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_134727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "events", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.date "date"
+    t.string "place"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
   create_table "families", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -53,5 +64,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_134727) do
 
   add_foreign_key "tasks", "users"
   add_foreign_key "tasks", "users", column: "assignee_id"
+  add_foreign_key "events", "users"
   add_foreign_key "users", "families"
 end
