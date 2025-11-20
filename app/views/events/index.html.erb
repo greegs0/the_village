@@ -1,0 +1,43 @@
+<div class="container-fluid px-4 px-lg-5 py-4">
+  <!-- Hero Section -->
+  <div class="text-center mb-5">
+    <div class="fs-1 mb-3">🌍</div>
+    <h1 class="display-5 fw-normal mb-3">Événements Communautaires</h1>
+    <p class="lead text-secondary mb-4">
+      Découvrez et participez aux événements organisés dans votre région. Rencontrez vos voisins et créez des liens !
+    </p>
+    <%# <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
+      <span class="me-2">+</span>Créer un événement dans votre région
+    </button> %>
+  </div>
+
+  <!-- View Toggle -->
+  <ul class="nav nav-pills bg-light rounded-3 p-1 mb-4 justify-content-center" style="max-width: 400px; margin: 0 auto;">
+    <li class="nav-item flex-fill" role="presentation">
+      <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#listView" type="button">
+        📋 Liste
+      </button>
+    </li>
+    <li class="nav-item flex-fill" role="presentation">
+      <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#mapView" type="button">
+        🗺️ Carte
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="listView">
+      <!-- Events Grid -->
+      <div class="row g-4">
+        <% @events.each do |event| %>
+          <%= render "event_card", event: event %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="mapView">
+      <p class="text-center text-muted py-5">Vue carte à venir</p>
+    </div>
+  </div>
+</div>
