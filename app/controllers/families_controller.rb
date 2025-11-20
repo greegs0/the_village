@@ -5,7 +5,7 @@ class FamiliesController < ApplicationController
 
   def show
     @people = @family.people.order(birthday: :desc)                    # du plus jeune au plus vieux
-    # @tasks  = @family.tasks.order(created_at: :desc).limit(10)          # limite 10 tâches pour pas polluer le dashboard
+    @tasks  = Task.all # Toutes les tâches pour l'instant
     # @events = @family.family_events.order(start_date: :asc).limit(5)
     # @files  = @family.files.order(created_at: :desc).limit(10)
   end
