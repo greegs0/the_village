@@ -8,7 +8,6 @@ Rails.application.routes.draw do
 
   # Pages routes
   resource :family, only: [:show, :new, :create, :edit, :update]
-  resource :task, only: [:index :show, :new, :create, :edit, :update]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
