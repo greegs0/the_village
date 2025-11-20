@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tasks
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
@@ -16,5 +17,6 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
+  resources :events, only: :index
   # root "posts#index"
 end
