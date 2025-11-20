@@ -32,7 +32,7 @@
               Gestion
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/families-tasks.html">Tâches</a></li>
+              <li><%= link_to "Tâches", tasks_path, class: "dropdown-item" %></li>
               <li><a class="dropdown-item" href="/families-calendar.html">Calendrier</a></li>
             </ul>
           </li>
@@ -317,7 +317,7 @@
           </div>
         </div>
 
-        <a href="/families-tasks.html" class="btn btn-dark w-100">Gérer les tâches</a>
+        <%= link_to "Gérer les tâches", tasks_path, class: "btn btn-dark w-100" %>
       </div>
     </div>
   </div>
