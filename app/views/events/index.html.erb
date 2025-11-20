@@ -1,3 +1,5 @@
+<%= render 'shared/navbar' %>
+
 <div class="container-fluid px-4 px-lg-5 py-4">
   <!-- Hero Section -->
   <div class="text-center mb-5">
@@ -6,9 +8,9 @@
     <p class="lead text-secondary mb-4">
       Découvrez et participez aux événements organisés dans votre région. Rencontrez vos voisins et créez des liens !
     </p>
-    <%# <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
+    <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
       <span class="me-2">+</span>Créer un événement dans votre région
-    </button> %>
+    </button>
   </div>
 
   <!-- View Toggle -->
@@ -38,6 +40,213 @@
 
     <div class="tab-pane fade" id="mapView">
       <p class="text-center text-muted py-5">Vue carte à venir</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Créer un événement communautaire -->
+<div class="modal fade" id="createCommunityEventModal" tabindex="-1" aria-labelledby="createCommunityEventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <div>
+          <h5 class="modal-title fw-medium" id="createCommunityEventModalLabel">Créer un événement communautaire</h5>
+          <p class="text-secondary small mb-0">Organisez un événement et invitez vos voisins à participer</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+
+
+
+  <!-- Form -->
+        <%= simple_form_for @event do |f| %>
+
+          <%= f.error_notification %>
+
+          <!-- Titre de l'événement -->
+          <div class="mb-3">
+            <%= f.input :name,
+                        label: "Titre de l'événement",
+                        required: true,
+                        input_html: {
+                          class: "form-control",
+                          placeholder: "Ex: Apéro voisins"
+                        } %>
+          </div>
+
+
+          <!-- Date et Heure -->
+          <div class="row g-3 mb-3">
+            <%= f.input :date,
+                        label: "Date",
+                        required: true,
+                        input_html: {
+                          class: "form-control",
+                          placeholder: "jj/mm/aaaa"
+                        } %>
+          </div>
+
+
+
+
+          <%# <div class="row g-3 mb-3">
+
+              <label for="communityEventDate" class="form-label fw-medium">Date</label>
+              <input type="date" class="form-control" id="communityEventDate">
+          </div> %>
+
+
+
+          <div class="d-flex justify-content-end gap-2">
+            <%= f.button :button, "Annuler", class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
+            <%= f.button :submit, "Créer l'événement", class: "btn btn-dark" %>
+          </div>
+        <% end %>
+
+
+
+
+
+
+        <form>
+          <%# <!-- Titre de l'événement -->
+          <div class="mb-3">
+            <label for="communityEventTitle" class="form-label fw-medium">Titre de l'événement</label>
+            <input type="text" class="form-control" id="communityEventTitle" placeholder="Ex: Apéro voisins">
+          </div> %>
+
+          <!-- Date et Heure -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="communityEventDate" class="form-label fw-medium">Date</label>
+              <input type="date" class="form-control" id="communityEventDate">
+            </div>
+            <div class="col-md-6">
+              <label for="communityEventTime" class="form-label fw-medium">Heure</label>
+              <input type="time" class="form-control" id="communityEventTime">
+            </div>
+          </div>
+
+          <!-- Lieu -->
+          <div class="mb-3">
+            <label for="communityEventLocation" class="form-label fw-medium">Lieu</label>
+            <input type="text" class="form-control" id="communityEventLocation" placeholder="Ex: Parc du quartier">
+          </div>
+
+          <!-- Catégorie -->
+          <div class="mb-3">
+            <label for="communityEventCategory" class="form-label fw-medium">Catégorie</label>
+            <select class="form-select" id="communityEventCategory">
+              <option selected>Sélectionner une catégorie</option>
+              <option value="social">Social</option>
+              <option value="sport">Sport</option>
+              <option value="culture">Culture</option>
+              <option value="famille">Famille</option>
+              <option value="jardinage">Jardinage</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="communityEventDescription" class="form-label fw-medium">Description</label>
+            <textarea class="form-control" id="communityEventDescription" rows="3" placeholder="Décrivez votre événement..."></textarea>
+          </div>
+
+          <!-- Nombre maximum de participants (optionnel) -->
+          <div class="mb-4">
+            <label for="maxParticipants" class="form-label fw-medium">Nombre maximum de participants (optionnel)</label>
+            <input type="number" class="form-control" id="maxParticipants" placeholder="Ex: 20">
+          </div>
+
+          <!-- Footer Buttons -->
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-dark">Créer l'événement</button>
+          </div>
+        </form>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Créer un événement communautaire -->
+<div class="modal fade" id="createCommunityEventModal" tabindex="-1" aria-labelledby="createCommunityEventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <div>
+          <h5 class="modal-title fw-medium" id="createCommunityEventModalLabel">Créer un événement communautaire</h5>
+          <p class="text-secondary small mb-0">Organisez un événement et invitez vos voisins à participer</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <form>
+          <!-- Titre de l'événement -->
+          <div class="mb-3">
+            <label for="communityEventTitle" class="form-label fw-medium">Titre de l'événement</label>
+            <input type="text" class="form-control" id="communityEventTitle" placeholder="Ex: Apéro voisins">
+          </div>
+
+          <!-- Date et Heure -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="communityEventDate" class="form-label fw-medium">Date</label>
+              <input type="date" class="form-control" id="communityEventDate">
+            </div>
+            <div class="col-md-6">
+              <label for="communityEventTime" class="form-label fw-medium">Heure</label>
+              <input type="time" class="form-control" id="communityEventTime">
+            </div>
+          </div>
+
+          <!-- Lieu -->
+          <div class="mb-3">
+            <label for="communityEventLocation" class="form-label fw-medium">Lieu</label>
+            <input type="text" class="form-control" id="communityEventLocation" placeholder="Ex: Parc du quartier">
+          </div>
+
+          <!-- Catégorie -->
+          <div class="mb-3">
+            <label for="communityEventCategory" class="form-label fw-medium">Catégorie</label>
+            <select class="form-select" id="communityEventCategory">
+              <option selected>Sélectionner une catégorie</option>
+              <option value="social">Social</option>
+              <option value="sport">Sport</option>
+              <option value="culture">Culture</option>
+              <option value="famille">Famille</option>
+              <option value="jardinage">Jardinage</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="communityEventDescription" class="form-label fw-medium">Description</label>
+            <textarea class="form-control" id="communityEventDescription" rows="3" placeholder="Décrivez votre événement..."></textarea>
+          </div>
+
+          <!-- Nombre maximum de participants (optionnel) -->
+          <div class="mb-4">
+            <label for="maxParticipants" class="form-label fw-medium">Nombre maximum de participants (optionnel)</label>
+            <input type="number" class="form-control" id="maxParticipants" placeholder="Ex: 20">
+          </div>
+
+          <!-- Footer Buttons -->
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-dark">Créer l'événement</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

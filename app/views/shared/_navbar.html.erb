@@ -9,6 +9,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
+          <li>
+            <%= link_to "créer un membre", new_person_path, class: "btn btn-secondary" %>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="/families.html">Tableau de bord</a>
           </li>
@@ -25,7 +28,7 @@
             <a class="nav-link" href="/families-documents.html">Partage</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/communities.html">Communauté</a>
+            <%= link_to "Communauté", events_path, class: "nav-link" %>
           </li>
         </ul>
       </div>
