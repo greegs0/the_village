@@ -61,7 +61,7 @@ class FamiliesController < ApplicationController
 
   def regenerate_invitation_code
     @family.regenerate_invitation_code
-    redirect_to edit_families_path, notice: "Nouveau code d'invitation généré."
+    redirect_to edit_family_path(@family), notice: "Nouveau code d'invitation généré."
   end
 
   def destroy
@@ -74,11 +74,11 @@ class FamiliesController < ApplicationController
 
   def set_family
     @family = current_user.family
-    redirect_to new_families_path if @family.nil?
+    redirect_to new_family_path if @family.nil?
 
     # Un member doit avoir une famille
     if current_user.member? && @family.nil?
-      redirect_to new_families_path, alert: "Crée d'abord ta famille."
+      redirect_to new_family_path, alert: "Crée d'abord ta famille."
     end
     # helper :
     # - avec family -> OK, voit le dashboard

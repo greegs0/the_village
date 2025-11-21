@@ -12,7 +12,8 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   # Pages routes
-  resource :families, only: [:show, :new, :create, :edit, :update] do
+  get 'families', to: 'families#show', as: :families  # Redirect /families to show action
+  resources :families, only: [:show, :new, :create, :edit, :update] do
     resources :family_events
   end
   resources :people, only: [:new, :create, :edit, :update, :destroy]
