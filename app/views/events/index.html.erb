@@ -77,13 +77,6 @@
                         } %>
           </div>
 
-          <%# <!-- Titre de l'événement -->
-          <div class="mb-3">
-            <label for="communityEventTitle" class="form-label fw-medium">Titre de l'événement</label>
-            <input type="text" class="form-control" id="communityEventTitle" placeholder="Ex: Apéro voisins">
-          </div> %>
-
-
           <!-- Date et Heure -->
           <div class="row g-3 mb-3">
             <%= f.input :date,
@@ -95,22 +88,9 @@
                         } %>
           </div>
 
-          <!-- Date et Heure -->
-          <%# <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label for="communityEventDate" class="form-label fw-medium">Date</label>
-              <input type="date" class="form-control" id="communityEventDate">
-            </div>
-            <div class="col-md-6">
-              <label for="communityEventTime" class="form-label fw-medium">Heure</label>
-              <input type="time" class="form-control" id="communityEventTime">
-            </div>
-          </div> %>
-
-
           <!-- Lieu-->
           <div class="mb-3">
-            <%= f.input :name,
+            <%= f.input :place,
                         label: "Lieu",
                         required: true,
                         input_html: {
@@ -119,17 +99,9 @@
                         } %>
           </div>
 
-
-          <%# <!-- Lieu -->
-          <div class="mb-3">
-            <label for="communityEventLocation" class="form-label fw-medium">Lieu</label>
-            <input type="text" class="form-control" id="communityEventLocation" placeholder="Ex: Parc du quartier">
-          </div> %>
-
-
           <!-- Catégorie-->
           <div class="mb-3">
-            <%= f.input :name,
+            <%= f.input :category,
                         as: :select,
                         collection: [
                           ['Social', 'social'],
@@ -150,21 +122,6 @@
                         } %>
           </div>
 
-          <%# <!-- Catégorie -->
-          <div class="mb-3">
-            <label for="communityEventCategory" class="form-label fw-medium">Catégorie</label>
-            <select class="form-select" id="communityEventCategory">
-              <option selected>Sélectionner une catégorie</option>
-              <option value="social">Social</option>
-              <option value="sport">Sport</option>
-              <option value="culture">Culture</option>
-              <option value="famille">Famille</option>
-              <option value="jardinage">Jardinage</option>
-              <option value="autre">Autre</option>
-            </select>
-          </div>%>
-
-
           <!-- Description -->
           <div class="mb-3">
             <%= f.input :description,
@@ -178,29 +135,22 @@
                         } %>
           </div>
 
-          <!-- Description -->
-          <%# <div class="mb-3">
-            <label for="communityEventDescription" class="form-label fw-medium">Description</label>
-            <textarea class="form-control" id="communityEventDescription" rows="3" placeholder="Décrivez votre événement..."></textarea>
-          </div> %>
-
-
           <!-- Nombre maximum de participants (optionnel) -->
-          <div class="mb-4">
-            <label for="maxParticipants" class="form-label fw-medium">Nombre maximum de participants (optionnel)</label>
-            <input type="number" class="form-control" id="maxParticipants" placeholder="Ex: 20">
+          <div class="mb-3">
+            <%= f.input :max_participations,
+                        label: "Nombre maximum de participants (optionnel)",
+                        required: false,
+                        input_html: {
+                          class: "form-control",
+                          placeholder: "Ex : 20"
+                        } %>
           </div>
-
-
 
           <div class="d-flex justify-content-end gap-2">
             <%= f.button :button, "Annuler", class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
             <%= f.button :submit, "Créer l'événement", class: "btn btn-dark" %>
           </div>
         <% end %>
-
-
-
 
         <form>
       </div>
