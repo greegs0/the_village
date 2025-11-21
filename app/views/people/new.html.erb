@@ -10,27 +10,7 @@
 </head>
 <body>
  <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
-      <div class="container-fluid px-4 px-lg-5">
-        <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
-          <div class="logo-gradient rounded me-2"></div>
-          <span class="fw-normal fs-5">The Village</span>
-        <% end %>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <%= link_to "Tableau de bord", new_person_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Déconnexion", destroy_user_session_path, method: :delete, class: "nav-link" %>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <%= render 'shared/navbar' %>
 
     <!-- Main Content -->
     <div class="container py-4 py-md-5">
@@ -115,14 +95,19 @@
                               <div class="fw-medium"><%= person.name %></div>
                               <small class="text-secondary">
                                 <% if person.birthday.present? %>
-                                  <%= ((Date.today - person.birthday).to_i / 365.25).floor %> ans
+                                  <%= ((Date.today - person.birthday).to_i / 365.25).floor %> ans (<%= person.birthday.strftime('%d/%m/%Y') %>)
                                 <% else %>
                                   Âge non renseigné
                                 <% end %>
                               </small>
                             </div>
                           </div>
-                          <%= link_to "Modifier", edit_person_path(person), class: "btn btn-sm btn-outline-secondary" if person.persisted? %>
+                          <div class="d-flex gap-2">
+                            <%= link_to "Modifier", edit_person_path(person, open_modal: true), class: "btn btn-sm btn-outline-secondary" if person.persisted? %>
+                            <%= link_to person_path(person), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer #{person.name} ?" }, class: "btn btn-sm btn-outline-danger" do %>
+                              <i class="fas fa-trash"></i>
+                            <% end %>
+                          </div>
                         </div>
                       <% end %>
                     <% else %>
@@ -178,31 +163,8 @@
     </div>
 
     <!-- Modal pour ajouter un membre -->
-      <div class="modal fade" id="addMemberModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addMemberModalLabel">Ajouter un membre de la famille</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <%= simple_form_for @person, url: people_path do |f| %>
-              <%= f.input :name, label: "Nom complet", placeholder: "Ex: Sophie Dupont", required: true %>
-              <%= f.input :birthday, as: :date, label: "Date de naissance",
-                          start_year: Date.today.year - 100,
-                          end_year: Date.today.year,
-                          order: [:day, :month, :year] %>
-              <%= f.input :zipcode, label: "Code postal (optionnel)", placeholder: "Ex: 75001" %>
+    <%= render 'people/form_modal' %>
 
-              <div class="modal-footer px-0 pb-0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <%= f.button :submit, "Ajouter ce membre", class: "btn btn-dark" %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

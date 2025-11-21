@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :tasks
+  get 'family_events/index'
+  resources :tasks do
+    member do
+      patch :toggle_status
+    end
+  end
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
@@ -7,8 +12,12 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   # Pages routes
-  resource :families, only: [:show, :new, :create, :edit, :update]
+  resource :families, only: [:show, :new, :create, :edit, :update] do
+    resources :family_events
+  end
   resources :people, only: [:new, :create, :edit, :update, :destroy]
+
+  get 'families-documents', to: 'pages#families_documents', as: :families_documents
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

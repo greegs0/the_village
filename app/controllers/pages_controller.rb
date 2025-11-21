@@ -6,4 +6,7 @@ class PagesController < ApplicationController
 
   def families
   end
+
+  def families_documents
+  end
 end

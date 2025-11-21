@@ -5,28 +5,30 @@ class PeopleController < ApplicationController
   before_action :set_person, only: [:edit, :update, :destroy]
 
   def new
-    @person = Person.new(family: @family) # Anciennement @person = @family.people.new -> crée un fantôme
+    if params[:edit_person_id].present?
+      @person = @family.people.find(params[:edit_person_id])
+    else
+      @person = Person.new(family: @family)
+    end
   end
 
   def create
     @person = @family.people.new(person_params)
     if @person.save
-      if params[:force_modal] == "true"
-        redirect_to family_path, notice: "Bienvenue ! Votre famille est prête."
-      else
-        @family.people.reload  # GHOSTBUSTER 👻🔫 Supprime tous les fantômes non sauvegardés !
-        redirect_to new_person_path, notice: "Membre ajouté à la famille."
-      end
+      redirect_to new_person_path, notice: "Membre ajouté à la famille."
     else
+      @family.people.reload
       render :new, status: :unprocessable_entity
     end
   end
 
-  def edit; end
+  def edit
+  redirect_to new_person_path(open_modal: true, edit_person_id: @person.id)
+  end
 
   def update
     if @person.update(person_params)
-      redirect_to families_path, notice: "Membre mis à jour."
+      redirect_to new_person_path, notice: "Membre mis à jour."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -34,7 +36,7 @@ class PeopleController < ApplicationController
 
   def destroy
     @person.destroy
-    redirect_to families_path, notice: "Membre supprimé."
+    redirect_to new_person_path, notice: "Membre supprimé."
   end
 
   private

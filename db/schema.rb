@@ -98,7 +98,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_111928) do
   add_foreign_key "events", "users"
   add_foreign_key "family_events", "families"
   add_foreign_key "people", "families"
+  add_foreign_key "tasks", "people", column: "assignee_id"
   add_foreign_key "tasks", "users"
-  add_foreign_key "tasks", "users", column: "assignee_id"
   add_foreign_key "users", "families"
 end

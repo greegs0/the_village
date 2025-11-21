@@ -8,11 +8,63 @@
     <p class="text-secondary">Voici un aperçu de votre journée</p>
   </div>
 
-  <!-- Stats Cards -->
-  <div class="row g-3 g-md-4 mb-4">
-    <div class="col-6 col-lg-3">
-      <div class="card border rounded-4 h-100">
-        <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
+    <!-- Stats Cards -->
+    <div class="row g-3 g-md-4 mb-4">
+      <div class="col-6 col-lg-3">
+        <%= link_to tasks_path, class: "text-decoration-none" do %>
+          <div class="card border rounded-4 h-100">
+            <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
+              <div>
+                <p class="text-secondary small mb-1">Tâches en cours</p>
+                <h3 class="h2 mb-0 text-dark"><%= @tasks.where(status: [false, nil]).count %></h3>
+              </div>
+              <div class="text-primary fs-1">⏳</div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="card border rounded-4 h-100">
+          <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-secondary small mb-1">Événements cette semaine</p>
+              <h3 class="h2 mb-0">5</h3>
+            </div>
+            <div class="text-primary fs-1">📅</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="card border rounded-4 h-100">
+          <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-secondary small mb-1">Membres actifs</p>
+              <h3 class="h2 mb-0"><%= Person.count%></h3>
+            </div>
+            <div class="text-primary fs-1">👥</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="card border rounded-4 h-100">
+          <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-secondary small mb-1">Documents partagés</p>
+              <h3 class="h2 mb-0">42</h3>
+            </div>
+            <div class="text-primary fs-1">📄</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Village Assistant -->
+    <div class="card border-0 rounded-4 mb-4 overflow-hidden shadow-sm">
+      <div class="card-header border-0 p-3" style="background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #f97316 100%);">
+        <div class="d-flex align-items-center">
+          <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+            <span style="font-size: 18px;">🏘️</span>
+          </div>
           <div>
             <p class="text-secondary small mb-1">Tâches en cours</p>
             <h3 class="h2 mb-0">8</h3>
@@ -21,12 +73,77 @@
         </div>
       </div>
     </div>
-    <div class="col-6 col-lg-3">
-      <div class="card border rounded-4 h-100">
-        <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
-          <div>
-            <p class="text-secondary small mb-1">Événements cette semaine</p>
-            <h3 class="h2 mb-0">5</h3>
+
+    <!-- Two Column Layout -->
+    <div class="row g-4 mb-4">
+      <!-- Upcoming Events -->
+      <div class="col-lg-6">
+        <div class="card border rounded-4 h-100">
+          <div class="card-body p-3 p-md-4">
+            <h5 class="mb-1">Événements à venir</h5>
+            <p class="text-secondary small mb-4">Vos prochains rendez-vous et activités</p>
+
+            <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
+              <div class="flex-grow-1">
+                <h6 class="mb-1">Réunion de famille</h6>
+                <p class="text-secondary small mb-0">
+                  <span class="me-2">🕐</span>Aujourd'hui, 18:00
+                </p>
+              </div>
+              <span class="badge bg-secondary">Famille</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
+              <div class="flex-grow-1">
+                <h6 class="mb-1">Sortie au parc avec voisins</h6>
+                <p class="text-secondary small mb-0">
+                  <span class="me-2">🕐</span>Demain, 15:00
+                </p>
+              </div>
+              <span class="badge bg-info">Communauté</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
+              <div class="flex-grow-1">
+                <h6 class="mb-1">Rendez-vous médical - Sophie</h6>
+                <p class="text-secondary small mb-0">
+                  <span class="me-2">🕐</span>Mercredi, 10:30
+                </p>
+              </div>
+              <span class="badge bg-danger">Important</span>
+            </div>
+
+            <a href="/families-calendar.html" class="btn btn-outline-secondary w-100">Voir tout le calendrier</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="col-lg-6">
+        <div class="card border rounded-4 h-100">
+          <div class="card-body p-3 p-md-4">
+            <h5 class="mb-1">Activité récente</h5>
+            <p class="text-secondary small mb-4">Ce qui s'est passé dans votre village</p>
+
+            <% if @recent_completed_tasks.any? %>
+              <% @recent_completed_tasks.each do |task| %>
+                <div class="d-flex mb-3">
+                  <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                       style="width: 40px; height: 40px;">
+                    <span class="fw-medium"><%= task.assignee.name.first.upcase %></span>
+                  </div>
+                  <div class="flex-grow-1">
+                    <p class="mb-1 small">
+                      <strong><%= task.assignee.name %></strong> a complété la tâche
+                      <%= link_to task.name, tasks_path, class: "text-primary text-decoration-none" %>
+                    </p>
+                    <small class="text-muted"><%= time_ago_in_words(task.updated_at) %></small>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="text-center text-muted py-4">Aucune activité récente pour le moment</p>
+            <% end %>
           </div>
           <div class="text-primary fs-1">📅</div>
         </div>
@@ -43,15 +160,56 @@
         </div>
       </div>
     </div>
-    <div class="col-6 col-lg-3">
-      <div class="card border rounded-4 h-100">
-        <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
-          <div>
-            <p class="text-secondary small mb-1">Documents partagés</p>
-            <h3 class="h2 mb-0">42</h3>
+
+    <!-- Task Progress Chart -->
+    <div class="card border rounded-4">
+      <div class="card-body p-3 p-md-4">
+        <h5 class="mb-1">Progression des tâches hebdomadaires</h5>
+        <p class="text-secondary small mb-4">
+          <% if @weekly_total > 0 %>
+            Votre famille a complété <%= @weekly_percentage %>% des tâches cette semaine
+          <% else %>
+            Aucune tâche planifiée cette semaine
+          <% end %>
+        </p>
+
+        <div class="row align-items-center mb-4">
+          <div class="col-md-6">
+            <div class="text-center mb-3">
+              <div class="position-relative d-inline-block">
+                <% stroke_offset = @weekly_total > 0 ? (502 * (100 - @weekly_percentage) / 100).round : 502 %>
+                <svg width="200" height="200" viewBox="0 0 200 200">
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="#e5e7eb" stroke-width="20"/>
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="#10b981" stroke-width="20"
+                          stroke-dasharray="502" stroke-dashoffset="<%= stroke_offset %>" transform="rotate(-90 100 100)"/>
+                </svg>
+                <div class="position-absolute top-50 start-50 translate-middle text-center">
+                  <div class="h2 mb-0"><%= @weekly_percentage %>%</div>
+                  <small class="text-muted">Complétées</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <div class="d-flex align-items-center mb-2">
+                <div class="rounded" style="width: 12px; height: 12px; background-color: #10b981;"></div>
+                <span class="ms-2 small">Complétées: <%= @weekly_completed %></span>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="rounded" style="width: 12px; height: 12px; background-color: #f59e0b;"></div>
+                <span class="ms-2 small">En cours: <%= @weekly_ongoing %></span>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="rounded" style="width: 12px; height: 12px; background-color: #ef4444;"></div>
+                <span class="ms-2 small">En retard: <%= @weekly_overdue %></span>
+              </div>
+            </div>
           </div>
           <div class="text-primary fs-1">📄</div>
         </div>
+
+        <%= link_to "Gérer les tâches", tasks_path, class: "btn btn-dark w-100" %>
       </div>
     </div>
   </div>
