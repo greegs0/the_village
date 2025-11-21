@@ -1,31 +1,35 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
     <div class="container-fluid px-4 px-lg-5">
-      <a class="navbar-brand d-flex align-items-center" href="/index.html">
+      <%= link_to families_path, class: "navbar-brand d-flex align-items-center" do %>
         <div class="logo-gradient rounded me-2"></div>
         <span class="fw-normal fs-5">The Village</span>
-      </a>
+      <% end %>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
+          <%= link_to "Créer un membre", new_person_path, class: "btn btn-secondary" %>
           <li class="nav-item">
-            <a class="nav-link" href="/families.html">Tableau de bord</a>
+            <%= link_to "Tableau de bord", families_path, class: "nav-link" %>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
               Gestion
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item active" href="/families-tasks.html">Tâches</a></li>
+              <li><%= link_to "Tâches", tasks_path, class: "dropdown-item active" %></li>
               <li><a class="dropdown-item" href="/families-calendar.html">Calendrier</a></li>
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/families-documents.html">Partage</a>
+            <%= link_to "Documents", families_documents_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/communities.html">Communauté</a>
+            <%= link_to "Communauté", events_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
           </li>
         </ul>
       </div>
