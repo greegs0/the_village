@@ -1,24 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta charset="utf-8" />
-  <title>Tableau de bord - The Village</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="globals.css" />
-  <link rel="stylesheet" href="style-responsive.css" />
-</head>
-<body>
-  <!-- Navigation -->
-  <%= render 'shared/navbar' %>
+<%= render 'shared/navbar' %>
 
-  <!-- Main Content -->
-  <div class="container-fluid px-4 px-lg-5 py-4">
-    <!-- Header -->
-    <div class="mb-4">
-      <h1 class="h2 mb-2">Bienvenue dans votre Village</h1>
-      <p class="text-secondary">Voici un aperçu de votre journée</p>
-    </div>
+<!-- Main Content -->
+<div class="container-fluid px-4 px-lg-5 py-4">
+  <!-- Header -->
+  <div class="mb-4">
+    <h1 class="h2 mb-2">Bienvenue dans votre Village</h1>
+    <p class="text-secondary">Voici un aperçu de votre journée</p>
+  </div>
 
     <!-- Stats Cards -->
     <div class="row g-3 g-md-4 mb-4">
@@ -78,60 +66,10 @@
             <span style="font-size: 18px;">🏘️</span>
           </div>
           <div>
-            <h6 class="mb-0 text-white fw-medium">Village Assistant</h6>
-            <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
+            <p class="text-secondary small mb-1">Tâches en cours</p>
+            <h3 class="h2 mb-0">8</h3>
           </div>
-        </div>
-      </div>
-      <div class="card-body p-3 bg-white">
-        <div class="d-flex mb-3">
-          <div class="me-2">
-            <div class="rounded-circle d-flex align-items-center justify-content-center"
-                 style="width: 28px; height: 28px; background: linear-gradient(135deg, #a855f7 0%, #f97316 100%);">
-              <span style="font-size: 14px;">🏘️</span>
-            </div>
-          </div>
-          <div class="flex-grow-1">
-            <div class="bg-light rounded-3 p-2">
-              <p class="mb-1" style="font-size: 13px; line-height: 1.4;">
-                Bonjour ! Je suis l'assistant de The Village. Comment puis-je vous aider aujourd'hui ?
-                Vous pouvez me demander de créer des tâches, planifier des événements, envoyer des messages à votre famille, ou obtenir des informations sur votre communauté.
-              </p>
-              <small class="text-muted" style="font-size: 11px;">09:28</small>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="d-flex flex-wrap gap-2 mb-3">
-          <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
-            📅 Créer un événement famille
-          </button>
-          <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
-            ✅ Ajouter une nouvelle tâche
-          </button>
-          <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
-            💬 Envoyer un message au groupe
-          </button>
-          <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
-            📊 Voir mes statistiques
-          </button>
-        </div>
-
-        <!-- Input -->
-        <div class="rounded-3 p-2" style="background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%); box-shadow: inset 0px 2px 4px rgba(0,0,0,0.05);">
-          <div class="d-flex align-items-center gap-1">
-            <button class="btn btn-sm btn-link text-white p-1" style="font-size: 16px;">📎</button>
-            <button class="btn btn-sm btn-link text-white p-1" style="font-size: 16px;">🎤</button>
-            <input type="text" class="form-control form-control-sm bg-transparent border-0 text-white"
-                   placeholder="Demandez à Village de créer un tableau de bord..."
-                   style="font-size: 13px; padding: 6px 8px;">
-            <button class="btn btn-sm btn-link text-white p-1" style="font-size: 16px;">😊</button>
-            <button class="btn btn-sm btn-primary rounded-circle d-flex align-items-center justify-content-center"
-                    style="width: 28px; height: 28px; padding: 0;">
-              <span style="font-size: 14px;">➤</span>
-            </button>
-          </div>
+          <div class="text-primary fs-1">✓</div>
         </div>
       </div>
     </div>
@@ -207,21 +145,19 @@
               <p class="text-center text-muted py-4">Aucune activité récente pour le moment</p>
             <% end %>
           </div>
+          <div class="text-primary fs-1">📅</div>
         </div>
       </div>
     </div>
-
-    <!-- Community Event Banner -->
-    <div class="card border rounded-4 mb-4 bg-gradient-light">
-      <div class="card-body p-3 p-md-4 d-flex flex-column flex-md-row align-items-center gap-3">
-        <div class="fs-1">🌍</div>
-        <div class="flex-grow-1">
-          <h5 class="mb-1">Créer un événement de région</h5>
-          <p class="text-secondary mb-0 small">
-            Organisez un événement communautaire et invitez vos voisins ! Créez des liens avec votre quartier.
-          </p>
+    <div class="col-6 col-lg-3">
+      <div class="card border rounded-4 h-100">
+        <div class="card-body p-3 p-md-4 d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-secondary small mb-1">Membres actifs</p>
+            <h3 class="h2 mb-0">24</h3>
+          </div>
+          <div class="text-primary fs-1">👥</div>
         </div>
-        <a href="/communities.html" class="btn btn-primary">Découvrir les événements</a>
       </div>
     </div>
 
@@ -270,6 +206,7 @@
               </div>
             </div>
           </div>
+          <div class="text-primary fs-1">📄</div>
         </div>
 
         <%= link_to "Gérer les tâches", tasks_path, class: "btn btn-dark w-100" %>
@@ -277,6 +214,221 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  <!-- Village Assistant -->
+  <div class="card border-0 rounded-4 mb-4 overflow-hidden shadow-sm">
+    <div class="card-header border-0 p-3" style="background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #f97316 100%);">
+      <div class="d-flex align-items-center">
+        <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+          <span style="font-size: 18px;">🏘️</span>
+        </div>
+        <div>
+          <h6 class="mb-0 text-white fw-medium">Village Assistant</h6>
+          <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-3 bg-white">
+      <div class="d-flex mb-3">
+        <div class="me-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center"
+                style="width: 28px; height: 28px; background: linear-gradient(135deg, #a855f7 0%, #f97316 100%);">
+            <span style="font-size: 14px;">🏘️</span>
+          </div>
+        </div>
+        <div class="flex-grow-1">
+          <div class="bg-light rounded-3 p-2">
+            <p class="mb-1" style="font-size: 13px; line-height: 1.4;">
+              Bonjour ! Je suis l'assistant de The Village. Comment puis-je vous aider aujourd'hui ?
+              Vous pouvez me demander de créer des tâches, planifier des événements, envoyer des messages à votre famille, ou obtenir des informations sur votre communauté.
+            </p>
+            <small class="text-muted" style="font-size: 11px;">09:28</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
+          📅 Créer un événement famille
+        </button>
+        <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
+          ✅ Ajouter une nouvelle tâche
+        </button>
+        <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
+          💬 Envoyer un message au groupe
+        </button>
+        <button class="btn btn-sm rounded-pill" style="background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%); border: none; font-size: 11px; padding: 4px 12px;">
+          📊 Voir mes statistiques
+        </button>
+      </div>
+
+      <!-- Input -->
+      <div class="rounded-3 p-2" style="background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%); box-shadow: inset 0px 2px 4px rgba(0,0,0,0.05);">
+        <div class="d-flex align-items-center gap-1">
+          <button class="btn btn-sm btn-link text-white p-1" style="font-size: 16px;">📎</button>
+          <button class="btn btn-sm btn-link text-white p-1" style="font-size: 16px;">🎤</button>
+          <input type="text" class="form-control form-control-sm bg-transparent border-0 text-white"
+                  placeholder="Demandez à Village de créer un tableau de bord..."
+                  style="font-size: 13px; padding: 6px 8px;">
+          <button class="btn btn-sm btn-link text-white p-1" style="font-size: 16px;">😊</button>
+          <button class="btn btn-sm btn-primary rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 28px; height: 28px; padding: 0;">
+            <span style="font-size: 14px;">➤</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two Column Layout -->
+  <div class="row g-4 mb-4">
+    <!-- Upcoming Events -->
+    <div class="col-lg-6">
+      <div class="card border rounded-4 h-100">
+        <div class="card-body p-3 p-md-4">
+          <h5 class="mb-1">Événements à venir</h5>
+          <p class="text-secondary small mb-4">Vos prochains rendez-vous et activités</p>
+
+          <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
+            <div class="flex-grow-1">
+              <h6 class="mb-1">Réunion de famille</h6>
+              <p class="text-secondary small mb-0">
+                <span class="me-2">🕐</span>Aujourd'hui, 18:00
+              </p>
+            </div>
+            <span class="badge bg-secondary">Famille</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
+            <div class="flex-grow-1">
+              <h6 class="mb-1">Sortie au parc avec voisins</h6>
+              <p class="text-secondary small mb-0">
+                <span class="me-2">🕐</span>Demain, 15:00
+              </p>
+            </div>
+            <span class="badge bg-info">Communauté</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
+            <div class="flex-grow-1">
+              <h6 class="mb-1">Rendez-vous médical - Sophie</h6>
+              <p class="text-secondary small mb-0">
+                <span class="me-2">🕐</span>Mercredi, 10:30
+              </p>
+            </div>
+            <span class="badge bg-danger">Important</span>
+          </div>
+
+          <a href="/families-calendar.html" class="btn btn-outline-secondary w-100">Voir tout le calendrier</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="col-lg-6">
+      <div class="card border rounded-4 h-100">
+        <div class="card-body p-3 p-md-4">
+          <h5 class="mb-1">Activité récente</h5>
+          <p class="text-secondary small mb-4">Ce qui s'est passé dans votre village</p>
+
+          <div class="d-flex mb-3">
+            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                  style="width: 40px; height: 40px;">
+              <span class="fw-medium">M</span>
+            </div>
+            <div class="flex-grow-1">
+              <p class="mb-1 small">
+                <strong>Marc</strong> a complété la tâche <span class="text-primary">Faire les courses</span>
+              </p>
+              <small class="text-muted">Il y a 2h</small>
+            </div>
+          </div>
+
+          <div class="d-flex mb-3">
+            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                  style="width: 40px; height: 40px;">
+              <span class="fw-medium">J</span>
+            </div>
+            <div class="flex-grow-1">
+              <p class="mb-1 small">
+                <strong>Julie</strong> a ajouté un événement <span class="text-primary">Dîner de famille</span>
+              </p>
+              <small class="text-muted">Il y a 4h</small>
+            </div>
+          </div>
+
+          <div class="d-flex mb-3">
+            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                  style="width: 40px; height: 40px;">
+              <span class="fw-medium">T</span>
+            </div>
+            <div class="flex-grow-1">
+              <p class="mb-1 small">
+                <strong>Thomas</strong> a envoyé un message <span class="text-primary">dans Groupe Famille</span>
+              </p>
+              <small class="text-muted">Il y a 5h</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Event Banner -->
+  <div class="card border rounded-4 mb-4 bg-gradient-light">
+    <div class="card-body p-3 p-md-4 d-flex flex-column flex-md-row align-items-center gap-3">
+      <div class="fs-1">🌍</div>
+      <div class="flex-grow-1">
+        <h5 class="mb-1">Créer un événement de région</h5>
+        <p class="text-secondary mb-0 small">
+          Organisez un événement communautaire et invitez vos voisins ! Créez des liens avec votre quartier.
+        </p>
+      </div>
+      <%= link_to "Découvrir les événements", events_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <!-- Task Progress Chart -->
+  <div class="card border rounded-4">
+    <div class="card-body p-3 p-md-4">
+      <h5 class="mb-1">Progression des tâches hebdomadaires</h5>
+      <p class="text-secondary small mb-4">Votre famille a complété 65% des tâches cette semaine</p>
+
+      <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+          <div class="text-center mb-3">
+            <div class="position-relative d-inline-block">
+              <svg width="200" height="200" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#e5e7eb" stroke-width="20"/>
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#10b981" stroke-width="20"
+                        stroke-dasharray="326" stroke-dashoffset="114" transform="rotate(-90 100 100)"/>
+              </svg>
+              <div class="position-absolute top-50 start-50 translate-middle text-center">
+                <div class="h2 mb-0">65%</div>
+                <small class="text-muted">Complétées</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <div class="d-flex align-items-center mb-2">
+              <div class="rounded" style="width: 12px; height: 12px; background-color: #10b981;"></div>
+              <span class="ms-2 small">Complétées: 20</span>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <div class="rounded" style="width: 12px; height: 12px; background-color: #f59e0b;"></div>
+              <span class="ms-2 small">En cours: 8</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="rounded" style="width: 12px; height: 12px; background-color: #ef4444;"></div>
+              <span class="ms-2 small">En retard: 3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="/families-tasks.html" class="btn btn-dark w-100">Gérer les tâches</a>
+    </div>
+  </div>
+</div>
