@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   get 'family_events/index'
-  resources :tasks
+  resources :tasks do
+    member do
+      patch :toggle_status
+    end
+  end
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
