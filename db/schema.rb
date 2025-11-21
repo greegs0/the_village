@@ -86,6 +86,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_20_155046) do
     t.string "status"
     t.bigint "family_id"
     t.string "zipcode"
+    t.date "birthday"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["family_id"], name: "index_users_on_family_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     # Autorise name et zipcode lors de l'inscription
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :zipcode])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :zipcode, :birthday])
     # Autorise aussi pour la mise à jour du profil
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :zipcode])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :zipcode, :birthday])
   end
 end
