@@ -1,0 +1,57 @@
+<!-- Modal pour ajouter/modifier un membre -->
+<div class="modal fade" id="addMemberModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMemberModalLabel">
+          <%= @person.persisted? ? "Modifier #{@person.name}" : "Ajouter un membre de la famille" %>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= simple_form_for @person, url: @person.persisted? ? person_path(@person) : people_path, method: @person.persisted? ? :patch : :post do |f| %>
+          <%= f.input :name, label: "Nom complet", placeholder: "Ex: Sophie Dupont", required: true %>
+          <%= f.input :birthday, as: :date, label: "Date de naissance",
+                      start_year: Date.today.year - 100,
+                      end_year: Date.today.year,
+                      order: [:day, :month, :year] %>
+          <%= f.input :zipcode, label: "Code postal (optionnel)", placeholder: "Ex: 75001" %>
+
+          <div class="modal-footer px-0 pb-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <%= f.button :submit, @person.persisted? ? "Enregistrer les modifications" : "Ajouter ce membre", class: "btn btn-dark" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if params[:open_modal] == "true" %>
+  <script>
+    // Essayer d'ouvrir immédiatement
+    (function() {
+      function openModal() {
+        console.log('Trying to open modal...'); // Debug
+        var modalElement = document.getElementById('addMemberModal');
+
+        if (modalElement) {
+          console.log('Modal element found!'); // Debug
+          var modal = new bootstrap.Modal(modalElement);
+          modal.show();
+          console.log('Modal opened!'); // Debug
+        } else {
+          console.error('Modal element NOT found!'); // Debug
+        }
+      }
+
+      // Essayer immédiatement
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', openModal);
+      } else {
+        // DOM already loaded
+        openModal();
+      }
+    })();
+  </script>
+<% end %>

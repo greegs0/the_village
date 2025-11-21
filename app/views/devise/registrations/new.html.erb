@@ -58,7 +58,16 @@
                               placeholder: "votreemail@exemple.com",
                               class: "form-control"
                             } %>
+
+              <!-- Date de naissance -->
               </div>
+                <%= f.input :birthday,
+                            as: :date,
+                            label: "Date de naissance",
+                            start_year: Date.today.year - 100,
+                            end_year: Date.today.year,
+                            order: [:day, :month, :year],
+                            input_html: { autocomplete: "bday" } %>
 
               <!-- Code postal -->
               <div class="mb-3">
