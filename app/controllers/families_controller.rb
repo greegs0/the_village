@@ -5,9 +5,29 @@ class FamiliesController < ApplicationController
 
   def show
     @people = @family.people.order(birthday: :desc)                    # du plus jeune au plus vieux
-    # @tasks  = @family.tasks.order(created_at: :desc).limit(10)          # limite 10 tâches pour pas polluer le dashboard
+    @tasks  = Task.all # Toutes les tâches pour l'instant
     # @events = @family.family_events.order(start_date: :asc).limit(5)
     # @files  = @family.files.order(created_at: :desc).limit(10)
+
+    # Activité récente - Tâches complétées récemment (max 5)
+    @recent_completed_tasks = Task.where(status: true)
+                                  .order(updated_at: :desc)
+                                  .limit(5)
+
+    # Progression des tâches hebdomadaires
+    week_start = Date.today.beginning_of_week
+    week_end = Date.today.end_of_week
+    weekly_tasks = Task.where(target_date: week_start..week_end)
+
+    @weekly_completed = weekly_tasks.where(status: true).count
+    @weekly_overdue = weekly_tasks.where(status: [false, nil])
+                                  .where("target_date < ?", Date.today)
+                                  .count
+    @weekly_ongoing = weekly_tasks.where(status: [false, nil])
+                                  .where("target_date >= ?", Date.today)
+                                  .count
+    @weekly_total = weekly_tasks.count
+    @weekly_percentage = @weekly_total > 0 ? ((@weekly_completed.to_f / @weekly_total) * 100).round : 0
   end
 
   def new
