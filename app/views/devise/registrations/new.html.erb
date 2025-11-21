@@ -6,7 +6,33 @@
           <div class="card-body p-4 p-md-5">
             <!-- Logo -->
             <div class="text-center mb-4">
-              <div class="logo-gradient rounded mx-auto mb-3"></div>
+              <svg width="120" height="120" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-3">
+                <defs>
+                  <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+                    <stop offset="100%" style="stop-color:#f3f4f6;stop-opacity:1"/>
+                  </radialGradient>
+                  <linearGradient id="houseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1"/>
+                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="95" fill="url(#bgGrad)"/>
+                <g transform="translate(50,40)">
+                  <path d="M 20 40 L 50 15 L 80 40 L 80 85 L 20 85 Z" fill="url(#houseGrad)" stroke="#4F46E5" stroke-width="3"/>
+                  <rect x="38" y="60" width="24" height="25" fill="#ffffff" opacity="0.9" rx="2"/>
+                  <circle cx="40" cy="35" r="5" fill="#ffffff" opacity="0.95"/>
+                  <circle cx="60" cy="35" r="5" fill="#ffffff" opacity="0.95"/>
+                  <path d="M 0 55 L 20 40 L 40 55 L 40 85 L 0 85 Z" fill="#667eea" opacity="0.85"/>
+                  <rect x="12" y="68" width="16" height="17" fill="#ffffff" opacity="0.8" rx="1"/>
+                  <path d="M 60 55 L 80 40 L 100 55 L 100 85 L 60 85 Z" fill="#764ba2" opacity="0.85"/>
+                  <rect x="72" y="68" width="16" height="17" fill="#ffffff" opacity="0.8" rx="1"/>
+                  <circle cx="10" cy="90" r="6" fill="#10b981" opacity="0.7"/>
+                  <rect x="9" y="90" width="2" height="10" fill="#059669"/>
+                  <circle cx="90" cy="90" r="6" fill="#10b981" opacity="0.7"/>
+                  <rect x="89" y="90" width="2" height="10" fill="#059669"/>
+                </g>
+              </svg>
               <h1 class="h4 mb-2">Bienvenue sur The Village</h1>
               <p class="text-secondary">Créez votre compte pour rejoindre votre communauté</p>
             </div>
