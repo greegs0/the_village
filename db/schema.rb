@@ -22,6 +22,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_095414) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "max_participations"
+    t.integer "participations_count"
+    t.string "category"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -45,7 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_095414) do
     t.string "assigned_to"
     t.string "event_icon"
     t.string "badge_class"
-    t.boolean "reminders_enabled"
+    t.boolean "reminders_enabled", default: false
     t.index ["family_id"], name: "index_family_events_on_family_id"
   end
 

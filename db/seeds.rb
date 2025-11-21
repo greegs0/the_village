@@ -11,6 +11,7 @@ Family.destroy_all
 
 puts "👨‍👩‍👧‍👦 Création de la famille..."
 family = Family.create!(name: "Famille Maheu")
+other_family = Family.create!(name: "Famille Marshal")
 
 puts "👤 Création des utilisateurs..."
 lois = User.create!(
@@ -19,6 +20,14 @@ lois = User.create!(
   name: "Lois",
   status: "member",
   family: family
+)
+
+steve = User.create!(
+  email: "steve@example.com",
+  password: "password",
+  name: "Steve Marshal",
+  status: "member",
+  family: other_family
 )
 
 puts "👥 Création des membres de la famille (People)..."
@@ -121,9 +130,9 @@ task_templates = [
 end
 
 puts "📅 Création de quelques événements..."
-Event.create!(name: "Piscine", date: Date.today + 1, description: "Avec les enfants", place: "L'Espadon", user: lois)
-Event.create!(name: "Patinoire", date: Date.today + 2, description: "Aussi avec les enfants", place: "Le Glaçon", user: lois)
-Event.create!(name: "Cinéma", date: Date.today + 4, description: "Batman", place: "Le Magnifique", user: lois)
+Event.create!(name: "Piscine", date: Date.today + 1, description: "Avec les enfants", place: "L'Espadon", user: lois, category: "sport", max_participations: 5, participations_count: 2)
+Event.create!(name: "Patinoire", date: Date.today + 2, description: "Aussi avec les enfants", place: "Le Glaçon", user: steve, category: "sport", max_participations: 20, participations_count: 15)
+Event.create!(name: "Cinéma", date: Date.today + 4, description: "Batman", place: "Le Magnifique", user: steve, category: "culture", max_participations: 15, participations_count: 1)
 
 puts "✅ Seeds terminés !"
 puts "   - #{Family.count} famille créée"
