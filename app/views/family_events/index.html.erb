@@ -36,10 +36,10 @@
     <ul class="nav nav-pills bg-light rounded-3 p-1 mb-4" role="tablist">
       <li class="nav-item flex-fill" role="presentation">
         <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#month" type="button">
-          Mois
+          Vue mensuelle
         </button>
       </li>
-      <li class="nav-item flex-fill" role="presentation">
+      <%#<li class="nav-item flex-fill" role="presentation">
         <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#week" type="button">
           Semaine
         </button>
@@ -48,7 +48,7 @@
         <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#list" type="button">
           Liste
         </button>
-      </li>
+      </li>%>
     </ul>
 
     <!-- Tab Content -->
@@ -110,8 +110,11 @@
                               data-event-id="<%= unavail.id %>"
                               data-event-title="<%= unavail.title %>"
                               data-event-type="<%= unavail.type_name %>"
+                              data-event-type-value="<%= unavail.event_type %>"
                               data-event-date="<%= unavail.formatted_date %>"
+                              data-event-start-date="<%= unavail.start_date %>"
                               data-event-time="<%= unavail.formatted_time %>"
+                              data-event-time-value="<%= unavail.time&.strftime('%H:%M') %>"
                               data-event-location="<%= unavail.location %>"
                               data-event-description="<%= unavail.description %>"
                               data-event-assigned="<%= unavail.assigned_to %>"
@@ -186,8 +189,11 @@
                                  data-event-id="<%= event.id %>"
                                  data-event-title="<%= event.title %>"
                                  data-event-type="<%= event.type_name %>"
+                                 data-event-type-value="<%= event.event_type %>"
                                  data-event-date="<%= event.formatted_date %>"
+                                 data-event-start-date="<%= event.start_date %>"
                                  data-event-time="<%= event.formatted_time %>"
+                                 data-event-time-value="<%= event.time&.strftime('%H:%M') %>"
                                  data-event-location="<%= event.location %>"
                                  data-event-description="<%= event.description %>"
                                  data-event-assigned="<%= event.assigned_to %>"
@@ -454,11 +460,11 @@
         <div class="modal-header border-0 pb-0">
           <div class="d-flex align-items-center">
             <div class="rounded-circle bg-primary-light d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
-              <span class="text-primary fs-5">🕒</span>
+              <span class="text-primary fs-5" id="eventDetailsIcon">🕒</span>
             </div>
             <div>
               <h5 class="modal-title fw-medium mb-0" id="eventDetailsModalLabel">Garde Lucas - École</h5>
-              <span class="badge bg-light text-dark">Garde d'enfant</span>
+              <span class="badge bg-light text-dark" id="eventDetailsTypeBadge">Garde d'enfant</span>
             </div>
           </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -469,41 +475,40 @@
               <span class="text-secondary">📅</span>
               <div>
                 <div class="fw-medium">Date et heure</div>
-                <small class="text-secondary">mercredi 19 novembre 2025</small>
-                <small class="text-secondary d-block">16:30</small>
+                <small class="text-secondary" id="eventDetailsDate">mercredi 19 novembre 2025</small>
+                <small class="text-secondary d-block" id="eventDetailsTime">16:30</small>
               </div>
             </div>
             <div class="d-flex align-items-start gap-2">
               <span class="text-secondary">📍</span>
               <div>
                 <div class="fw-medium">Lieu</div>
-                <small class="text-secondary">École primaire</small>
+                <small class="text-secondary" id="eventDetailsLocation">École primaire</small>
               </div>
             </div>
             <div class="d-flex align-items-start gap-2">
               <span class="text-secondary">●</span>
               <div>
                 <div class="fw-medium">Description</div>
-                <small class="text-secondary">Récupérer Lucas à l'école</small>
+                <small class="text-secondary" id="eventDetailsDescription">Récupérer Lucas à l'école</small>
               </div>
             </div>
             <div class="d-flex align-items-start gap-2">
               <span class="text-secondary">🧑‍🤝‍🧑</span>
               <div>
                 <div class="fw-medium">Assigné à</div>
-                <span class="badge bg-light text-dark">M Marc</span>
+                <span class="badge bg-light text-dark" id="eventDetailsAssigned">M Marc</span>
               </div>
             </div>
           </div>
 
-          <div class="alert alert-info d-flex align-items-center gap-3 p-3 mb-3 mx-3" role="alert">
+          <div class="alert alert-info d-flex align-items-center gap-3 p-3 mb-3 mx-3" role="alert" id="eventDetailsReminder">
             <span class="fs-5">🔔</span>
             <small>Les rappels sont activés pour cet événement</small>
           </div>
 
           <div class="d-flex justify-content-between gap-2">
             <button type="button" class="btn btn-outline-secondary flex-grow-1" id="modifyEventBtn">Modifier</button>
-            <button type="button" class="btn btn-outline-secondary flex-grow-1" id="duplicateEventBtn">Dupliquer</button>
             <button type="button" class="btn btn-danger flex-grow-1" id="deleteEventBtn">Supprimer</button>
           </div>
         </div>
@@ -513,9 +518,14 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function initializeFamilyEventsPage() {
       const eventDetailsModal = document.getElementById('eventDetailsModal');
       const newEventModal = document.getElementById('newEventModal');
+
+      if (!eventDetailsModal || !newEventModal) {
+        console.log('Modals not found, skipping initialization');
+        return;
+      }
 
       // Get action buttons from the event details modal
       const modifyEventBtn = document.getElementById('modifyEventBtn');
@@ -523,71 +533,134 @@
       const deleteEventBtn = document.getElementById('deleteEventBtn');
 
       let currentEventId = null;
+      let currentEventData = null;
 
       // Function to update modal content from data attributes
       function updateModalContent(badge) {
-        const eventData = {
-          id: badge.dataset.eventId,
-          title: badge.dataset.eventTitle,
-          type: badge.dataset.eventType,
-          date: badge.dataset.eventDate,
-          time: badge.dataset.eventTime,
-          location: badge.dataset.eventLocation,
-          description: badge.dataset.eventDescription,
-          assignedTo: badge.dataset.eventAssigned,
-          icon: badge.dataset.eventIcon,
-          badgeClass: badge.dataset.eventBadge,
-          reminders: badge.dataset.eventReminders === 'true'
-        };
+        try {
+          const eventData = {
+            id: badge.dataset.eventId || '',
+            title: badge.dataset.eventTitle || 'Sans titre',
+            type: badge.dataset.eventType || 'Autre',
+            typeValue: badge.dataset.eventTypeValue || '',
+            date: badge.dataset.eventDate || '',
+            startDate: badge.dataset.eventStartDate || '',
+            time: badge.dataset.eventTime || '',
+            timeValue: badge.dataset.eventTimeValue || '',
+            location: badge.dataset.eventLocation || '',
+            description: badge.dataset.eventDescription || '',
+            assignedTo: badge.dataset.eventAssigned || '',
+            icon: badge.dataset.eventIcon || '📌',
+            badgeClass: badge.dataset.eventBadge || 'bg-secondary',
+            reminders: badge.dataset.eventReminders === 'true'
+          };
 
-        currentEventId = eventData.id;
+          console.log('Event data loaded:', eventData);
 
-        // Update title and icon
-        document.getElementById('eventDetailsModalLabel').textContent = eventData.title;
-        document.querySelector('#eventDetailsModal .text-primary').textContent = eventData.icon;
+          currentEventId = eventData.id;
+          currentEventData = eventData;
 
-        // Update badge type
-        const typeBadge = document.querySelector('#eventDetailsModal .badge');
-        typeBadge.className = `badge ${eventData.badgeClass} text-white`;
-        typeBadge.textContent = eventData.type;
+          // Update title
+          const titleElement = document.getElementById('eventDetailsModalLabel');
+          if (titleElement) titleElement.textContent = eventData.title;
 
-        // Update date and time
-        const dateTimeElement = document.querySelector('#eventDetailsModal .d-flex.align-items-start.gap-2:nth-child(1) small');
-        dateTimeElement.innerHTML = `${eventData.date}<small class="text-secondary d-block">${eventData.time}</small>`;
+          // Update icon
+          const iconElement = document.getElementById('eventDetailsIcon');
+          if (iconElement) iconElement.textContent = eventData.icon;
 
-        // Update location
-        const locationElement = document.querySelector('#eventDetailsModal .d-flex.align-items-start.gap-2:nth-child(2) small');
-        locationElement.textContent = eventData.location || 'Non spécifié';
+          // Update badge type
+          const typeBadge = document.getElementById('eventDetailsTypeBadge');
+          if (typeBadge) {
+            typeBadge.className = `badge ${eventData.badgeClass} text-white`;
+            typeBadge.textContent = eventData.type;
+          }
 
-        // Update description
-        const descriptionElement = document.querySelector('#eventDetailsModal .d-flex.align-items-start.gap-2:nth-child(3) small');
-        descriptionElement.textContent = eventData.description || 'Aucune description';
+          // Update date
+          const dateElement = document.getElementById('eventDetailsDate');
+          if (dateElement) dateElement.textContent = eventData.date || 'Non spécifié';
 
-        // Update assigned to
-        const assignedElement = document.querySelector('#eventDetailsModal .d-flex.align-items-start.gap-2:nth-child(4) .badge');
-        assignedElement.textContent = eventData.assignedTo || 'Non assigné';
+          // Update time
+          const timeElement = document.getElementById('eventDetailsTime');
+          if (timeElement) timeElement.textContent = eventData.time || 'Non spécifié';
 
-        // Show/hide reminder alert based on event data
-        const reminderAlert = document.querySelector('#eventDetailsModal .alert-info');
-        if (eventData.reminders) {
-          reminderAlert.style.display = 'flex';
-        } else {
-          reminderAlert.style.display = 'none';
+          // Update location
+          const locationElement = document.getElementById('eventDetailsLocation');
+          if (locationElement) locationElement.textContent = eventData.location || 'Non spécifié';
+
+          // Update description
+          const descriptionElement = document.getElementById('eventDetailsDescription');
+          if (descriptionElement) descriptionElement.textContent = eventData.description || 'Aucune description';
+
+          // Update assigned to
+          const assignedElement = document.getElementById('eventDetailsAssigned');
+          if (assignedElement) assignedElement.textContent = eventData.assignedTo || 'Non assigné';
+
+          // Show/hide reminder alert based on event data
+          const reminderAlert = document.getElementById('eventDetailsReminder');
+          if (reminderAlert) {
+            reminderAlert.style.display = eventData.reminders ? 'flex' : 'none';
+          }
+        } catch (error) {
+          console.error('Error updating modal content:', error);
         }
       }
 
-      // Add click listeners to all event badges and buttons
-      document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#eventDetailsModal"]').forEach(element => {
-        element.addEventListener('click', function(e) {
+      // Add click listeners using event delegation for dynamic content
+      document.body.addEventListener('click', function(e) {
+        const target = e.target.closest('[data-bs-toggle="modal"][data-bs-target="#eventDetailsModal"]');
+        if (target) {
           e.preventDefault();
-          updateModalContent(this);
-        });
+          updateModalContent(target);
+        }
       });
 
       // Event listener for "Modifier" button
       if (modifyEventBtn) {
         modifyEventBtn.addEventListener('click', function() {
-          // TODO: Load event data into edit form
+          if (currentEventId && currentEventData) {
+            // Update the form action to use PATCH method for editing
+            const form = document.getElementById('newEventForm');
+            if (form) {
+              form.action = `/families/<%= @family.id %>/family_events/${currentEventId}`;
+
+              // Add hidden field for PATCH method if it doesn't exist
+              let methodField = form.querySelector('input[name="_method"]');
+              if (!methodField) {
+                methodField = document.createElement('input');
+                methodField.type = 'hidden';
+                methodField.name = '_method';
+                form.appendChild(methodField);
+              }
+              methodField.value = 'patch';
+
+              // Fill the form with current event data using stored data
+              const titleInput = form.querySelector('#family_event_title');
+              const startDateInput = form.querySelector('#family_event_start_date');
+              const timeInput = form.querySelector('#family_event_time');
+              const locationInput = form.querySelector('#family_event_location');
+              const descriptionInput = form.querySelector('#family_event_description');
+              const assignedSelect = form.querySelector('#family_event_assigned_to');
+              const typeSelect = form.querySelector('#family_event_event_type');
+              const remindersCheckbox = form.querySelector('#family_event_reminders_enabled');
+
+              if (titleInput) titleInput.value = currentEventData.title || '';
+              if (startDateInput) startDateInput.value = currentEventData.startDate || '';
+              if (timeInput) timeInput.value = currentEventData.timeValue || '';
+              if (locationInput) locationInput.value = currentEventData.location || '';
+              if (descriptionInput) descriptionInput.value = currentEventData.description || '';
+              if (assignedSelect) assignedSelect.value = currentEventData.assignedTo || '';
+              if (typeSelect) typeSelect.value = currentEventData.typeValue || '';
+              if (remindersCheckbox) remindersCheckbox.checked = currentEventData.reminders;
+
+              // Update modal title
+              document.getElementById('newEventModalLabel').textContent = 'Modifier l\'événement';
+
+              // Update submit button text
+              const submitBtn = form.querySelector('input[type="submit"]');
+              if (submitBtn) submitBtn.value = 'Modifier l\'événement';
+            }
+          }
+
           bootstrap.Modal.getInstance(eventDetailsModal).hide();
           const newEventBootstrapModal = new bootstrap.Modal(newEventModal);
           newEventBootstrapModal.show();
@@ -630,7 +703,39 @@
           }
         });
       }
-    });
+
+      // Reset form when opening "New Event" modal (not from Modifier button)
+      document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#newEventModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+          const form = document.getElementById('newEventForm');
+          if (form) {
+            // Reset form to create mode
+            form.action = `/families/<%= @family.id %>/family_events`;
+            form.reset();
+
+            // Remove PATCH method field if it exists
+            const methodField = form.querySelector('input[name="_method"]');
+            if (methodField) {
+              methodField.remove();
+            }
+
+            // Reset modal title and button
+            document.getElementById('newEventModalLabel').textContent = 'Créer un nouvel événement';
+            const submitBtn = form.querySelector('input[type="submit"]');
+            if (submitBtn) submitBtn.value = 'Créer l\'événement';
+          }
+        });
+      });
+    }
+
+    // Initialize on DOMContentLoaded (for regular page loads)
+    document.addEventListener('DOMContentLoaded', initializeFamilyEventsPage);
+
+    // Initialize on turbo:load (for Turbo navigation)
+    document.addEventListener('turbo:load', initializeFamilyEventsPage);
+
+    // Also try turbo:render for frame updates
+    document.addEventListener('turbo:render', initializeFamilyEventsPage);
   </script>
 
 </body>
