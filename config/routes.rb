@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'family_events/index'
   resources :tasks
   devise_for :users, controllers: {
     sessions: 'users/sessions',
@@ -7,7 +8,9 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   # Pages routes
-  resource :families, only: [:show, :new, :create, :edit, :update]
+  resources :families, only: [:show, :new, :create, :edit, :update] do
+    resources :family_events
+  end
   resources :people, only: [:new, :create, :edit, :update, :destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
