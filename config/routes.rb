@@ -12,10 +12,12 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   # Pages routes
-  resources :families, only: [:show, :new, :create, :edit, :update] do
+  resource :families, only: [:show, :new, :create, :edit, :update] do
     resources :family_events
   end
   resources :people, only: [:new, :create, :edit, :update, :destroy]
+
+  get 'families-documents', to: 'pages#families_documents', as: :families_documents
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
