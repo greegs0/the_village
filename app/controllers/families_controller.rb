@@ -38,6 +38,11 @@ class FamiliesController < ApplicationController
     @family = Family.new(family_params)
     if @family.save
       current_user.update!(family: @family, status: "member")
+      @family.people.create(
+        name: current_user.name,
+        zipcode: current_user.zipcode,
+        birthday: current_user.birthday
+      )
       redirect_to families_path, notice: "Famille créée ! Bienvenue dans the village, n'hésite pas à créer un membre ! 😊"
     else
       render :new, status: :unprocessable_entity
