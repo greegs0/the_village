@@ -83,37 +83,41 @@
             <h5 class="mb-1">Événements à venir</h5>
             <p class="text-secondary small mb-4">Vos prochains rendez-vous et activités</p>
 
-            <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Réunion de famille</h6>
-                <p class="text-secondary small mb-0">
-                  <span class="me-2">🕐</span>Aujourd'hui, 18:00
-                </p>
-              </div>
-              <span class="badge bg-secondary">Famille</span>
-            </div>
+            <% if @events.any? %>
+              <% @events.each do |event| %>
+                <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1">
+                      <% if event.event_icon.present? %>
+                        <span class="me-1"><%= event.event_icon %></span>
+                      <% end %>
+                      <%= event.title %>
+                    </h6>
+                    <p class="text-secondary small mb-0">
+                      <span class="me-2">🕐</span>
+                      <%= l(event.start_date, format: :long) %>
+                      <% if event.time.present? %>
+                        , <%= event.time.strftime("%H:%M") %>
+                      <% end %>
+                    </p>
+                    <% if event.location.present? %>
+                      <p class="text-secondary small mb-0">
+                        <span class="me-2">📍</span><%= event.location %>
+                      </p>
+                    <% end %>
+                  </div>
+                  <% if event.event_type.present? %>
+                    <span class="badge <%= event.badge_class || 'bg-secondary' %>">
+                      <%= event.event_type %>
+                    </span>
+                  <% end %>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="text-center text-muted py-4">Aucun événement à venir pour le moment</p>
+            <% end %>
 
-            <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Sortie au parc avec voisins</h6>
-                <p class="text-secondary small mb-0">
-                  <span class="me-2">🕐</span>Demain, 15:00
-                </p>
-              </div>
-              <span class="badge bg-info">Communauté</span>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-start bg-light rounded-3 p-3 mb-3">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Rendez-vous médical - Sophie</h6>
-                <p class="text-secondary small mb-0">
-                  <span class="me-2">🕐</span>Mercredi, 10:30
-                </p>
-              </div>
-              <span class="badge bg-danger">Important</span>
-            </div>
-
-            <a href="/families-calendar.html" class="btn btn-outline-secondary w-100">Voir tout le calendrier</a>
+            <%= link_to "Voir tout le calendrier", family_family_events_path(@family), class: "btn btn-outline-secondary w-100" %>
           </div>
         </div>
       </div>
