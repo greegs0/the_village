@@ -39,6 +39,16 @@
             <div class="small fw-medium"><%= event.user.name %></div>
           </div>
         </div>
+        <% if event.user == current_user %>
+          <div class="d-flex gap-2">
+            <%= link_to edit_event_path(event), class: "btn btn-sm btn-outline-primary" do %>
+              <span class="me-1">✏️</span>Modifier
+            <% end %>
+            <%= link_to event_path(event), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet événement ?" }, class: "btn btn-sm btn-outline-danger" do %>
+              <span class="me-1">🗑️</span>Supprimer
+            <% end %>
+          </div>
+        <% end %>
       </div>
 
       <div class="d-flex gap-2 mt-3 pt-3 border-top">
