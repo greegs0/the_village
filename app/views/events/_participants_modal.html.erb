@@ -1,0 +1,32 @@
+<div class="modal fade" id="participantsModal<%= event.id %>" tabindex="-1" aria-labelledby="participantsModalLabel<%= event.id %>" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0">
+        <div>
+          <h5 class="modal-title fw-medium" id="participantsModalLabel<%= event.id %>">Participants inscrits</h5>
+          <p class="text-secondary small mb-0"><%= event.participations_count || 0 %> participant<%= (event.participations_count || 0) > 1 ? 's' : '' %> inscrit<%= (event.participations_count || 0) > 1 ? 's' : '' %></p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% participants = generate_fake_participants(event.participations_count || 0) %>
+        <% if participants.any? %>
+          <ul class="list-group list-group-flush">
+            <% participants.each do |participant| %>
+              <li class="list-group-item d-flex align-items-center gap-3 px-0">
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                  <span class="fw-medium"><%= participant.split.map(&:first).join %></span>
+                </div>
+                <div>
+                  <div class="fw-medium"><%= participant %></div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-center text-secondary py-4 mb-0">Aucun participant inscrit pour le moment</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
