@@ -1,0 +1,43 @@
+<%= form_with(model: task, url: url, method: method, local: true) do |f| %>
+
+  <!-- Titre de la tâche -->
+  <div class="mb-3">
+    <%= f.label :name, "Titre de la tâche", class: "form-label fw-medium" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "Ex: Faire les courses", required: true %>
+  </div>
+
+  <!-- Date d'échéance -->
+  <div class="mb-3">
+    <%= f.label :target_date, "Date d'échéance", class: "form-label fw-medium" %>
+    <%= f.date_field :target_date, class: "form-control", required: true %>
+  </div>
+
+  <!-- Assigné à -->
+  <div class="mb-3">
+    <%= f.label :assignee_id, "Assigné à", class: "form-label fw-medium" %>
+    <%= f.collection_select :assignee_id,
+                            @family.people,
+                            :id,
+                            :name,
+                            { prompt: "Sélectionner un membre" },
+                            { class: "form-select" } %>
+  </div>
+
+  <!-- Description (optionnel pour création, visible pour édition) -->
+  <% if task.persisted? %>
+    <div class="mb-3">
+      <%= f.label :description, "Description", class: "form-label fw-medium" %>
+      <%= f.text_area :description, class: "form-control", rows: 3, placeholder: "Ajouter une description (optionnel)" %>
+    </div>
+  <% end %>
+
+  <!-- Hidden field for user_id -->
+  <%= f.hidden_field :user_id, value: current_user.id %>
+
+  <!-- Modal Footer with Buttons -->
+  <div class="d-flex gap-2 pt-3 border-top">
+    <button type="button" class="btn btn-outline-secondary flex-fill" data-bs-dismiss="modal">Annuler</button>
+    <%= f.submit submit_text, class: "btn btn-primary flex-fill" %>
+  </div>
+
+<% end %>

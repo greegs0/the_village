@@ -1,10 +1,10 @@
 class TasksController < ApplicationController
   before_action :set_family
-  before_action :set_task, only: [:show, :update, :toggle_status, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :toggle_status, :destroy]
 
   # GET /families/:family_id/tasks
   def index
-    @tasks = @family.tasks
+    @tasks = @family.tasks.order(created_at: :desc)
     @people = @family.people
 
     # Calculer les statistiques par personne
@@ -22,6 +22,10 @@ class TasksController < ApplicationController
 
   # GET /tasks/:id
   def show
+  end
+
+  # GET /families/:family_id/tasks/:id/edit
+  def edit
   end
 
   # GET /families/:family_id/tasks/new
@@ -53,7 +57,7 @@ class TasksController < ApplicationController
   # PATCH /families/:family_id/tasks/:id/toggle_status
   def toggle_status
     @task.update(status: !@task.status)
-    redirect_to family_tasks_path(@family), notice: "Statut de la tâche mis à jour."
+    redirect_to family_tasks_path(@family)
   end
 
   # DELETE /families/:family_id/tasks/:id
@@ -73,6 +77,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :target_date, :user_id, :assignee_id)
+    params.require(:task).permit(:name, :target_date, :user_id, :assignee_id, :description)
   end
 end
