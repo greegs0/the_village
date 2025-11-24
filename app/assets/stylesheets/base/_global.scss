@@ -1,0 +1,316 @@
+// ============================================================
+// GLOBAL STYLES
+// ============================================================
+// Styles de base et resets globaux
+// Préserve le comportement actuel de l'application
+// ============================================================
+
+// ============================================================
+// RESET & BASE
+// ============================================================
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family: $font-primary;
+}
+
+// ============================================================
+// FOCUS STATES (Accessibility)
+// ============================================================
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline-offset: 2px;
+}
+
+// ============================================================
+// LINKS
+// ============================================================
+
+a {
+  text-decoration: none;
+  color: inherit;
+
+  &.text-decoration-none {
+    text-decoration: none !important;
+  }
+}
+
+// ============================================================
+// UTILITY CLASSES
+// ============================================================
+
+// Hero Section (Landing page)
+.hero-section {
+  padding: $spacing-xxxl 0;
+
+  @media (max-width: $breakpoint-tablet-max) {
+    padding: $spacing-xl 0;
+  }
+}
+
+// Hero Image Wrapper
+.hero-image-wrapper {
+  position: relative;
+  aspect-ratio: 4/3;
+  background-color: $color-white;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  &.rounded-4 {
+    border-radius: $radius-lg;
+  }
+
+  &.shadow-lg {
+    box-shadow: none; // Pas de shadow sur l'image elle-même
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+// Blur circles (background effects - cachés pour éviter l'effet visuel)
+.blur-circle {
+  display: none; // Cachés pour l'instant car ils créent un effet visuel non désiré
+  position: absolute;
+  border-radius: $radius-circle;
+  filter: $blur-background;
+  opacity: $opacity-blur;
+  pointer-events: none;
+
+  &.blur-circle-1 {
+    width: 200px;
+    height: 200px;
+    background: $gradient-logo;
+    top: -50px;
+    right: -50px;
+  }
+
+  &.blur-circle-2 {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #e9d4ff 0%, #dbeafe 100%);
+    bottom: -50px;
+    left: -50px;
+  }
+}
+
+// ============================================================
+// SECTIONS
+// ============================================================
+
+.features-section,
+.testimonials-section {
+  padding: $spacing-xxxl 0;
+
+  @media (max-width: $breakpoint-tablet-max) {
+    padding: $spacing-xl 0;
+  }
+}
+
+// ============================================================
+// TYPOGRAPHY UTILITIES
+// ============================================================
+
+.display-3 {
+  font-size: 3rem;
+  font-weight: 300;
+  line-height: 1.2;
+
+  @media (max-width: $breakpoint-tablet-max) {
+    font-size: 2rem;
+  }
+}
+
+.display-6 {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.2;
+
+  @media (max-width: $breakpoint-tablet-max) {
+    font-size: 1.5rem;
+  }
+}
+
+.fw-normal {
+  font-weight: 400 !important;
+}
+
+.fw-medium {
+  font-weight: 500 !important;
+}
+
+.fst-italic {
+  font-style: italic !important;
+}
+
+// ============================================================
+// SPACING UTILITIES (complément Bootstrap)
+// ============================================================
+
+.g-3 {
+  --bs-gutter-x: 1rem;
+  --bs-gutter-y: 1rem;
+}
+
+.g-4 {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 1.5rem;
+}
+
+.gap-2 {
+  gap: $spacing-xs !important;
+}
+
+.gap-3 {
+  gap: $spacing-md !important;
+}
+
+// ============================================================
+// CONTAINER UTILITIES
+// ============================================================
+
+.container-fluid {
+  &.px-4 {
+    padding-left: $spacing-lg;
+    padding-right: $spacing-lg;
+  }
+
+  &.px-lg-5 {
+    @media (min-width: calc($breakpoint-desktop + 1px)) {
+      padding-left: $spacing-xxxl;
+      padding-right: $spacing-xxxl;
+    }
+  }
+}
+
+// ============================================================
+// OVERFLOW & POSITION
+// ============================================================
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+.position-absolute {
+  position: absolute !important;
+}
+
+// ============================================================
+// BACKGROUND GRADIENTS
+// ============================================================
+
+.bg-gradient-light {
+  background: $gradient-hero !important;
+}
+
+// ============================================================
+// ROUNDED UTILITIES (complément Bootstrap)
+// ============================================================
+
+.rounded-3 {
+  border-radius: $radius-sm !important;
+}
+
+.rounded-4 {
+  border-radius: $radius-lg !important;
+}
+
+// ============================================================
+// FLEX UTILITIES
+// ============================================================
+
+.d-inline-flex {
+  display: inline-flex !important;
+
+  &.align-items-center {
+    align-items: center !important;
+  }
+}
+
+// ============================================================
+// IMAGE UTILITIES
+// ============================================================
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+// ============================================================
+// CHART / SVG UTILITIES (Dashboard)
+// ============================================================
+
+svg {
+  vertical-align: middle;
+}
+
+// ============================================================
+// SMALL TEXT
+// ============================================================
+
+.small {
+  font-size: 0.875rem;
+}
+
+small {
+  font-size: 0.875rem;
+}
+
+// ============================================================
+// RESPONSIVE HELPERS
+// ============================================================
+
+@media (max-width: $breakpoint-mobile-max) {
+  .col-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+
+@media (max-width: $breakpoint-tablet-max) {
+  .col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .flex-md-row {
+    flex-direction: row !important;
+  }
+}
+
+@media (min-width: calc($breakpoint-desktop + 1px)) {
+  .col-lg-3,
+  .col-lg-4,
+  .col-lg-6 {
+    flex: 0 0 auto;
+  }
+
+  .col-lg-3 {
+    width: 25%;
+  }
+
+  .col-lg-4 {
+    width: 33.333333%;
+  }
+
+  .col-lg-6 {
+    width: 50%;
+  }
+}

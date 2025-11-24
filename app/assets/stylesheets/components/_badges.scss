@@ -1,0 +1,160 @@
+// ============================================================
+// BADGES COMPONENTS
+// ============================================================
+// Extensions et customisations des badges Bootstrap
+// Préserve tous les styles de badges existants
+// ============================================================
+
+// ============================================================
+// BADGE BASE
+// ============================================================
+
+.badge {
+  font-family: $font-primary;
+  font-weight: 500;
+  padding: $spacing-xxs $spacing-sm;
+  border-radius: $spacing-xxs;
+  font-size: 0.75rem;
+
+  &.rounded-pill {
+    border-radius: 50px;
+    padding: $spacing-xxs $spacing-md;
+  }
+}
+
+// ============================================================
+// BADGE VARIANTS (Colors)
+// ============================================================
+
+.badge.bg-primary {
+  background-color: $blue !important;
+  color: $color-white;
+}
+
+.badge.bg-primary-light {
+  background-color: $color-blue-light !important;
+  color: $blue;
+}
+
+.badge.bg-secondary {
+  background-color: $color-gray !important;
+  color: $color-white;
+}
+
+.badge.bg-light {
+  background-color: $color-gray-lightest !important;
+  color: $color-black;
+}
+
+.badge.bg-success {
+  background-color: $green !important;
+  color: $color-white;
+}
+
+.badge.bg-warning {
+  background-color: $orange !important;
+  color: $color-white;
+}
+
+.badge.bg-danger {
+  background-color: $red !important;
+  color: $color-white;
+}
+
+// ============================================================
+// TEXT COLOR VARIANTS
+// ============================================================
+
+.text-primary {
+  color: $blue !important;
+}
+
+.text-secondary {
+  color: $color-gray !important;
+}
+
+.text-dark {
+  color: $color-black !important;
+}
+
+.text-muted {
+  color: $color-gray !important;
+}
+
+// ============================================================
+// BADGE WITH ICONS
+// ============================================================
+
+.badge {
+  .icon,
+  .me-1,
+  span {
+    margin-right: $spacing-xxs;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+// ============================================================
+// EVENT BADGES (Specific use cases)
+// ============================================================
+
+.event-badges {
+  display: flex;
+  gap: $spacing-xs;
+  flex-wrap: wrap;
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xxs;
+  }
+}
+
+// ============================================================
+// BADGE SIZES
+// ============================================================
+
+.badge.badge-sm {
+  font-size: 0.625rem;
+  padding: 2px $spacing-xs;
+}
+
+.badge.badge-lg {
+  font-size: 0.875rem;
+  padding: $spacing-xs $spacing-md;
+}
+
+// ============================================================
+// BADGE IN NAVBAR/NOTIFICATIONS
+// ============================================================
+
+.badge-notification {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: $red;
+  color: $color-white;
+  @include circle(18px);
+  font-size: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+// ============================================================
+// HERO BADGE (Landing page)
+// ============================================================
+
+.badge.bg-primary-light.text-primary {
+  background: linear-gradient(
+    90deg,
+    $color-blue-light 0%,
+    $color-purple-light 100%
+  ) !important;
+  color: $blue !important;
+  border: none;
+}
