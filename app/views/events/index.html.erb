@@ -7,10 +7,10 @@
     <div class="fs-1 mb-3">🌍</div>
     <h1 class="display-5 fw-normal mb-3">Événements Communautaires</h1>
     <p class="lead text-secondary mb-4">
-      Découvrez et participez aux événements organisés dans votre région. Rencontrez vos voisins et créez des liens !
+      Découvres et participe aux événements organisés dans ta région. Rencontre tes voisins et créez des liens !
     </p>
     <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
-      <span class="me-2">+</span>Créer un événement dans votre région
+      <span class="me-2">+</span>Crée un événement dans ta région
     </button>
   </div>
 
@@ -51,106 +51,14 @@
     <div class="modal-content rounded-4">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-medium" id="createCommunityEventModalLabel">Créer un événement communautaire</h5>
-          <p class="text-secondary small mb-0">Organisez un événement et invitez vos voisins à participer</p>
+          <h5 class="modal-title fw-medium" id="createCommunityEventModalLabel">Crée un événement communautaire</h5>
+          <p class="text-secondary small mb-0">Organise un événement et invite tes voisins à participer</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
-
-  <!-- Form -->
-        <%= simple_form_for @event do |f| %>
-          <%= f.error_notification %>
-
-          <!-- Titre de l'événement -->
-          <div class="mb-3">
-            <%= f.input :name,
-                        label: "Titre de l'événement",
-                        required: true,
-                        input_html: {
-                          class: "form-control",
-                          placeholder: "Ex: Apéro voisins"
-                        } %>
-          </div>
-
-          <!-- Date et Heure -->
-          <div class="row g-3 mb-3">
-            <%= f.input :date,
-                        label: "Date",
-                        required: true,
-                        input_html: {
-                          class: "form-control",
-                          placeholder: "jj/mm/aaaa"
-                        } %>
-          </div>
-
-          <!-- Lieu-->
-          <div class="mb-3">
-            <%= f.input :place,
-                        label: "Lieu",
-                        required: true,
-                        input_html: {
-                          class: "form-control",
-                          placeholder: "Ex : Parc du quartier"
-                        } %>
-          </div>
-
-          <!-- Catégorie-->
-          <div class="mb-3">
-            <%= f.input :category,
-                        as: :select,
-                        collection: [
-                          ['Social', 'social'],
-                          ['Sport', 'sport'],
-                          ['Culture', 'culture'],
-                          ['Famille', 'famille'],
-                          ['Jardinage', 'jardinage'],
-                          ['Autre', 'autre']
-                        ],
-                        label: "Catégorie",
-                        required: true,
-                        prompt: "Sélectionner une catégorie",
-                        input_html: {
-                          class: "form-select"
-                        },
-                        label_html: {
-                          class: "form-label fw-medium"
-                        } %>
-          </div>
-
-          <!-- Description -->
-          <div class="mb-3">
-            <%= f.input :description,
-                        as: :text,
-                        label: "Description",
-                        required: true,
-                        input_html: {
-                          class: "form-control",
-                          rows: 4,
-                          placeholder: "Ex : Décrivez votre événement..."
-                        } %>
-          </div>
-
-          <!-- Nombre maximum de participants (optionnel) -->
-          <div class="mb-3">
-            <%= f.input :max_participations,
-                        label: "Nombre maximum de participants (optionnel)",
-                        required: false,
-                        input_html: {
-                          class: "form-control",
-                          placeholder: "Ex : 20"
-                        } %>
-          </div>
-
-          <div class="d-flex justify-content-end gap-2">
-            <%= f.button :button, "Annuler", class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
-            <%= f.button :submit, "Créer l'événement", class: "btn btn-dark" %>
-          </div>
-        <% end %>
-
-        <form>
+        <%= render "form", event: @event, in_modal: true %>
       </div>
     </div>
   </div>
 </div>
-
