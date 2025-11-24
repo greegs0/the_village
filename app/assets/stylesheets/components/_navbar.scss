@@ -1,12 +1,208 @@
+// ============================================================
+// NAVBAR COMPONENTS
+// ============================================================
+// Styles pour la navigation principale
+// Préserve le logo SVG gradient et tous les styles existants
+// ============================================================
+
+// ============================================================
+// NAVBAR BASE
+// ============================================================
+
+.navbar {
+  background-color: $color-white;
+  border-bottom: 1px solid $color-gray-border;
+
+  &.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: $z-index-base;
+  }
+
+  &.py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  &.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+// ============================================================
+// NAVBAR BRAND (Logo)
+// ============================================================
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin: 0;
+
+  svg {
+    height: 50px;
+    width: auto;
+    max-width: 400px;
+  }
+}
+
+// ============================================================
+// NAVBAR TOGGLER (Mobile)
+// ============================================================
+
+.navbar-toggler {
+  border: none;
+  padding: $spacing-xs;
+
+  &:focus {
+    box-shadow: none;
+    outline: 2px solid $blue;
+  }
+}
+
+// ============================================================
+// NAVBAR COLLAPSE
+// ============================================================
+
+.navbar-collapse {
+  &.justify-content-end {
+    justify-content: flex-end;
+  }
+}
+
+// ============================================================
+// NAVBAR NAV
+// ============================================================
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  &.ms-auto {
+    margin-left: auto;
+  }
+
+  .nav-item {
+    .nav-link {
+      color: $color-black;
+      padding: $spacing-xs $spacing-md;
+      transition: $transition-all-fast;
+      text-decoration: none;
+
+      &:hover {
+        color: $blue;
+      }
+
+      &.active {
+        color: $blue;
+        font-weight: 500;
+      }
+    }
+
+    &.dropdown {
+      .dropdown-toggle {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xxs;
+
+        &::after {
+          margin-left: $spacing-xxs;
+        }
+      }
+
+      .dropdown-menu {
+        border: 1px solid $color-gray-border;
+        border-radius: $radius-sm;
+        box-shadow: $shadow-card;
+        margin-top: $spacing-xs;
+
+        .dropdown-item {
+          padding: $spacing-xs $spacing-md;
+          color: $color-black;
+          transition: $transition-all-fast;
+
+          &:hover {
+            background-color: $color-gray-lightest;
+            color: $blue;
+          }
+
+          &.active {
+            background-color: $color-blue-light;
+            color: $blue;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ============================================================
+// NAVBAR BUTTONS
+// ============================================================
+
+.navbar .btn {
+  margin: 0 $spacing-xxs;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+// ============================================================
+// NAVBAR RESPONSIVE
+// ============================================================
+
+@media (max-width: $breakpoint-desktop) {
+  .navbar-collapse {
+    .d-flex.gap-2 {
+      margin-top: 1rem;
+      flex-direction: column;
+      align-items: stretch;
+
+      .btn {
+        width: 100%;
+        margin: $spacing-xxs 0;
+      }
+    }
+  }
+
+  .navbar-nav {
+    .nav-item {
+      .nav-link {
+        padding: $spacing-sm 0;
+      }
+    }
+  }
+}
+
+@media (min-width: calc($breakpoint-desktop + 1px)) {
+  .navbar-collapse {
+    .mt-3.mt-lg-0 {
+      margin-top: 0 !important;
+    }
+  }
+}
+
+// ============================================================
+// LEGACY LEWAGON NAVBAR (Backwards compatibility)
+// ============================================================
+
 .navbar-lewagon {
   justify-content: space-between;
   background: white;
-}
 
-.navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
-}
+  .navbar-collapse {
+    flex-grow: 0;
+  }
 
-.navbar-lewagon .navbar-brand img {
-  width: 40px;
+  .navbar-brand img {
+    width: 40px;
+  }
 }
