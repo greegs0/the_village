@@ -8,13 +8,13 @@ class FamilyEvent < ApplicationRecord
 
   # Event types
   EVENT_TYPES = {
-    'anniversaire' => { name: 'Anniversaire', icon: '🎂', badge_class: 'bg-pink' },
-    'garde' => { name: 'Garde d\'enfant', icon: '👶', badge_class: 'bg-primary' },
-    'medical' => { name: 'Rendez-vous médical', icon: '🦷', badge_class: 'bg-secondary' },
-    'scolaire' => { name: 'Événement scolaire', icon: '🏫', badge_class: 'bg-success' },
-    'vacances' => { name: 'Vacances', icon: '✈️', badge_class: 'bg-info' },
-    'indisponibilite' => { name: 'Indisponibilité', icon: '🚫', badge_class: 'bg-danger' },
-    'autre' => { name: 'Autre', icon: '📌', badge_class: 'bg-secondary' }
+    'anniversaire' => { name: 'Anniversaire', icon: '🎂', badge_class: 'bg-pink', color: '#f6339a' },
+    'garde' => { name: 'Garde d\'enfant', icon: '👶', badge_class: 'bg-primary', color: '#2b7fff' },
+    'medical' => { name: 'Rendez-vous médical', icon: '🦷', badge_class: 'bg-secondary', color: '#c6005b' },
+    'scolaire' => { name: 'Événement scolaire', icon: '🏫', badge_class: 'bg-success', color: '#00c950' },
+    'vacances' => { name: 'Vacances', icon: '✈️', badge_class: 'bg-info', color: '#1347e5' },
+    'indisponibilite' => { name: 'Indisponibilité', icon: '🚫', badge_class: 'bg-danger', color: '#ef4444' },
+    'autre' => { name: 'Autre', icon: '📌', badge_class: 'bg-secondary', color: '#6a7282' }
   }.freeze
 
   # Callbacks
@@ -33,6 +33,11 @@ class FamilyEvent < ApplicationRecord
   # Méthode pour obtenir le nom du type d'événement
   def type_name
     EVENT_TYPES.dig(event_type, :name) || 'Autre'
+  end
+
+  # Méthode pour obtenir la couleur hexadécimale du type d'événement
+  def event_color
+    EVENT_TYPES.dig(event_type, :color) || '#6a7282'
   end
 
   # Méthode pour formater la date

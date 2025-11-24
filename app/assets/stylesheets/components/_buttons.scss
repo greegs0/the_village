@@ -20,41 +20,53 @@
 }
 
 // ============================================================
-// PRIMARY BUTTON (Dark)
+// PRIMARY BUTTON (Dark) - V2 avec gradient
 // ============================================================
 
-.btn-dark {
-  background-color: $color-black;
-  border-color: $color-black;
+.btn-dark,
+.btn-primary {
+  background: $gradient-primary;
+  border: none;
   color: $color-white;
+  animation: float-primary 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba($color-primary, 0.2);
 
   &:hover {
-    background-color: lighten($color-black, 10%);
-    border-color: lighten($color-black, 10%);
-    transform: $transform-hover-sm;
+    animation: none; // Stop float on hover
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+    color: $color-white;
   }
 
   &:active {
-    background-color: $color-black;
-    border-color: $color-black;
+    transform: translateY(0);
   }
 }
 
 // ============================================================
-// SECONDARY BUTTON (Outline)
+// SECONDARY BUTTON (Outline) - V2 avec gradient text
 // ============================================================
 
 .btn-outline-secondary,
 .btn-outline-dark {
-  border-color: $color-black;
-  color: $color-black;
-  background-color: transparent;
+  position: relative;
+  background: transparent;
+  border: 2px solid transparent;
+  background-image: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.6s ease;
+  box-shadow: inset 0 0 0 2px $color-primary;
 
   &:hover {
-    background-color: $color-black;
-    border-color: $color-black;
+    -webkit-text-fill-color: $color-white;
+    background: $gradient-primary;
+    background-clip: padding-box;
+    box-shadow: 0 6px 16px rgba($color-primary, 0.3);
+    transform: scale(1.05);
     color: $color-white;
-    transform: $transform-hover-sm;
   }
 }
 
@@ -262,5 +274,18 @@
   .btn-lg {
     font-size: 1rem;
     padding: $spacing-sm $spacing-lg;
+  }
+}
+
+// ============================================================
+// ANIMATIONS V2
+// ============================================================
+
+@keyframes float-primary {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
   }
 }

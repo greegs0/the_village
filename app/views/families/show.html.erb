@@ -157,8 +157,8 @@
                   <% end %>
                 </div>
                 <% if event.event_type.present? %>
-                  <span class="badge <%= event.badge_class || 'bg-secondary' %>">
-                    <%= event.event_type %>
+                  <span class="badge text-white" style="background-color: <%= event.event_color %>;">
+                    <%= event.type_name %>
                   </span>
                 <% end %>
               </div>

@@ -1,0 +1,212 @@
+<%= render 'shared/navbar' %>
+
+<!-- Main Content -->
+<div class="container-fluid px-4 px-lg-5 py-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex align-items-center mb-4">
+    <%= link_to family_tasks_path(@family), class: "btn btn-outline-secondary me-3" do %>
+      ← Retour
+    <% end %>
+    <div class="flex-grow-1">
+      <h1 class="h2 mb-1"><%= @task.name %></h1>
+      <p class="text-secondary mb-0">Détails de la tâche</p>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Task Details Card -->
+    <div class="col-lg-8">
+      <div class="card border rounded-4">
+        <div class="card-body p-4">
+          <!-- Status Section with Checkbox -->
+          <div class="mb-4 pb-4 border-bottom">
+            <h5 class="mb-3">Statut</h5>
+            <%= form_with(url: toggle_status_family_task_path(@family, @task), method: :patch, local: true, class: "d-flex align-items-center gap-3", id: "task-status-form") do %>
+              <%= check_box_tag 'status', '1', @task.status, class: "form-check-input m-0", style: "width: 24px; height: 24px; cursor: pointer;", id: "task-status-checkbox" %>
+              <label class="form-check-label <%= @task.status ? 'text-success' : 'text-secondary' %> fw-medium" for="task-status-checkbox">
+                <%= @task.status ? '✓ Tâche terminée' : 'Coche quand c\'est fait !' %>
+              </label>
+            <% end %>
+          </div>
+
+          <!-- Task Information -->
+          <div class="mb-4 pb-4 border-bottom">
+            <h5 class="mb-3">Informations</h5>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <div class="text-primary me-2" style="font-size: 20px;">🕐</div>
+                  <div>
+                    <small class="text-muted d-block">Date d'échéance</small>
+                    <span class="fw-medium"><%= @task.target_date.strftime("%d/%m/%Y") %></span>
+                  </div>
+                </div>
+              </div>
+
+              <% if @task.assignee.present? %>
+                <div class="col-md-6">
+                  <div class="d-flex align-items-start">
+                    <div class="text-primary me-2" style="font-size: 20px;">👤</div>
+                    <div>
+                      <small class="text-muted d-block">Assigné à</small>
+                      <span class="fw-medium"><%= @task.assignee.name %></span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <div class="text-primary me-2" style="font-size: 20px;">📅</div>
+                  <div>
+                    <small class="text-muted d-block">Créée le</small>
+                    <span class="fw-medium"><%= @task.created_at.strftime("%d/%m/%Y") %></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <div class="text-primary me-2" style="font-size: 20px;">✏️</div>
+                  <div>
+                    <small class="text-muted d-block">Dernière modification</small>
+                    <span class="fw-medium"><%= time_ago_in_words(@task.updated_at) %></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% if @task.description.present? %>
+            <!-- Description -->
+            <div class="mb-4">
+              <h5 class="mb-3">Description</h5>
+              <p class="text-secondary"><%= @task.description %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Card -->
+    <div class="col-lg-4">
+      <div class="card border rounded-4">
+        <div class="card-body p-4">
+          <h5 class="mb-3">Actions</h5>
+
+          <!-- Edit Button -->
+          <button type="button" class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#editTaskModal">
+            ✏️ Modifier la tâche
+          </button>
+
+          <!-- Delete Button -->
+          <%= button_to family_task_path(@family, @task),
+                        method: :delete,
+                        data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette tâche ?" },
+                        class: "btn btn-outline-danger w-100" do %>
+            🗑️ Supprimer la tâche
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Quick Stats Card -->
+      <div class="card border rounded-4 mt-4">
+        <div class="card-body p-4">
+          <h6 class="mb-3">Statistiques</h6>
+
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-secondary small">Tâches de <%= @task.assignee&.name || 'Non assigné' %></span>
+          </div>
+
+          <% if @task.assignee.present? %>
+            <% assignee_tasks = @family.tasks.where(assignee_id: @task.assignee.id) %>
+            <% completed = assignee_tasks.where(status: true).count %>
+            <% total = assignee_tasks.count %>
+
+            <div class="mb-2">
+              <div class="d-flex justify-content-between mb-1">
+                <small>Complétées</small>
+                <small class="fw-medium"><%= completed %>/<%= total %></small>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-success" style="width: <%= total > 0 ? (completed.to_f / total * 100).round : 0 %>%"></div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Task Modal -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <div>
+          <h5 class="modal-title fw-medium" id="editTaskModalLabel">Modifier la tâche</h5>
+          <p class="text-secondary small mb-0">Mettre à jour les informations de la tâche</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <%= render 'form',
+                   task: @task,
+                   url: family_task_path(@family, @task),
+                   method: :patch,
+                   submit_text: "Enregistrer" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow">
+      <div class="modal-body text-center p-4">
+        <div class="mb-3">
+          <span style="font-size: 64px;">🎉</span>
+        </div>
+        <h5 class="fw-bold mb-3">Bien joué !</h5>
+        <p class="text-secondary mb-4">
+          Bravo pour ta contribution au Village. Retrouve toutes les tâches réalisées dans la liste des tâches terminées.
+        </p>
+        <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('task-status-checkbox');
+    const form = document.getElementById('task-status-form');
+    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+
+    if (checkbox && form) {
+      const wasChecked = checkbox.checked;
+
+      checkbox.addEventListener('change', function(e) {
+        // Si la tâche passe de non cochée à cochée
+        if (!wasChecked && this.checked) {
+          e.preventDefault();
+          // Afficher la modale de confirmation
+          confirmationModal.show();
+
+          // Soumettre le formulaire après que la modale soit fermée
+          document.getElementById('confirmationModal').addEventListener('hidden.bs.modal', function() {
+            form.submit();
+          }, { once: true });
+        } else {
+          // Si on décoche, soumettre directement sans modale
+          form.submit();
+        }
+      });
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

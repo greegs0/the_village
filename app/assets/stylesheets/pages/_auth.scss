@@ -1,0 +1,405 @@
+// ============================================================
+// AUTH PAGES V2 (Login / Signup)
+// ============================================================
+// Styles modernes pour les pages d'authentification
+// Utilise la palette violet du logo
+// ============================================================
+
+// ============================================================
+// AUTH PAGE WRAPPER
+// ============================================================
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: $gradient-page-bg;
+
+  .container {
+    padding-top: $spacing-xxxl;
+    padding-bottom: $spacing-xxxl;
+
+    @media (max-width: $breakpoint-tablet-max) {
+      padding-top: $spacing-xl;
+      padding-bottom: $spacing-xl;
+    }
+  }
+}
+
+// ============================================================
+// AUTH CARD
+// ============================================================
+
+.auth-card {
+  background: $color-white;
+  border-radius: $radius-lg;
+  border: 1px solid rgba($color-primary, 0.1);
+  box-shadow: 0 10px 40px rgba($color-primary, 0.08),
+              0 0 60px rgba($color-primary, 0.04);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 15px 50px rgba($color-primary, 0.12),
+                0 0 80px rgba($color-primary, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .card-body {
+    position: relative;
+  }
+}
+
+// ============================================================
+// LOGO & HEADER
+// ============================================================
+
+.auth-logo {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(0 4px 12px rgba($color-primary, 0.15));
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 6px 16px rgba($color-primary, 0.2));
+  }
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: $spacing-xs;
+}
+
+.auth-subtitle {
+  color: $color-gray-dark;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+// ============================================================
+// TABS (Connexion / Inscription)
+// ============================================================
+
+.auth-page {
+  .nav-pills {
+    &.nav-fill {
+      &.bg-light {
+        background: linear-gradient(135deg,
+          rgba($color-primary-lightest, 0.1) 0%,
+          rgba($color-primary-lightest, 0.05) 100%) !important;
+        border-radius: $radius-sm;
+        padding: $spacing-xxs;
+
+        .nav-item {
+          .nav-link {
+            position: relative;
+            color: $color-gray-dark;
+            border-radius: $radius-sm;
+            transition: all 0.3s ease;
+            padding: $spacing-xs $spacing-md;
+            font-weight: 500;
+            border: 1px solid transparent;
+
+            // Ligne gradient animée (comme mot de passe oublié)
+            &::before {
+              content: '';
+              position: absolute;
+              bottom: 4px;
+              left: 50%;
+              width: 0;
+              height: 2px;
+              background: $gradient-primary-horizontal;
+              transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+              transform: translateX(-50%);
+              border-radius: 1px;
+            }
+
+            &:hover {
+              background-color: transparent;
+              color: $color-primary;
+              text-decoration: none !important;
+
+              &::before {
+                width: 70%;
+              }
+            }
+
+            &.active {
+              background: $gradient-primary !important;
+              color: $color-white !important;
+              font-weight: 500;
+              box-shadow: 0 2px 8px rgba($color-primary, 0.2);
+              border-color: transparent;
+
+              &::before {
+                display: none;
+              }
+            }
+          }
+
+          button.nav-link {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ============================================================
+// FORM ELEMENTS
+// ============================================================
+
+.auth-page {
+  .form-control {
+    border: 1px solid rgba($color-primary, 0.15);
+    border-radius: $radius-sm;
+    padding: $spacing-sm $spacing-md;
+    transition: all 0.3s ease;
+    background: rgba($color-primary-lightest, 0.02);
+
+    &:focus {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+      background: $color-white;
+    }
+
+    &::placeholder {
+      color: $color-gray;
+    }
+  }
+
+  .form-label,
+  label {
+    font-weight: 500;
+    color: $color-gray-dark;
+    font-size: 0.9rem;
+    margin-bottom: $spacing-xs;
+  }
+
+  .form-text,
+  .hint {
+    color: $color-gray;
+    font-size: 0.85rem;
+    margin-top: $spacing-xxs;
+  }
+
+  // Date selects
+  select.form-control {
+    display: inline-block;
+    width: auto;
+    margin-right: $spacing-xs;
+  }
+}
+
+// ============================================================
+// BUTTONS
+// ============================================================
+
+.auth-page {
+  .btn-dark {
+    // Désactiver l'animation de respiration sur les pages auth
+    animation: none !important;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+    }
+  }
+
+  .btn-outline-secondary {
+    // Hérite des styles de _buttons.scss
+    // Gradient text + border déjà définis
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+
+      &:hover {
+        transform: none !important;
+      }
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+// ============================================================
+// DIVIDER
+// ============================================================
+
+.auth-page {
+  hr {
+    border-color: rgba($color-primary, 0.1);
+    margin: 0;
+  }
+
+  .position-relative {
+    .position-absolute {
+      &.bg-white {
+        background-color: $color-white;
+        padding: 0 $spacing-sm;
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+// ============================================================
+// ALERTS (Error messages)
+// ============================================================
+
+.auth-page {
+  .alert {
+    border-radius: $radius-sm;
+    border: none;
+    font-size: 0.9rem;
+
+    &.alert-danger {
+      background: linear-gradient(135deg,
+        rgba($red, 0.08) 0%,
+        rgba($red, 0.05) 100%);
+      color: darken($red, 10%);
+      border-left: 4px solid $red;
+
+      ul {
+        margin-bottom: 0;
+
+        li {
+          margin-bottom: $spacing-xxs;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ============================================================
+// LINKS
+// ============================================================
+
+.auth-page {
+  a {
+    color: $color-primary;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $color-primary-dark;
+      text-decoration: underline;
+    }
+
+    &.small {
+      font-size: 0.875rem;
+    }
+
+    // Lien "Mot de passe oublié" avec gradient
+    &.text-decoration-none {
+      position: relative;
+      display: inline-block;
+      background: $gradient-primary;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 500;
+      transition: all 0.4s ease;
+
+      // Ligne animée en dessous
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: $gradient-primary-horizontal;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transform: translateX(-50%);
+      }
+
+      // Petit emoji clé qui apparaît
+      &::after {
+        content: '🔑';
+        position: absolute;
+        right: -25px;
+        top: 50%;
+        transform: translateY(-50%) scale(0) rotate(-45deg);
+        opacity: 0;
+        font-size: 0.9em;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+
+      &:hover {
+        text-decoration: none !important;
+        letter-spacing: 0.5px;
+
+        &::before {
+          width: 100%;
+        }
+
+        &::after {
+          transform: translateY(-50%) scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+// ============================================================
+// RESPONSIVE
+// ============================================================
+
+@media (max-width: $breakpoint-tablet-max) {
+  .auth-page {
+    .container {
+      padding-top: $spacing-lg;
+      padding-bottom: $spacing-lg;
+    }
+
+    .auth-card {
+      .card-body {
+        padding: $spacing-lg !important;
+      }
+    }
+
+    .auth-logo {
+      width: 80px;
+      height: 80px;
+    }
+
+    .auth-title {
+      font-size: 1.25rem;
+    }
+
+    .auth-subtitle {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile-max) {
+  .auth-page {
+    .auth-logo {
+      width: 70px;
+      height: 70px;
+    }
+
+    .auth-title {
+      font-size: 1.125rem;
+    }
+  }
+}

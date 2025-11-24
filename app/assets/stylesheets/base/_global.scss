@@ -19,6 +19,8 @@ body {
   margin: 0;
   height: 100%;
   font-family: $font-primary;
+  background: $gradient-page-bg;
+  background-attachment: fixed;
 }
 
 // ============================================================
