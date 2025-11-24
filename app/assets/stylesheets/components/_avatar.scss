@@ -1,20 +1,174 @@
+// ============================================================
+// AVATAR COMPONENTS
+// ============================================================
+// Styles pour les avatars, cercles avec initiales, etc.
+// Préserve tous les patterns existants + nouveaux du design
+// ============================================================
+
+// ============================================================
+// AVATAR BASE (Images)
+// ============================================================
+
 .avatar {
   width: 40px;
-  border-radius: 50%;
+  height: 40px;
+  border-radius: $radius-circle;
+  object-fit: cover;
 }
+
 .avatar-large {
   width: 56px;
-  border-radius: 50%;
+  height: 56px;
+  border-radius: $radius-circle;
+  object-fit: cover;
 }
+
 .avatar-bordered {
   width: 40px;
-  border-radius: 50%;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  border: white 1px solid;
+  height: 40px;
+  border-radius: $radius-circle;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border: $color-white 1px solid;
+  object-fit: cover;
 }
+
 .avatar-square {
   width: 40px;
+  height: 40px;
   border-radius: 0px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  border: white 1px solid;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border: $color-white 1px solid;
+  object-fit: cover;
+}
+
+// ============================================================
+// AVATAR CIRCLES (avec initiales ou contenu)
+// ============================================================
+
+.avatar-circle {
+  @include circle(48px);
+  background-color: $color-gray-lightest;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &.me-3 {
+    margin-right: $spacing-md;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-initial {
+    font-weight: 500;
+    color: $color-black;
+  }
+}
+
+// Tailles variées d'avatar circles
+.avatar-circle-sm {
+  @include circle(32px);
+  background-color: $color-gray-lightest;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .avatar-initial {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+}
+
+.avatar-circle-lg {
+  @include circle(64px);
+  background-color: $color-gray-lightest;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .avatar-initial {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+}
+
+// ============================================================
+// AVATAR CIRCLE AVEC GRADIENT (Village Assistant)
+// ============================================================
+
+.avatar-circle-gradient {
+  @include circle(32px);
+  @include logo-gradient;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-white;
+
+  &.me-2 {
+    margin-right: $spacing-xs;
+  }
+}
+
+.avatar-circle-gradient-sm {
+  @include circle(28px);
+  background: linear-gradient(135deg, #a855f7 0%, #f97316 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ============================================================
+// ROUNDED CIRCLE (Bootstrap utility avec notre radius)
+// ============================================================
+
+.rounded-circle {
+  border-radius: $radius-circle !important;
+
+  &.bg-light {
+    background-color: $color-gray-lightest !important;
+  }
+
+  &.bg-white {
+    background-color: $color-white !important;
+  }
+
+  &.d-flex {
+    display: flex;
+
+    &.align-items-center {
+      align-items: center;
+    }
+
+    &.justify-content-center {
+      justify-content: center;
+    }
+  }
+}
+
+// ============================================================
+// AVATAR AVEC BG CUSTOM (dimensions inline style)
+// ============================================================
+
+// Support pour width/height inline styles
+.rounded-circle[style*="width"],
+.avatar-circle[style*="width"] {
+  flex-shrink: 0;
+}
+
+// ============================================================
+// OBJECT FIT UTILITIES
+// ============================================================
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.w-100.h-100.object-fit-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

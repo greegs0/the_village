@@ -1,31 +1,31 @@
-// Graphical variables
+// ============================================================
+// THE VILLAGE - APPLICATION STYLESHEET
+// ============================================================
+// Architecture V2 - Refactorisée et modulaire
+// ============================================================
+
+// 1. Design Tokens (variables globales)
+@import "config/design_tokens";
+
+// 2. Configuration (fonts, colors, Bootstrap overrides)
 @import "config/fonts";
 @import "config/colors";
 @import "config/bootstrap_variables";
 
-// External libraries
+// 3. External libraries
 @import "bootstrap";
 @import "font-awesome";
 
-// Your CSS partials
+// 4. Base styles (reset, global)
+@import "base/global";
+
+// 5. Components (réutilisables)
 @import "components/index";
+
+// 6. Pages (styles spécifiques aux pages)
 @import "pages/index";
 
-@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+// ============================================================
+// EXTERNAL FONTS
+// ============================================================
 @import url("https://fonts.googleapis.com/css?family=Inter:500,400,italic");
-* {
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-html,
-body {
-  margin: 0px;
-  height: 100%;
-}
-button:focus-visible {
-  outline: 2px solid #4a90e2 !important;
-  outline: -webkit-focus-ring-color auto 5px !important;
-}
-a {
-  text-decoration: none;
-}

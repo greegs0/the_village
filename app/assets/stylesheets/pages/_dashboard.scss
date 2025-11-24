@@ -1,0 +1,37 @@
+// ============================================================
+// DASHBOARD PAGE (Family show)
+// ============================================================
+// Styles spécifiques au dashboard principal
+// ============================================================
+
+// Village Assistant Card
+.card-header {
+  &[style*="background: linear-gradient"] {
+    border: none;
+  }
+}
+
+// Chart/Progress bars
+.progress-chart {
+  circle {
+    transition: stroke-dashoffset 0.5s ease;
+  }
+}
+
+// Quick actions pills
+.quick-actions {
+  .btn.rounded-pill {
+    background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%);
+    border: none;
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+}
+
+// Dark input wrapper (Village Assistant)
+.dark-input-wrapper {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: $radius-sm;
+  padding: $spacing-xs;
+}

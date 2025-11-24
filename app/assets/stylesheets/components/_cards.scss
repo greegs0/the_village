@@ -1,0 +1,348 @@
+// ============================================================
+// CARDS COMPONENTS
+// ============================================================
+// Extensions et customisations des cards Bootstrap
+// Basé sur les patterns extraits du design existant
+// ============================================================
+
+// Card de base avec le style standard
+.card {
+  border-radius: $radius-lg;
+  border: 1px solid $color-gray-border;
+  @include card-shadow;
+  transition: $transition-transform;
+
+  &.rounded-4 {
+    border-radius: $radius-lg; // 14px
+  }
+
+  // Hover sur toutes les cards
+  &:hover {
+    transform: $transform-hover-sm;
+    box-shadow: $shadow-hover-sm;
+  }
+}
+
+// Card body avec padding standard
+.card-body {
+  &.p-3 {
+    padding: $spacing-md; // 16px
+  }
+
+  &.p-4 {
+    padding: $spacing-lg; // 24px
+  }
+
+  &.p-md-4 {
+    @media (min-width: $breakpoint-tablet) {
+      padding: $spacing-lg;
+    }
+  }
+
+  &.p-md-5 {
+    @media (min-width: $breakpoint-tablet) {
+      padding: $spacing-xl; // 32px
+    }
+  }
+}
+
+// ============================================================
+// STATS CARDS (Dashboard)
+// ============================================================
+
+.stats-card {
+  @extend .card;
+  @include hover-lift;
+  cursor: pointer;
+  text-decoration: none;
+
+  .card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .stats-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+  }
+
+  .stats-value {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    color: $color-black;
+  }
+
+  .stats-label {
+    font-size: 0.875rem;
+    color: $color-gray;
+    margin-bottom: $spacing-xxs;
+  }
+}
+
+// ============================================================
+// EVENT CARDS (Communities)
+// ============================================================
+
+.event-card {
+  @extend .card;
+  height: 100%;
+
+  .event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: $spacing-md;
+  }
+
+  .event-badges {
+    display: flex;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-xs;
+  }
+
+  .event-title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .event-meta {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-md;
+
+    .event-meta-item {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      color: $color-gray;
+
+      .icon {
+        margin-right: $spacing-xs;
+      }
+    }
+  }
+
+  .event-description {
+    font-size: 0.875rem;
+    color: $color-gray;
+    margin-bottom: $spacing-md;
+  }
+
+  .event-organizer {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding-top: $spacing-md;
+    border-top: 1px solid $color-gray-border;
+
+    .organizer-info {
+      .organizer-label {
+        font-size: 0.875rem;
+        color: $color-gray;
+      }
+
+      .organizer-name {
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .event-actions {
+    display: flex;
+    gap: $spacing-xs;
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1px solid $color-gray-border;
+
+    .action-btn {
+      &:hover {
+        background-color: $color-gray-lighter;
+      }
+    }
+  }
+}
+
+// ============================================================
+// TESTIMONIAL CARDS (Home page)
+// ============================================================
+
+.testimonial-card {
+  @extend .card;
+  height: 100%;
+
+  .testimonial-stars {
+    margin-bottom: $spacing-md;
+    height: 20px;
+  }
+
+  blockquote {
+    margin-bottom: $spacing-lg;
+
+    p {
+      font-style: italic;
+      color: $color-gray;
+      line-height: 1.6;
+    }
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+
+    .author-info {
+      .author-name {
+        font-weight: 500;
+      }
+
+      .author-role {
+        font-size: 0.875rem;
+        color: $color-gray;
+      }
+    }
+  }
+}
+
+// ============================================================
+// FEATURE CARDS (Home page)
+// ============================================================
+
+.feature-card {
+  @extend .card;
+  height: 100%;
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: $spacing-md;
+  }
+
+  .feature-title {
+    font-size: 1.125rem;
+    margin-bottom: $spacing-md;
+  }
+
+  .feature-description {
+    color: $color-gray;
+    margin-bottom: 0;
+  }
+}
+
+// ============================================================
+// GRADIENT CARDS
+// ============================================================
+
+.card.bg-gradient-light {
+  background: $gradient-hero;
+  border: 1px solid $color-gray-border;
+}
+
+// ============================================================
+// CARD VARIANTS
+// ============================================================
+
+// Card sans border
+.card.border-0 {
+  border: none;
+}
+
+// Card avec shadow custom
+.card.shadow-sm {
+  box-shadow: $shadow-hover-sm;
+}
+
+.card.shadow-lg {
+  box-shadow: $shadow-large;
+}
+
+// ============================================================
+// ACTIVITY CARD (Recent Activity)
+// ============================================================
+
+.activity-item {
+  display: flex;
+  margin-bottom: $spacing-md;
+
+  .activity-avatar {
+    @include circle(40px);
+    background-color: $color-gray-lightest;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: $spacing-md;
+
+    .avatar-initial {
+      font-weight: 500;
+    }
+  }
+
+  .activity-content {
+    flex-grow: 1;
+
+    .activity-text {
+      margin-bottom: $spacing-xxs;
+      font-size: 0.875rem;
+
+      strong {
+        font-weight: 600;
+      }
+
+      a {
+        color: $blue;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .activity-time {
+      font-size: 0.875rem;
+      color: $color-gray;
+    }
+  }
+}
+
+// ============================================================
+// UPCOMING EVENTS CARD ITEM
+// ============================================================
+
+.upcoming-event-item {
+  background-color: $color-gray-lightest;
+  border-radius: $radius-sm;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .event-item-title {
+    margin-bottom: $spacing-xxs;
+    font-size: 1rem;
+    font-weight: 600;
+
+    .event-icon {
+      margin-right: $spacing-xxs;
+    }
+  }
+
+  .event-item-meta {
+    font-size: 0.875rem;
+    color: $color-gray;
+    margin-bottom: 0;
+
+    .meta-icon {
+      margin-right: $spacing-xs;
+    }
+  }
+
+  .event-item-badge {
+    margin-left: auto;
+  }
+}
