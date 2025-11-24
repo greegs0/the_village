@@ -1,11 +1,19 @@
 class FamilyEventsController < ApplicationController
   before_action :set_family
+  before_action :set_family_members
   before_action :set_family_event, only: [:update, :destroy]
 
   def index
     @current_date = params[:date] ? Date.parse(params[:date]) : Date.today
     @family_events = @family.family_events.for_month(@current_date)
     @family_event = FamilyEvent.new # Pour le formulaire de création
+
+    # Charger les événements des 7 prochains jours
+    @upcoming_events = @family.family_events
+                              .where("start_date >= ?", Date.today)
+                              .where("start_date <= ?", Date.today + 7.days)
+                              .order(start_date: :asc, time: :asc)
+                              .limit(5)
 
     # Generate calendar data
     @calendar_start = @current_date.beginning_of_month.beginning_of_week(:monday)
@@ -65,6 +73,10 @@ class FamilyEventsController < ApplicationController
 
   def set_family
     @family = Family.find(params[:family_id])
+  end
+
+  def set_family_members
+    @family_members = @family.people
   end
 
   def set_family_event
