@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_family
-  before_action :set_task, only: [:show, :update, :toggle_status]
+  before_action :set_task, only: [:show, :update, :toggle_status, :destroy]
 
   # GET /families/:family_id/tasks
   def index
@@ -54,6 +54,12 @@ class TasksController < ApplicationController
   def toggle_status
     @task.update(status: !@task.status)
     redirect_to family_tasks_path(@family), notice: "Statut de la tâche mis à jour."
+  end
+
+  # DELETE /families/:family_id/tasks/:id
+  def destroy
+    @task.destroy
+    redirect_to family_tasks_path(@family), notice: "Tâche supprimée avec succès."
   end
 
   private
