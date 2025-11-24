@@ -1,4 +1,5 @@
 class Task < ApplicationRecord
+  belongs_to :family
   belongs_to :user
   belongs_to :assignee, class_name: "Person"
 

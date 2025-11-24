@@ -42,8 +42,6 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <%= link_to "Créer un membre", new_person_path, class: "btn btn-secondary" %>
-          <li class="nav-item">
             <%= link_to "Tableau de bord", families_path, class: "nav-link" %>
           </li>
           <li class="nav-item dropdown">
@@ -51,12 +49,11 @@
               Gestion
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to "Tâches", tasks_path, class: "dropdown-item active" %></li>
-              <li><a class="dropdown-item" href="/families-calendar.html">Calendrier</a></li>
+              <li><%= link_to "Tâches", family_tasks_path(current_user.family), class: "dropdown-item" %></li>
+              <li><%= link_to "Calendrier", family_family_events_path(current_user.family), class: "dropdown-item" %></li>
+              <li><%= link_to "Documents", families_documents_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Membres", new_person_path, class: "dropdown-item" %></li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Documents", families_documents_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
             <%= link_to "Communauté", events_path, class: "nav-link" %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_21_111928) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_24_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,7 +73,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_111928) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "assignee_id"
+    t.bigint "family_id", null: false
     t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
+    t.index ["family_id"], name: "index_tasks_on_family_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
@@ -98,6 +100,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_111928) do
   add_foreign_key "events", "users"
   add_foreign_key "family_events", "families"
   add_foreign_key "people", "families"
+  add_foreign_key "tasks", "families"
   add_foreign_key "tasks", "people", column: "assignee_id"
   add_foreign_key "tasks", "users"
   add_foreign_key "users", "families"
