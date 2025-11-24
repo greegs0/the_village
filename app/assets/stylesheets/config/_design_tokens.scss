@@ -34,6 +34,15 @@ $color-blue-primary: #155dfc;
 $color-purple-light: #e9d4ff;
 $color-pink: #f6339a;
 
+// ============================================================
+// V2 COLORS (Logo gradient colors)
+// ============================================================
+
+$color-primary: #667eea;        // Violet-bleu du logo (start)
+$color-primary-dark: #764ba2;   // Violet foncé du logo (end)
+$color-primary-light: #a78bfa;  // Violet clair (hover/accents)
+$color-primary-lightest: #e9d5ff; // Violet pale (backgrounds)
+
 // Shadows (using rgba for transparency)
 $color-shadow-light: #0000001a; // rgba(0, 0, 0, 0.1)
 
@@ -72,6 +81,19 @@ $gradient-hero-alt: linear-gradient(
 );
 
 // ============================================================
+// V2 GRADIENTS (Logo colors)
+// ============================================================
+
+$gradient-primary: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+$gradient-primary-horizontal: linear-gradient(90deg, $color-primary 0%, $color-primary-dark 100%);
+$gradient-page-bg: linear-gradient(180deg, $color-white 0%, rgba($color-primary-lightest, 0.1) 100%);
+$gradient-primary-shine: linear-gradient(135deg,
+  rgba($color-white, 0) 0%,
+  rgba($color-white, 0.1) 50%,
+  rgba($color-white, 0) 100%
+);
+
+// ============================================================
 // SPACING SYSTEM (basé sur 8px grid)
 // ============================================================
 
@@ -94,6 +116,7 @@ $radius-sm: 8px;
 $radius-md: 10px;
 $radius-lg: 14px;
 $radius-xl: 16px;
+$radius-full: 9999px; // Pour les pills/boutons arrondis
 $radius-circle: 16777200px; // Valeur max pour cercles parfaits
 
 // ============================================================
