@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
   get 'family_events/index'
-  resources :tasks do
-    member do
-      patch :toggle_status
-    end
-  end
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
@@ -15,6 +10,11 @@ Rails.application.routes.draw do
   get 'families', to: 'families#show', as: :families  # Redirect /families to show action
   resources :families, only: [:show, :new, :create, :edit, :update] do
     resources :family_events
+    resources :tasks do
+      member do
+        patch :toggle_status
+      end
+    end
   end
   resources :people, only: [:new, :create, :edit, :update, :destroy]
 

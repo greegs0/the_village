@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
+  before_action :set_family
   before_action :set_task, only: [:show, :update, :toggle_status]
 
-  # GET /tasks
+  # GET /families/:family_id/tasks
   def index
-    @tasks = Task.all
-    @people = Person.all
+    @tasks = @family.tasks
+    @people = @family.people
 
     # Calculer les statistiques par personne
     @tasks_by_person = @people.map do |person|
@@ -23,42 +24,46 @@ class TasksController < ApplicationController
   def show
   end
 
-  # GET /tasks/new
+  # GET /families/:family_id/tasks/new
   def new
-    @task = Task.new
+    @task = @family.tasks.new
   end
 
-  # POST /tasks
+  # POST /families/:family_id/tasks
   def create
-    @task = Task.new(task_params)
+    @task = @family.tasks.new(task_params)
 
     if @task.save
-      redirect_to tasks_path, notice: 'Task was successfully created.'
+      redirect_to family_tasks_path(@family), notice: 'Task was successfully created.'
     else
-      @tasks = Task.all
+      @tasks = @family.tasks
       render :index, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /tasks/:id
+  # PATCH/PUT /families/:family_id/tasks/:id
   def update
     if @task.update(task_params)
-      redirect_to task_path(@task), notice: 'Task was successfully updated.'
+      redirect_to family_task_path(@family, @task), notice: 'Task was successfully updated.'
     else
       render :show, status: :unprocessable_entity
     end
   end
 
-  # PATCH /tasks/:id/toggle_status
+  # PATCH /families/:family_id/tasks/:id/toggle_status
   def toggle_status
     @task.update(status: !@task.status)
-    redirect_to tasks_path, notice: "Statut de la tâche mis à jour."
+    redirect_to family_tasks_path(@family), notice: "Statut de la tâche mis à jour."
   end
 
   private
 
+  def set_family
+    @family = Family.find(params[:family_id])
+  end
+
   def set_task
-    @task = Task.find(params[:id])
+    @task = @family.tasks.find(params[:id])
   end
 
   def task_params

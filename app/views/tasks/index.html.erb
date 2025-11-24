@@ -57,11 +57,11 @@
                   <div id="ongoing-tasks-container">
                     <% ongoing_tasks.each_with_index do |task, index| %>
                       <div class="border rounded-3 p-3 mb-3 d-flex align-items-center gap-3 task-item <%= 'hidden-task' if index >= 5 %>" data-task-type="ongoing">
-                        <%= form_with(url: toggle_status_task_path(task), method: :patch, local: true, class: "m-0") do %>
+                        <%= form_with(url: toggle_status_family_task_path(@family, task), method: :patch, local: true, class: "m-0") do %>
                           <%= check_box_tag 'status', '1', task.status, class: "form-check-input m-0", onchange: "this.form.submit()" %>
                         <% end %>
                         <div class="flex-grow-1">
-                          <h6 class="mb-1"><%= link_to task.name, task_path(task), class: "text-decoration-none text-dark" %></h6>
+                          <h6 class="mb-1"><%= link_to task.name, family_task_path(@family, task), class: "text-decoration-none text-dark" %></h6>
                           <div class="d-flex flex-wrap gap-2 align-items-center">
                             <small class="text-muted">🕐 <%= task.target_date.strftime("%d/%m/%Y") %></small>
                           </div>
@@ -99,11 +99,11 @@
                   <div id="completed-tasks-container">
                     <% completed_tasks.each_with_index do |task, index| %>
                       <div class="border rounded-3 p-3 mb-3 d-flex align-items-center gap-3 task-item <%= 'hidden-task' if index >= 5 %>" data-task-type="completed">
-                        <%= form_with(url: toggle_status_task_path(task), method: :patch, local: true, class: "m-0") do %>
+                        <%= form_with(url: toggle_status_family_task_path(@family, task), method: :patch, local: true, class: "m-0") do %>
                           <%= check_box_tag 'status', '1', task.status, class: "form-check-input m-0", onchange: "this.form.submit()" %>
                         <% end %>
                         <div class="flex-grow-1">
-                          <h6 class="mb-1"><%= link_to task.name, task_path(task), class: "text-decoration-none text-dark text-decoration-line-through" %></h6>
+                          <h6 class="mb-1"><%= link_to task.name, family_task_path(@family, task), class: "text-decoration-none text-dark text-decoration-line-through" %></h6>
                           <div class="d-flex flex-wrap gap-2 align-items-center">
                             <small class="text-muted">🕐 <%= task.target_date.strftime("%d/%m/%Y") %></small>
                           </div>
@@ -267,7 +267,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body pt-3">
-          <%= form_with(model: Task.new, url: tasks_path, method: :post, local: true) do |f| %>
+          <%= form_with(model: Task.new, url: family_tasks_path(@family), method: :post, local: true) do |f| %>
             <!-- Titre de la tâche -->
             <div class="mb-3">
               <%= f.label :name, "Titre de la tâche", class: "form-label fw-medium" %>
