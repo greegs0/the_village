@@ -116,7 +116,8 @@ task_templates = [
     target_date: target_date,
     time: ["09:00", "14:00", "18:00", "20:00", nil].sample,
     user: lois,
-    assignee: assignee
+    assignee: assignee,
+    family: family
   )
 
   # Pour les tâches complétées, mettre à jour le updated_at pour simuler une complétion récente
