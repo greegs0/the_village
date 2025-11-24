@@ -18,11 +18,29 @@ $info:       $yellow;
 $danger:     $red;
 $warning:    $orange;
 
-// Buttons & inputs' radius
+// Buttons & inputs' radius (en rem pour Bootstrap)
 $border-radius-sm:            .0625rem;
 $border-radius:               .125rem;
 $border-radius-lg:            .25rem;
 $border-radius-xl:            .5rem;
 $border-radius-xxl:           1rem;
+
+// Spacing (Bootstrap utilise rem, nos tokens sont en px)
+// Bootstrap génère automatiquement les classes .p-*, .m-*, etc.
+$spacer: 1rem; // 16px par défaut
+
+// Cards
+$card-border-radius:          $radius-lg; // 14px depuis design tokens
+$card-border-color:           $color-gray-border;
+$card-box-shadow:             $shadow-card;
+
+// Shadows
+$box-shadow:                  $shadow-card;
+$box-shadow-sm:               $shadow-hover-sm;
+$box-shadow-lg:               $shadow-large;
+
+// Transitions
+$transition-base:             $transition-all-fast;
+$transition-fade:             opacity 0.15s linear;
 
 // Override other variables below!

@@ -1,0 +1,266 @@
+// ============================================================
+// BUTTONS COMPONENTS
+// ============================================================
+// Extensions et customisations des boutons Bootstrap
+// Préserve tous les styles existants du design
+// ============================================================
+
+// ============================================================
+// BUTTON BASE OVERRIDES
+// ============================================================
+
+.btn {
+  transition: $transition-all-fast;
+  font-family: $font-primary;
+
+  &:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    box-shadow: $shadow-focus;
+  }
+}
+
+// ============================================================
+// PRIMARY BUTTON (Dark)
+// ============================================================
+
+.btn-dark {
+  background-color: $color-black;
+  border-color: $color-black;
+  color: $color-white;
+
+  &:hover {
+    background-color: lighten($color-black, 10%);
+    border-color: lighten($color-black, 10%);
+    transform: $transform-hover-sm;
+  }
+
+  &:active {
+    background-color: $color-black;
+    border-color: $color-black;
+  }
+}
+
+// ============================================================
+// SECONDARY BUTTON (Outline)
+// ============================================================
+
+.btn-outline-secondary,
+.btn-outline-dark {
+  border-color: $color-black;
+  color: $color-black;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $color-black;
+    border-color: $color-black;
+    color: $color-white;
+    transform: $transform-hover-sm;
+  }
+}
+
+// ============================================================
+// PRIMARY COLORED BUTTON
+// ============================================================
+
+.btn-primary {
+  background-color: $blue;
+  border-color: $blue;
+
+  &:hover {
+    background-color: darken($blue, 10%);
+    border-color: darken($blue, 10%);
+    transform: $transform-hover-sm;
+  }
+}
+
+// ============================================================
+// BUTTON SIZES
+// ============================================================
+
+.btn-sm {
+  padding: $spacing-xs $spacing-md;
+  font-size: 0.875rem;
+}
+
+.btn-lg {
+  padding: $spacing-md $spacing-xl;
+  font-size: 1.125rem;
+}
+
+// ============================================================
+// ROUNDED PILL BUTTONS (Quick Actions)
+// ============================================================
+
+.btn.rounded-pill {
+  border-radius: 50px;
+  padding: $spacing-xxs $spacing-sm;
+
+  &.btn-sm {
+    font-size: 0.6875rem; // 11px
+    padding: $spacing-xxs $spacing-sm;
+  }
+}
+
+// ============================================================
+// GRADIENT BUTTONS
+// ============================================================
+
+.btn-gradient {
+  @include logo-gradient;
+  color: $color-white;
+  border: none;
+
+  &:hover {
+    opacity: 0.9;
+    transform: $transform-hover-sm;
+    color: $color-white;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+}
+
+// ============================================================
+// TOGGLE BUTTON (Event participation)
+// ============================================================
+
+.toggle-participation-btn {
+  transition: $transition-all-fast;
+
+  &[data-status="registered"] {
+    background-color: $color-gray;
+    border-color: $color-gray;
+    color: $color-white;
+
+    &:hover {
+      background-color: $red;
+      border-color: $red;
+      &::after {
+        content: " ✕";
+      }
+    }
+  }
+
+  &[data-status="not-registered"] {
+    background-color: $blue;
+    border-color: $blue;
+    color: $color-white;
+
+    &:hover {
+      background-color: darken($blue, 10%);
+      border-color: darken($blue, 10%);
+    }
+  }
+}
+
+// ============================================================
+// ACTION BUTTONS (Like, Comment, Share)
+// ============================================================
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xxs;
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.875rem;
+  transition: $transition-all-fast;
+
+  &:hover {
+    background-color: $color-gray-lighter;
+    border-color: $color-gray-border;
+  }
+
+  &.like-btn {
+    &.liked {
+      background-color: $color-blue-light;
+      border-color: $blue;
+      color: $blue;
+    }
+  }
+}
+
+// ============================================================
+// ICON BUTTONS (Circular)
+// ============================================================
+
+.btn-circle {
+  @include circle($icon-size-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  &.btn-sm {
+    @include circle(28px);
+    font-size: 14px;
+  }
+}
+
+// ============================================================
+// LINK BUTTONS (No background)
+// ============================================================
+
+.btn-link {
+  color: $blue;
+  text-decoration: none;
+
+  &:hover {
+    color: darken($blue, 15%);
+    text-decoration: underline;
+  }
+}
+
+// ============================================================
+// BUTTON GROUPS & NAVBAR BUTTONS
+// ============================================================
+
+.navbar .btn {
+  &.btn-sm {
+    padding: $spacing-xs $spacing-md;
+  }
+}
+
+// Gap utilities for button groups
+.d-flex.gap-2 {
+  gap: $spacing-xs;
+}
+
+// ============================================================
+// DISABLED STATE
+// ============================================================
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+
+  &:hover {
+    transform: none !important;
+  }
+}
+
+// ============================================================
+// FULL WIDTH BUTTONS
+// ============================================================
+
+.btn.w-100 {
+  width: 100%;
+}
+
+// ============================================================
+// RESPONSIVE BUTTON SIZES
+// ============================================================
+
+@media (max-width: $breakpoint-tablet-max) {
+  .btn {
+    font-size: 0.875rem;
+    padding: $spacing-xs $spacing-md;
+  }
+
+  .btn-lg {
+    font-size: 1rem;
+    padding: $spacing-sm $spacing-lg;
+  }
+}

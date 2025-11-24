@@ -1,0 +1,213 @@
+// ============================================================
+// DESIGN TOKENS - The Village
+// ============================================================
+// Ce fichier centralise TOUS les tokens de design extraits
+// de l'ancien code. NE PAS modifier sans vérifier l'impact visuel.
+// ============================================================
+
+// ============================================================
+// COLORS
+// ============================================================
+
+// Primary Colors
+$color-white: #ffffff;
+$color-black: #0a0a0a;
+$color-dark-blue: #030213;
+
+// Grays
+$color-gray: #717182;
+$color-gray-medium: #495565;
+$color-gray-light: #ececf0;
+$color-gray-lighter: #f3f3f5;
+$color-gray-lightest: #f9fafb;
+$color-gray-border: #e5e7eb;
+$color-gray-text: #697282;
+$color-gray-dark: #354152;
+
+// Accent Colors
+$color-blue: #1347e5;
+$color-blue-light: #dbeafe;
+$color-blue-lighter: #bedbff;
+$color-blue-primary: #155dfc;
+
+// Purple/Pink
+$color-purple-light: #e9d4ff;
+$color-pink: #f6339a;
+
+// Shadows (using rgba for transparency)
+$color-shadow-light: #0000001a; // rgba(0, 0, 0, 0.1)
+
+// Legacy colors from _colors.scss (Bootstrap overrides)
+$red: #FD1015;
+$blue: #0D6EFD;
+$yellow: #FFC65A;
+$orange: #E67E22;
+$green: #1EDD88;
+$gray: #0E0000;
+$light-gray: #F4F4F4;
+
+// ============================================================
+// GRADIENTS
+// ============================================================
+
+// Primary Logo Gradient (utilisé 20+ fois dans l'app)
+$gradient-logo: linear-gradient(
+  135deg,
+  rgba(43, 127, 255, 1) 0%,
+  rgba(152, 16, 250, 1) 100%
+);
+
+// Hero Background Gradient
+$gradient-hero: linear-gradient(
+  180deg,
+  rgba(239, 246, 255, 1) 0%,
+  rgba(255, 255, 255, 1) 100%
+);
+
+// Alternative Hero Gradient
+$gradient-hero-alt: linear-gradient(
+  135deg,
+  rgba(239, 246, 255, 1) 0%,
+  rgba(250, 245, 255, 1) 100%
+);
+
+// ============================================================
+// SPACING SYSTEM (basé sur 8px grid)
+// ============================================================
+
+$spacing-xxxs: 2px;
+$spacing-xxs: 4px;
+$spacing-xs: 8px;
+$spacing-sm: 12px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+$spacing-xxxl: 64px;
+$spacing-huge: 96px;
+
+// ============================================================
+// BORDER RADIUS
+// ============================================================
+
+$radius-sm: 8px;
+$radius-md: 10px;
+$radius-lg: 14px;
+$radius-xl: 16px;
+$radius-circle: 16777200px; // Valeur max pour cercles parfaits
+
+// ============================================================
+// SHADOWS
+// ============================================================
+
+// Card Shadow (le plus utilisé)
+$shadow-card: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
+              0px 1px 3px rgba(0, 0, 0, 0.1);
+
+// Large Shadow (hero sections)
+$shadow-large: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+// Hover Shadows
+$shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1);
+$shadow-hover-sm: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+// Focus Shadow (accessibility)
+$shadow-focus: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+
+// ============================================================
+// TYPOGRAPHY
+// ============================================================
+
+$font-primary: "Inter", Helvetica, sans-serif;
+
+// Importé depuis _fonts.scss pour Bootstrap
+$body-font: "Work Sans", "Helvetica", "sans-serif";
+$headers-font: "Nunito", "Helvetica", "sans-serif";
+
+// ============================================================
+// TRANSITIONS & ANIMATIONS
+// ============================================================
+
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+
+$transition-bg: background-color 0.2s ease;
+$transition-all-fast: all 0.2s ease;
+$transition-all-normal: all 0.3s ease;
+$transition-transform: transform 0.2s ease, box-shadow 0.2s ease;
+
+// Transform values
+$transform-hover-up: translateY(-4px);
+$transform-hover-sm: translateY(-2px);
+
+// ============================================================
+// Z-INDEX
+// ============================================================
+
+$z-index-base: 100;
+
+// ============================================================
+// BREAKPOINTS (Media Queries)
+// ============================================================
+
+$breakpoint-mobile: 480px;
+$breakpoint-mobile-max: 575.98px;
+$breakpoint-tablet: 768px;
+$breakpoint-tablet-max: 767.98px;
+$breakpoint-desktop: 991.98px;
+$breakpoint-wide: 1400px;
+
+// ============================================================
+// LAYOUT DIMENSIONS
+// ============================================================
+
+// Fixed width du design original (à remplacer progressivement par responsive)
+$legacy-width-desktop: 2044px;
+
+// Container max-widths
+$container-max-width: 1400px;
+
+// Common element sizes
+$icon-size-sm: 24px;
+$icon-size-md: 48px;
+
+// Sidebar widths
+$sidebar-width: 320px;
+
+// ============================================================
+// EFFECTS
+// ============================================================
+
+$blur-background: blur(64px);
+$opacity-blur: 0.6;
+
+// ============================================================
+// MIXINS UTILES
+// ============================================================
+
+// Mixin pour appliquer le card shadow standard
+@mixin card-shadow {
+  box-shadow: $shadow-card;
+}
+
+// Mixin pour le hover state standard
+@mixin hover-lift {
+  transition: $transition-transform;
+
+  &:hover {
+    transform: $transform-hover-up;
+    box-shadow: $shadow-hover;
+  }
+}
+
+// Mixin pour les cercles parfaits
+@mixin circle($size) {
+  width: $size;
+  height: $size;
+  border-radius: $radius-circle;
+}
+
+// Mixin pour le gradient logo
+@mixin logo-gradient {
+  background: $gradient-logo;
+}

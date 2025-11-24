@@ -1,0 +1,334 @@
+// ============================================================
+// FORMS COMPONENTS
+// ============================================================
+// Styles pour les formulaires (auth, création, édition)
+// Préserve le design des pages auth existantes
+// ============================================================
+
+// ============================================================
+// AUTH PAGE WRAPPER
+// ============================================================
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: $gradient-hero;
+
+  .container {
+    padding-top: $spacing-xxxl;
+    padding-bottom: $spacing-xxxl;
+  }
+
+  .card {
+    @include card-shadow;
+  }
+}
+
+// ============================================================
+// FORM CONTROLS (Inputs)
+// ============================================================
+
+.form-control {
+  font-family: $font-primary;
+  border: 1px solid $color-gray-border;
+  border-radius: $radius-sm;
+  padding: $spacing-sm $spacing-md;
+  transition: $transition-all-fast;
+
+  &:focus {
+    border-color: $blue;
+    box-shadow: $shadow-focus;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $color-gray;
+  }
+
+  &.form-control-sm {
+    padding: $spacing-xs $spacing-sm;
+    font-size: 0.875rem;
+  }
+
+  &.bg-transparent {
+    background-color: transparent;
+
+    &.text-white {
+      color: $color-white;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+  }
+}
+
+// ============================================================
+// FORM LABELS
+// ============================================================
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: $spacing-xs;
+  color: $color-black;
+  font-size: 0.875rem;
+}
+
+// ============================================================
+// FORM GROUPS
+// ============================================================
+
+.mb-3 {
+  margin-bottom: $spacing-md;
+}
+
+.mb-4 {
+  margin-bottom: $spacing-lg;
+}
+
+// ============================================================
+// SIMPLE FORM (Rails gem)
+// ============================================================
+
+.form-group {
+  margin-bottom: $spacing-md;
+
+  label {
+    font-weight: 500;
+    margin-bottom: $spacing-xs;
+    color: $color-black;
+    font-size: 0.875rem;
+  }
+
+  .form-control {
+    width: 100%;
+  }
+
+  .invalid-feedback {
+    color: $red;
+    font-size: 0.875rem;
+    margin-top: $spacing-xxs;
+  }
+
+  .form-text {
+    color: $color-gray;
+    font-size: 0.875rem;
+    margin-top: $spacing-xxs;
+  }
+}
+
+// ============================================================
+// AUTH FORM TABS (Connexion / Inscription)
+// ============================================================
+
+.nav-pills {
+  &.nav-fill {
+    &.bg-light {
+      background-color: $color-gray-lightest;
+      border-radius: $radius-sm;
+      padding: $spacing-xxs;
+
+      .nav-item {
+        .nav-link {
+          color: $color-gray;
+          border-radius: $radius-sm;
+          transition: $transition-all-fast;
+          padding: $spacing-xs $spacing-md;
+
+          &:hover {
+            background-color: $color-gray-lighter;
+          }
+
+          &.active {
+            background-color: $color-white;
+            color: $color-black;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        button.nav-link {
+          border: none;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+// ============================================================
+// DIVIDER AVEC TEXT ("ou")
+// ============================================================
+
+.position-relative {
+  position: relative;
+
+  hr {
+    border-color: $color-gray-border;
+  }
+
+  .position-absolute {
+    &.top-50 {
+      top: 50%;
+    }
+
+    &.start-50 {
+      left: 50%;
+    }
+
+    &.translate-middle {
+      transform: translate(-50%, -50%);
+    }
+
+    &.bg-white {
+      background-color: $color-white;
+      padding: 0 $spacing-xs;
+    }
+  }
+}
+
+// ============================================================
+// CHECKBOX & RADIO
+// ============================================================
+
+.form-check {
+  padding-left: 1.5rem;
+  margin-bottom: $spacing-sm;
+
+  .form-check-input {
+    margin-left: -1.5rem;
+    cursor: pointer;
+
+    &:checked {
+      background-color: $blue;
+      border-color: $blue;
+    }
+
+    &:focus {
+      border-color: $blue;
+      box-shadow: $shadow-focus;
+    }
+  }
+
+  .form-check-label {
+    cursor: pointer;
+    color: $color-black;
+  }
+}
+
+// ============================================================
+// SEARCH INPUT (Village Assistant)
+// ============================================================
+
+.search-input {
+  background-color: transparent;
+  border: none;
+  color: $color-white;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+// ============================================================
+// INPUT GROUPS (avec icons)
+// ============================================================
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+
+  .form-control {
+    flex: 1;
+  }
+
+  .btn {
+    flex-shrink: 0;
+  }
+}
+
+// ============================================================
+// FORM VALIDATION STATES
+// ============================================================
+
+.is-invalid {
+  border-color: $red !important;
+
+  &:focus {
+    border-color: $red !important;
+    box-shadow: 0 0 0 0.2rem rgba(253, 16, 21, 0.25) !important;
+  }
+}
+
+.is-valid {
+  border-color: $green !important;
+
+  &:focus {
+    border-color: $green !important;
+    box-shadow: 0 0 0 0.2rem rgba(30, 221, 136, 0.25) !important;
+  }
+}
+
+// ============================================================
+// ERROR MESSAGES (Devise)
+// ============================================================
+
+.error_notification {
+  background-color: rgba(253, 16, 21, 0.1);
+  border: 1px solid $red;
+  border-radius: $radius-sm;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  color: $red;
+}
+
+// ============================================================
+// SELECT DROPDOWNS
+// ============================================================
+
+.form-select {
+  font-family: $font-primary;
+  border: 1px solid $color-gray-border;
+  border-radius: $radius-sm;
+  padding: $spacing-sm $spacing-md;
+  transition: $transition-all-fast;
+
+  &:focus {
+    border-color: $blue;
+    box-shadow: $shadow-focus;
+    outline: none;
+  }
+}
+
+// ============================================================
+// TEXTAREA
+// ============================================================
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+// ============================================================
+// FORM RESPONSIVE
+// ============================================================
+
+@media (max-width: $breakpoint-tablet-max) {
+  .auth-page {
+    .container {
+      padding-top: $spacing-lg;
+      padding-bottom: $spacing-lg;
+    }
+
+    .card-body {
+      padding: $spacing-lg !important;
+    }
+  }
+}
