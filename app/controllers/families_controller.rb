@@ -31,7 +31,15 @@ class FamiliesController < ApplicationController
 
     # Chats
     @chats = current_user.chats.recent
-    @current_chat = @chats.first || current_user.chats.create(title: "Nouvelle conversation")
+
+    # Si un chat_id est passé en paramètre, on l'utilise, sinon on prend le premier
+    if params[:chat_id].present?
+      @current_chat = current_user.chats.find_by(id: params[:chat_id])
+    end
+
+    # Si pas de chat trouvé ou pas de paramètre, on prend le premier ou on en crée un
+    @current_chat ||= @chats.first || current_user.chats.create(title: "Nouvelle conversation")
+
     @messages = @current_chat.messages.chronological
     @message = Message.new
   end
