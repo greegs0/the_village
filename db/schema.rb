@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_120000) do
     t.string "assigned_to"
     t.string "event_icon"
     t.string "badge_class"
-    t.boolean "reminders_enabled"
+    t.boolean "reminders_enabled", default: false
     t.index ["family_id"], name: "index_family_events_on_family_id"
   end
 
