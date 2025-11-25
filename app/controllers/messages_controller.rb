@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
     if @message.save
       # TODO: Appeler l'API de l'Assistant IA ici
       # Pour l'instant, on redirige simplement vers families avec le chat actif
-      redirect_to families_path(chat_id: @chat.id), notice: 'Message envoyé avec succès.'
+      redirect_to families_path(chat_id: @chat.id)
     else
       redirect_to families_path(chat_id: @chat.id), alert: 'Erreur lors de l\'envoi du message.'
     end
