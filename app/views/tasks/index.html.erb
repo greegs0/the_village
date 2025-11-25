@@ -210,7 +210,7 @@
 
   <!-- Charts Section -->
   <div class="row g-4 mt-2">
-    <!-- Pie Chart -->
+    <!-- Pie Chart with Stimulus Controller -->
     <div class="col-lg-6">
       <div class="card stat-card rounded-4">
         <div class="card-body p-3 p-md-4">
@@ -218,51 +218,41 @@
           <p class="text-secondary small mb-4">Qui en fait le plus depuis le début de l'année ?</p>
 
           <% if @tasks_by_person.any? && @tasks.count > 0 %>
-            <%
-              # Couleurs pastel distinctes pour chaque segment
-              pie_colors = ['#7684ffff', '#F0ABFC', '#FDA4AF', '#ffe181ff', '#75e79fff', '#7DD3FC']
-              total_tasks = @tasks_by_person.sum { |d| d[:total_tasks] }
-              accumulated_percent = 0
-              circumference = 502
-            %>
-            <div class="row align-items-center">
-              <div class="col-md-6">
-                <div class="text-center mb-3">
-                  <div class="position-relative d-inline-block">
-                    <svg width="180" height="180" viewBox="0 0 200 200">
-                      <!-- Fond -->
-                      <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(102, 126, 234, 0.08)" stroke-width="24"/>
-                      <!-- Segments -->
-                      <% @tasks_by_person.each_with_index do |data, index| %>
-                        <% if data[:total_tasks] > 0 %>
-                          <%
-                            percent = (data[:total_tasks].to_f / total_tasks * 100).round
-                            segment_length = (circumference * percent / 100).round
-                            offset = circumference - (circumference * accumulated_percent / 100).round
-                            accumulated_percent += percent
-                            color = pie_colors[index % pie_colors.length]
-                          %>
-                          <circle cx="100" cy="100" r="80" fill="none"
-                                  stroke="<%= color %>"
-                                  stroke-width="24"
-                                  stroke-dasharray="<%= segment_length %> <%= circumference - segment_length %>"
-                                  stroke-dashoffset="<%= offset %>"
-                                  transform="rotate(-90 100 100)"/>
-                        <% end %>
-                      <% end %>
-                    </svg>
-                    <div class="position-absolute top-50 start-50 translate-middle text-center">
-                      <div class="h3 mb-0 stat-number"><%= total_tasks %></div>
-                      <small class="text-muted">Total</small>
-                    </div>
-                  </div>
-                </div>
+            <% colors = ["#7684ffff", "#F0ABFC", "#FDA4AF", "#ffe181ff", "#75e79fff", "#7DD3FC"] %>
+            <div class="text-center">
+              <!-- Camembert avec Stimulus -->
+              <%
+                labels = @tasks_by_person.map do |data|
+                  data[:person].name if data[:total_tasks] > 0
+                end.compact
+
+                chart_data = @tasks_by_person.map do |data|
+                  data[:total_tasks] if data[:total_tasks] > 0
+                end.compact
+
+                background_color = @tasks_by_person.map.with_index do |data, index|
+                  colors[index % 6] if data[:total_tasks] > 0
+                end.compact
+
+                pie_data = {
+                  labels: labels,
+                  datasets: [{
+                    data: chart_data,
+                    backgroundColor: background_color
+                  }]
+                }
+              %>
+
+              <div style="max-width: 300px; margin: 0 auto 2rem;">
+                <canvas id="pieChart" data-controller="chart" data-chart-data-value="<%= pie_data.to_json %>"></canvas>
               </div>
-              <div class="col-md-6">
+
+              <!-- Légende -->
+              <div class="d-flex justify-content-center gap-3 flex-wrap">
                 <% @tasks_by_person.each_with_index do |data, index| %>
                   <% if data[:total_tasks] > 0 %>
-                    <div class="d-flex align-items-center mb-2">
-                      <div class="rounded-circle" style="width: 12px; height: 12px; background: <%= pie_colors[index % pie_colors.length] %>;"></div>
+                    <div class="d-flex align-items-center">
+                      <div class="rounded-circle" style="width: 12px; height: 12px; background: <%= colors[index % colors.length] %>;"></div>
                       <span class="ms-2 small"><%= data[:person].name %> (<%= data[:total_tasks] %>)</span>
                     </div>
                   <% end %>
