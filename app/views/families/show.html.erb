@@ -80,49 +80,116 @@
     </div>
   </div>
 
-  <!-- Village Assistant -->
-  <div class="card border-0 rounded-4 mb-4 overflow-hidden shadow-sm">
-    <div class="card-header village-assistant-header border-0 p-3">
-      <div class="d-flex align-items-center">
-        <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
-          <%= image_tag "village-assistant-icon-v2.svg", alt: "Village Assistant", style: "width: 54px; height: 54px;" %>
+  <!-- Village Assistant Chat -->
+  <div class="row g-4 mb-4">
+    <!-- Main Chat Area (3/4) -->
+    <div class="col-lg-9">
+      <div class="card border-0 rounded-4 overflow-hidden shadow-sm">
+        <div class="card-header village-assistant-header border-0 p-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                <%= image_tag "village-assistant-icon-v2.svg", alt: "Village Assistant", style: "width: 54px; height: 54px;" %>
+              </div>
+              <div>
+                <h6 class="mb-0 text-white fw-medium">Village Assistant</h6>
+                <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
+              </div>
+            </div>
+            <%= button_to chats_path, method: :post, params: { chat: { title: "Nouvelle conversation" } }, class: "btn btn-sm btn-light rounded-pill", form: { style: "display: inline;" } do %>
+              ➕ Nouveau chat
+            <% end %>
+          </div>
         </div>
-        <div>
-          <h6 class="mb-0 text-white fw-medium">Village Assistant</h6>
-          <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
+        <div class="card-body p-3 bg-white messages-container" id="messagesContainer" style="height: 400px; overflow-y: auto;">
+          <% if @messages.any? %>
+            <% @messages.each do |message| %>
+              <div class="d-flex mb-3 <%= message.from_assistant? ? '' : 'justify-content-end' %>">
+                <% if message.from_assistant? %>
+                  <div class="me-2">
+                    <div class="d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">
+                      <%= image_tag "village-assistant-avatar.svg", alt: "Assistant", style: "width: 28px; height: 28px;" %>
+                    </div>
+                  </div>
+                <% end %>
+                <div class="flex-grow-1" style="max-width: 70%;">
+                  <div class="rounded-3 p-2" style="<%= message.from_assistant? ? 'background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%); border: 1px solid rgba(102, 126, 234, 0.15);' : 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;' %>">
+                    <p class="mb-1" style="font-size: 13px; line-height: 1.4;">
+                      <%= message.content %>
+                    </p>
+                    <small class="<%= message.from_assistant? ? 'text-muted' : 'text-white opacity-75' %>" style="font-size: 11px;">
+                      <%= l(message.created_at, format: :short) %>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="d-flex mb-3">
+              <div class="me-2">
+                <div class="d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">
+                  <%= image_tag "village-assistant-avatar.svg", alt: "Assistant", style: "width: 28px; height: 28px;" %>
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <div class="rounded-3 p-2" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%); border: 1px solid rgba(102, 126, 234, 0.15);">
+                  <p class="mb-1" style="font-size: 13px; line-height: 1.4;">
+                    Bonjour ! Je suis l'assistant de The Village. Comment puis-je vous aider aujourd'hui ?
+                    Vous pouvez me demander de créer des tâches, planifier des événements, envoyer des messages à votre famille, ou obtenir des informations sur votre communauté.
+                  </p>
+                  <small class="text-muted" style="font-size: 11px;"><%= l(Time.current, format: :short) %></small>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Input -->
+        <div class="card-footer bg-white border-0 p-3">
+          <div class="input-gradient-border">
+            <div class="input-inner">
+              <%= form_with model: @message, url: chat_messages_path(@current_chat), method: :post, local: true, class: "d-flex align-items-center gap-2", id: "chatForm" do |f| %>
+                <%= f.text_field :content, class: "form-control form-control-sm bg-transparent border-0 flex-grow-1", placeholder: "Posez une question à votre Village Assistant...", style: "font-size: 13px; padding: 6px 8px; color: #374151;", id: "messageInput", autofocus: true %>
+                <%= f.button type: "submit", class: "btn btn-sm rounded-circle d-flex align-items-center justify-content-center", style: "width: 28px; height: 28px; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" do %>
+                  <span style="font-size: 14px; color: white;">➤</span>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card-body p-3 bg-white">
-      <div class="d-flex mb-3">
-        <div class="me-2">
-          <div class="d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">
-            <%= image_tag "village-assistant-avatar.svg", alt: "Assistant", style: "width: 28px; height: 28px;" %>
-          </div>
-        </div>
-        <div class="flex-grow-1">
-          <div class="rounded-3 p-2" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%); border: 1px solid rgba(102, 126, 234, 0.15);">
-            <p class="mb-1" style="font-size: 13px; line-height: 1.4;">
-              Bonjour ! Je suis l'assistant de The Village. Comment puis-je vous aider aujourd'hui ?
-              Vous pouvez me demander de créer des tâches, planifier des événements, envoyer des messages à votre famille, ou obtenir des informations sur votre communauté.
-            </p>
-            <small class="text-muted" style="font-size: 11px;">09:28</small>
-          </div>
-        </div>
-      </div>
 
-      <!-- Input -->
-      <div class="input-gradient-border">
-        <div class="input-inner">
-          <div class="d-flex align-items-center gap-2">
-            <input type="text" class="form-control form-control-sm bg-transparent border-0 flex-grow-1"
-                    placeholder="Posez une question à votre Village Assistant..."
-                    style="font-size: 13px; padding: 6px 8px; color: #374151;">
-            <button class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
-                    style="width: 28px; height: 28px; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-              <span style="font-size: 14px; color: white;">➤</span>
-            </button>
-          </div>
+    <!-- Chat Sidebar (1/4) -->
+    <div class="col-lg-3">
+      <div class="card stat-card rounded-4 h-100">
+        <div class="card-header bg-white border-0 p-3">
+          <h6 class="mb-0 dashboard-section-title">Conversations</h6>
+        </div>
+        <div class="card-body p-2" style="max-height: 500px; overflow-y: auto;">
+          <% if @chats.any? %>
+            <% @chats.each do |chat| %>
+              <%= link_to families_path(chat_id: chat.id), class: "text-decoration-none" do %>
+                <div class="chat-item p-2 mb-1 rounded <%= chat.id == @current_chat.id ? 'chat-item-active' : '' %>">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <p class="mb-0 small fw-medium text-dark"><%= chat.title %></p>
+                      <% if chat.last_message %>
+                        <small class="text-muted" style="font-size: 11px;">
+                          <%= truncate(chat.last_message.content, length: 30) %>
+                        </small>
+                      <% end %>
+                    </div>
+                    <small class="text-muted ms-2" style="font-size: 10px;">
+                      <%= time_ago_in_words(chat.updated_at) %>
+                    </small>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          <% else %>
+            <p class="text-center text-muted small py-3">Aucune conversation</p>
+          <% end %>
         </div>
       </div>
     </div>
@@ -299,3 +366,33 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Auto-scroll vers le bas des messages au chargement de la page
+  document.addEventListener('DOMContentLoaded', function() {
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Focus automatique sur l'input
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+      messageInput.focus();
+    }
+  });
+
+  // Raccourci clavier: Enter pour envoyer, Shift+Enter pour nouvelle ligne
+  const messageInput = document.getElementById('messageInput');
+  if (messageInput) {
+    messageInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const form = document.getElementById('chatForm');
+        if (form && messageInput.value.trim() !== '') {
+          form.requestSubmit();
+        }
+      }
+    });
+  }
+</script>

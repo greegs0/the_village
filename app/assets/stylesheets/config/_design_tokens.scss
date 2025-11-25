@@ -86,6 +86,9 @@ $gradient-hero-alt: linear-gradient(
 
 $gradient-primary: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
 $gradient-primary-horizontal: linear-gradient(90deg, $color-primary 0%, $color-primary-dark 100%);
+$gradient-primary-light: linear-gradient(135deg, rgba($color-primary, 0.08) 0%, rgba($color-primary-dark, 0.08) 100%);
+$gradient-primary-lighter: linear-gradient(135deg, rgba($color-primary, 0.12) 0%, rgba($color-primary-dark, 0.12) 100%);
+$gradient-primary-subtle: linear-gradient(135deg, rgba($color-primary, 0.05) 0%, rgba($color-primary-dark, 0.05) 100%);
 $gradient-page-bg: linear-gradient(180deg, $color-white 0%, rgba($color-primary-lightest, 0.1) 100%);
 $gradient-primary-shine: linear-gradient(135deg,
   rgba($color-white, 0) 0%,
@@ -193,6 +196,15 @@ $container-max-width: 1400px;
 // Common element sizes
 $icon-size-sm: 24px;
 $icon-size-md: 48px;
+
+// Avatar sizes
+$avatar-size-sm: 28px;
+$avatar-size-md: 32px;
+$avatar-size-lg: 40px;
+
+// Button sizes
+$btn-circular-sm: 28px;
+$btn-circular-md: 32px;
 
 // Sidebar widths
 $sidebar-width: 320px;
