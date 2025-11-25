@@ -7,8 +7,8 @@ class MessagesController < ApplicationController
     @message.role = "user"
 
     if @message.save
-      # TODO: Appeler l'API de l'Assistant IA ici
-      # Pour l'instant, on redirige simplement vers families avec le chat actif
+      # Appeler l'API de l'Assistant IA
+      generate_assistant_response
       redirect_to families_path(chat_id: @chat.id)
     else
       redirect_to families_path(chat_id: @chat.id), alert: 'Erreur lors de l\'envoi du message.'
@@ -23,5 +23,17 @@ class MessagesController < ApplicationController
 
   def message_params
     params.require(:message).permit(:content)
+  end
+
+  def generate_assistant_response
+    # Appeler le service OpenAI avec le contexte de la famille (méthode DRY)
+    openai_service = OpenaiService.new
+    response_content = openai_service.chat_completion(@chat.messages.chronological, family_context)
+
+    # Créer la réponse de l'assistant
+    @chat.messages.create!(
+      role: "assistant",
+      content: response_content
+    )
   end
 end
