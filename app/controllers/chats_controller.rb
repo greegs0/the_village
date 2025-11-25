@@ -17,7 +17,7 @@ class ChatsController < ApplicationController
     @chat = current_user.chats.new(chat_params)
 
     if @chat.save
-      redirect_to families_path(chat_id: @chat.id), notice: 'Chat créé avec succès.'
+      redirect_to families_path(chat_id: @chat.id)
     else
       redirect_to families_path, alert: 'Erreur lors de la création du chat.'
     end

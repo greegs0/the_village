@@ -96,7 +96,7 @@
                 <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
               </div>
             </div>
-            <%= link_to chats_path, method: :post, params: { chat: { title: "Nouvelle conversation" } }, class: "btn btn-sm btn-light rounded-pill" do %>
+            <%= button_to chats_path, method: :post, params: { chat: { title: "Nouvelle conversation" } }, class: "btn btn-sm btn-light rounded-pill", form: { style: "display: inline;" } do %>
               ➕ Nouveau chat
             <% end %>
           </div>
