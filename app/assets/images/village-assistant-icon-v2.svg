@@ -1,0 +1,72 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgGrad2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#faf5ff;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="houseAI" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fond -->
+  <circle cx="100" cy="100" r="95" fill="url(#bgGrad2)"/>
+  
+  <!-- Cercle principal avec lueur -->
+  <circle cx="100" cy="100" r="75" fill="none" stroke="#e9d5ff" stroke-width="3"/>
+  <circle cx="100" cy="100" r="70" fill="none" stroke="#c4b5fd" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Maison centrale simplifiée -->
+  <g transform="translate(50, 55)">
+    <path d="M 25 25 L 50 5 L 75 25 L 75 60 L 25 60 Z" fill="url(#houseAI)" stroke="#4F46E5" stroke-width="3"/>
+    <rect x="40" y="40" width="20" height="20" fill="#ffffff" opacity="0.9" rx="2"/>
+    
+    <!-- Yeux de la maison (IA) -->
+    <circle cx="42" cy="22" r="4" fill="#ffffff" opacity="0.95"/>
+    <circle cx="58" cy="22" r="4" fill="#ffffff" opacity="0.95"/>
+    
+    <!-- Pupilles qui brillent -->
+    <circle cx="42" cy="22" r="2" fill="#4F46E5">
+      <animate attributeName="opacity" values="1;0.4;1" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="58" cy="22" r="2" fill="#4F46E5">
+      <animate attributeName="opacity" values="1;0.4;1" dur="3s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Sourire chaleureux -->
+    <path d="M 42 32 Q 50 36 58 32" stroke="#4F46E5" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  
+  <!-- Ondes d'IA qui émanent -->
+  <g opacity="0.5">
+    <path d="M 100 35 Q 100 25 100 20" stroke="#a78bfa" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <animate attributeName="stroke-dasharray" from="0 10" to="10 0" dur="1.5s" repeatCount="indefinite" />
+    </path>
+    <path d="M 70 50 Q 55 45 45 45" stroke="#a78bfa" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <animate attributeName="stroke-dasharray" from="0 10" to="10 0" dur="1.8s" repeatCount="indefinite" />
+    </path>
+    <path d="M 130 50 Q 145 45 155 45" stroke="#a78bfa" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <animate attributeName="stroke-dasharray" from="0 10" to="10 0" dur="2s" repeatCount="indefinite" />
+    </path>
+  </g>
+  
+  <!-- Points lumineux qui orbitent -->
+  <g>
+    <circle cx="100" cy="25" r="4" fill="#8b5cf6" opacity="0.8">
+      <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="8s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="175" cy="100" r="4" fill="#7C3AED" opacity="0.8">
+      <animateTransform attributeName="transform" type="rotate" from="120 100 100" to="480 100 100" dur="8s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="25" cy="100" r="4" fill="#667eea" opacity="0.8">
+      <animateTransform attributeName="transform" type="rotate" from="240 100 100" to="600 100 100" dur="8s" repeatCount="indefinite" />
+    </circle>
+  </g>
+  
+  <!-- Badge AI élégant -->
+  <g transform="translate(135, 130)">
+    <rect x="-18" y="-10" width="36" height="20" rx="10" fill="#4F46E5" opacity="0.95"/>
+    <text x="0" y="4" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">AI</text>
+  </g>
+</svg>
