@@ -24,12 +24,12 @@
 // STATS CARDS
 // ============================================================
 .stat-card {
-  border: 1px solid rgba(102, 126, 234, 0.25) !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba($color-primary, 0.25) !important;
+  transition: $transition-transform;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    transform: $transform-hover-sm;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.15);
   }
 
   .card-body {
@@ -38,7 +38,7 @@
 }
 
 .stat-number {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: $gradient-primary;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -49,7 +49,7 @@
 // ACTIVITY SECTION
 // ============================================================
 .gradient-link {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: $gradient-primary;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -64,8 +64,8 @@
 .activity-avatar {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: $gradient-primary;
+  color: $color-white;
   font-size: 13px;
 }
 
@@ -99,13 +99,13 @@
 .input-gradient-border {
   position: relative;
   padding: 2px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: $radius-md;
+  background: $gradient-primary;
 
   .input-inner {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 8px;
+    background: $color-white;
+    border-radius: $radius-md;
+    padding: $spacing-xs;
   }
 }
 
@@ -113,19 +113,19 @@
 // CHAT SIDEBAR
 // ============================================================
 .chat-item {
-  transition: all 0.2s ease;
+  transition: $transition-all-fast;
   cursor: pointer;
   border: 1px solid transparent;
 
   &:hover {
-    background: rgba(102, 126, 234, 0.05) !important;
-    border-color: rgba(102, 126, 234, 0.15);
+    background: rgba($color-primary, 0.05) !important;
+    border-color: rgba($color-primary, 0.15);
     transform: translateX(2px);
   }
 
   &.chat-item-active {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%) !important;
-    border-color: rgba(102, 126, 234, 0.3);
+    background: $gradient-primary-lighter !important;
+    border-color: rgba($color-primary, 0.3);
 
     &:hover {
       transform: translateX(0);

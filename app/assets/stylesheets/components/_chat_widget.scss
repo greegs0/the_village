@@ -19,18 +19,18 @@
   height: 60px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+  background: $gradient-primary;
+  box-shadow: 0 4px 16px rgba($color-primary, 0.4);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: $transition-all-normal;
   animation: pulse 2s infinite;
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 6px 20px rgba($color-primary, 0.5);
   }
 
   &:active {
@@ -45,10 +45,10 @@
 
 @keyframes pulse {
   0%, 100% {
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 16px rgba($color-primary, 0.4);
   }
   50% {
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 4px 20px rgba($color-primary, 0.6);
   }
 }
 
@@ -130,14 +130,14 @@
 // CHAT MESSAGE BUBBLES
 // ============================================================
 .chat-message-bubble {
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: $radius-md;
+  padding: $radius-md;
   max-width: 85%;
   word-wrap: break-word;
 
   &.assistant-message {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-    border: 1px solid rgba(102, 126, 234, 0.15);
+    background: $gradient-primary-light;
+    border: 1px solid rgba($color-primary, 0.15);
 
     p {
       font-size: 14px;
@@ -148,8 +148,8 @@
   }
 
   &.user-message {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: $gradient-primary;
+    color: $color-white;
     margin-left: auto;
 
     p {
@@ -159,7 +159,7 @@
     }
 
     small {
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba($color-white, 0.8);
     }
   }
 }
@@ -168,9 +168,9 @@
 // CHAT WIDGET INPUT AREA
 // ============================================================
 .chat-widget-input-area {
-  padding: 16px;
-  background: white;
-  border-top: 1px solid rgba(102, 126, 234, 0.15);
+  padding: $spacing-md;
+  background: $color-white;
+  border-top: 1px solid rgba($color-primary, 0.15);
 }
 
 // ============================================================

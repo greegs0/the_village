@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { CHAT_CONSTANTS } from "../config/chat_constants"
 
 // Connects to data-controller="chat-widget"
 export default class extends Controller {
@@ -56,8 +57,8 @@ export default class extends Controller {
     // TODO: Envoyer à l'API et recevoir la réponse
     // Pour l'instant, on simule une réponse
     setTimeout(() => {
-      this.addAssistantMessage('Merci pour votre message ! L\'intégration de l\'API est en cours. Pour accéder à toutes les fonctionnalités, rendez-vous sur la page principale du chat.')
-    }, 1000)
+      this.addAssistantMessage(CHAT_CONSTANTS.API_PENDING_MESSAGE)
+    }, CHAT_CONSTANTS.RESPONSE_DELAY_MS)
   }
 
   // Raccourci Enter
@@ -73,10 +74,10 @@ export default class extends Controller {
   // Ajouter un message utilisateur
   addUserMessage(text) {
     const messageDiv = document.createElement('div')
-    messageDiv.className = 'd-flex mb-3 justify-content-end'
+    messageDiv.className = CHAT_CONSTANTS.MESSAGE_CONTAINER_USER
     messageDiv.innerHTML = `
       <div style="max-width: 85%;">
-        <div class="chat-message-bubble user-message">
+        <div class="${CHAT_CONSTANTS.MESSAGE_BUBBLE_USER}">
           <p class="mb-1">${this.escapeHtml(text)}</p>
           <small style="font-size: 11px;">${this.getCurrentTime()}</small>
         </div>
@@ -89,13 +90,13 @@ export default class extends Controller {
   // Ajouter un message assistant
   addAssistantMessage(text) {
     const messageDiv = document.createElement('div')
-    messageDiv.className = 'd-flex mb-3'
+    messageDiv.className = CHAT_CONSTANTS.MESSAGE_CONTAINER
     messageDiv.innerHTML = `
-      <div class="me-2">
-        <img src="/assets/village-assistant-avatar.svg" alt="Assistant" style="width: 32px; height: 32px;">
+      <div class="${CHAT_CONSTANTS.MESSAGE_AVATAR}">
+        <img src="${CHAT_CONSTANTS.ASSISTANT_AVATAR_PATH}" alt="Assistant" style="width: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px; height: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px;">
       </div>
-      <div class="flex-grow-1">
-        <div class="chat-message-bubble assistant-message">
+      <div class="${CHAT_CONSTANTS.MESSAGE_CONTENT}">
+        <div class="${CHAT_CONSTANTS.MESSAGE_BUBBLE_ASSISTANT}">
           <p class="mb-1">${this.escapeHtml(text)}</p>
           <small class="text-muted" style="font-size: 11px;">${this.getCurrentTime()}</small>
         </div>
@@ -115,7 +116,7 @@ export default class extends Controller {
   // Obtenir l'heure actuelle
   getCurrentTime() {
     const now = new Date()
-    return now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+    return now.toLocaleTimeString(CHAT_CONSTANTS.TIME_LOCALE, CHAT_CONSTANTS.TIME_FORMAT_OPTIONS)
   }
 
   // Échapper le HTML pour éviter XSS
