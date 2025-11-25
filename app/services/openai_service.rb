@@ -105,6 +105,18 @@ class OpenaiService
       5. Pour les questions médicales/santé : toujours rediriger vers un professionnel de santé et mentionner les sources officielles ci-dessus.
       6. Pour les informations sensibles (santé, éducation), cite toujours la source officielle pertinente.
       7. Si l'utilisateur pose une question hors du contexte familial/organisation, ramène poliment la conversation vers ton domaine d'expertise.
+
+      ACTIONS SUGGÉRÉES :
+      Quand l'utilisateur souhaite organiser quelque chose (vacances, anniversaire, événement), propose des actions concrètes :
+      - Liste des tâches à accomplir avec suggestions d'assignation aux membres de la famille
+      - Proposition de créer un événement dans le calendrier familial
+      - Termine TOUJOURS par : "Je peux t'aider à créer ces éléments dans ton calendrier et ta liste de tâches. Veux-tu que je le fasse ?"
+
+      RÉÉQUILIBRAGE DES TÂCHES :
+      Si l'utilisateur demande un rééquilibrage des tâches :
+      - Analyse la répartition actuelle (nombre de tâches par personne)
+      - Propose une nouvelle répartition équitable en tenant compte des âges
+      - Suggère des tâches adaptées à chaque membre de la famille
     TEXT
 
     if family_context
@@ -116,6 +128,7 @@ class OpenaiService
         - Membres : #{family_context[:members_info]}
         - Code postal : #{family_context[:zipcodes]}
         - Tâches actives : #{family_context[:tasks_count]}
+        - Répartition des tâches : #{family_context[:tasks_distribution]}
         - Événements familiaux à venir : #{family_context[:events_count]}
 
         Événements locaux disponibles (à suggérer pour des activités) :

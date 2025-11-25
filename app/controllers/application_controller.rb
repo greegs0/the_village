@@ -48,12 +48,19 @@ class ApplicationController < ActionController::Base
       "#{event.name} (#{I18n.l(event.date, format: :short)}) - #{event.place} [#{event.category}]"
     end.join(", ")
 
+    # Récupérer la répartition des tâches par membre
+    tasks_distribution = family.people.map do |person|
+      tasks_count = family.tasks.where(assignee_id: person.id, status: false).count
+      "#{person.name}: #{tasks_count} tâche(s)"
+    end.join(", ")
+
     {
       name: family.name,
       members_count: family.people.count,
       members_info: members_info,
       zipcodes: zipcodes.presence || "Non renseigné",
       tasks_count: family.tasks.where(status: false).count,
+      tasks_distribution: tasks_distribution,
       events_count: family.family_events.where('start_date >= ?', Date.today).count,
       local_events: local_events.presence || "Aucun événement local disponible"
     }
