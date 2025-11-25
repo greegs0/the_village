@@ -28,6 +28,12 @@ class FamiliesController < ApplicationController
                                   .count
     @weekly_total = weekly_tasks.count
     @weekly_percentage = @weekly_total > 0 ? ((@weekly_completed.to_f / @weekly_total) * 100).round : 0
+
+    # Chats
+    @chats = current_user.chats.recent
+    @current_chat = @chats.first || current_user.chats.create(title: "Nouvelle conversation")
+    @messages = @current_chat.messages.chronological
+    @message = Message.new
   end
 
   def new
