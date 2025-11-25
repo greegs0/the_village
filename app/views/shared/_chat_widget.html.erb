@@ -1,65 +1,83 @@
 <% if user_signed_in? && controller_name != 'families' %>
-  <!-- Chat Widget Button -->
-  <div id="chatWidgetLauncher" class="chat-widget-launcher">
-    <button id="chatWidgetButton" class="chat-widget-button" aria-label="Ouvrir le chat avec Village Assistant">
-      <%= image_tag "village-assistant-icon-v2.svg", alt: "Village Assistant", class: "chat-widget-icon" %>
-    </button>
-  </div>
+  <div data-controller="chat-widget">
+    <!-- Chat Widget Button -->
+    <div class="chat-widget-launcher">
+      <button class="chat-widget-button"
+              aria-label="Ouvrir le chat avec Village Assistant"
+              data-action="click->chat-widget#toggle">
+        <%= image_tag "village-assistant-icon-v2.svg", alt: "Village Assistant", class: "chat-widget-icon" %>
+      </button>
+    </div>
 
-  <!-- Chat Widget Modal -->
-  <div id="chatWidgetModal" class="chat-widget-modal" style="display: none;">
-    <div class="chat-widget-container">
-      <!-- Header -->
-      <div class="chat-widget-header village-assistant-header">
-        <div class="d-flex align-items-center justify-content-between w-100">
-          <div class="d-flex align-items-center">
+    <!-- Chat Widget Modal -->
+    <div class="chat-widget-modal"
+         style="display: none;"
+         data-chat-widget-target="modal"
+         data-action="click->chat-widget#closeOnOutsideClick">
+      <div class="chat-widget-container">
+        <!-- Header -->
+        <div class="chat-widget-header village-assistant-header">
+          <div class="d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex align-items-center">
+              <div class="me-2">
+                <%= image_tag "village-assistant-icon-v2.svg", alt: "Village Assistant", style: "width: 40px; height: 40px;" %>
+              </div>
+              <div>
+                <h6 class="mb-0 text-white fw-medium">Village Assistant</h6>
+                <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
+              </div>
+            </div>
+            <button class="btn btn-sm text-white"
+                    aria-label="Fermer le chat"
+                    data-action="click->chat-widget#close">
+              <svg width="20" height="20" viewBox="0 0 19 18" fill="none">
+                <path d="M10.627 9.013l6.872 6.873.708.707-1.415 1.414-.707-.707-6.872-6.872L2.34 17.3l-.707.707L.22 16.593l.707-.707L7.8 9.013.946 2.161l-.707-.708L1.653.04l.707.707L9.213 7.6 16.066.746l.707-.707 1.414 1.414-.707.708-6.853 6.852z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="chat-widget-messages" data-chat-widget-target="messages">
+          <div class="d-flex mb-3">
             <div class="me-2">
-              <%= image_tag "village-assistant-icon-v2.svg", alt: "Village Assistant", style: "width: 40px; height: 40px;" %>
+              <%= image_tag "village-assistant-avatar.svg", alt: "Assistant", style: "width: 32px; height: 32px;" %>
             </div>
-            <div>
-              <h6 class="mb-0 text-white fw-medium">Village Assistant</h6>
-              <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
+            <div class="flex-grow-1">
+              <div class="chat-message-bubble assistant-message">
+                <p class="mb-1">
+                  Bonjour ! Je suis l'assistant de The Village. Comment puis-je vous aider aujourd'hui ?
+                </p>
+                <small class="text-muted" style="font-size: 11px;"><%= l(Time.current, format: :short) %></small>
+              </div>
             </div>
           </div>
-          <button id="closeChatWidget" class="btn btn-sm text-white" aria-label="Fermer le chat">
-            <svg width="20" height="20" viewBox="0 0 19 18" fill="none">
-              <path d="M10.627 9.013l6.872 6.873.708.707-1.415 1.414-.707-.707-6.872-6.872L2.34 17.3l-.707.707L.22 16.593l.707-.707L7.8 9.013.946 2.161l-.707-.708L1.653.04l.707.707L9.213 7.6 16.066.746l.707-.707 1.414 1.414-.707.708-6.853 6.852z" fill="currentColor"/>
-            </svg>
-          </button>
         </div>
-      </div>
 
-      <!-- Messages Area -->
-      <div class="chat-widget-messages" id="chatWidgetMessages">
-        <div class="d-flex mb-3">
-          <div class="me-2">
-            <%= image_tag "village-assistant-avatar.svg", alt: "Assistant", style: "width: 32px; height: 32px;" %>
-          </div>
-          <div class="flex-grow-1">
-            <div class="chat-message-bubble assistant-message">
-              <p class="mb-1">
-                Bonjour ! Je suis l'assistant de The Village. Comment puis-je vous aider aujourd'hui ?
-              </p>
-              <small class="text-muted" style="font-size: 11px;"><%= l(Time.current, format: :short) %></small>
+        <!-- Input Area -->
+        <div class="chat-widget-input-area">
+          <div class="input-gradient-border">
+            <div class="input-inner">
+              <form class="d-flex align-items-center gap-2"
+                    data-chat-widget-target="form"
+                    data-action="submit->chat-widget#sendMessage">
+                <input type="text"
+                       class="form-control form-control-sm bg-transparent border-0 flex-grow-1"
+                       placeholder="Écrivez votre message..."
+                       style="font-size: 13px; padding: 6px 8px;"
+                       data-chat-widget-target="input"
+                       data-action="keydown->chat-widget#handleKeydown">
+                <button type="submit"
+                        class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 32px; height: 32px; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <span style="font-size: 16px; color: white;">➤</span>
+                </button>
+              </form>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Input Area -->
-      <div class="chat-widget-input-area">
-        <div class="input-gradient-border">
-          <div class="input-inner">
-            <%= form_with url: "#", method: :post, local: false, class: "d-flex align-items-center gap-2", id: "chatWidgetForm" do |f| %>
-              <%= text_field_tag :message, nil, class: "form-control form-control-sm bg-transparent border-0 flex-grow-1", placeholder: "Écrivez votre message...", style: "font-size: 13px; padding: 6px 8px;", id: "chatWidgetInput" %>
-              <%= button_tag type: "submit", class: "btn btn-sm rounded-circle d-flex align-items-center justify-content-center", style: "width: 32px; height: 32px; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" do %>
-                <span style="font-size: 16px; color: white;">➤</span>
-              <% end %>
-            <% end %>
+          <div class="text-center mt-2">
+            <%= link_to "Voir toutes les conversations", families_path, class: "text-decoration-none small", style: "color: #667eea;" %>
           </div>
-        </div>
-        <div class="text-center mt-2">
-          <%= link_to "Voir toutes les conversations", families_path, class: "text-decoration-none small", style: "color: #667eea;" %>
         </div>
       </div>
     </div>
