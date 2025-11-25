@@ -1,9 +1,9 @@
 <div class="modal fade" id="participantsModal<%= event.id %>" tabindex="-1" aria-labelledby="participantsModalLabel<%= event.id %>" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4">
+    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
       <div class="modal-header border-0">
         <div>
-          <h5 class="modal-title fw-medium" id="participantsModalLabel<%= event.id %>">Participants inscrits</h5>
+          <h5 class="modal-title fw-semibold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="participantsModalLabel<%= event.id %>">Participants inscrits</h5>
           <p class="text-secondary small mb-0"><%= event.participations_count || 0 %> participant<%= (event.participations_count || 0) > 1 ? 's' : '' %> inscrit<%= (event.participations_count || 0) > 1 ? 's' : '' %></p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -13,9 +13,9 @@
         <% if participants.any? %>
           <ul class="list-group list-group-flush">
             <% participants.each do |participant| %>
-              <li class="list-group-item d-flex align-items-center gap-3 px-0">
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                  <span class="fw-medium"><%= participant.split.map(&:first).join %></span>
+              <li class="list-group-item d-flex align-items-center gap-3 px-0" style="border-color: rgba(102, 126, 234, 0.1) !important;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <span class="fw-medium text-white"><%= participant.split.map(&:first).join %></span>
                 </div>
                 <div>
                   <div class="fw-medium"><%= participant %></div>
@@ -24,7 +24,17 @@
             <% end %>
           </ul>
         <% else %>
-          <p class="text-center text-secondary py-4 mb-0">Aucun participant inscrit pour le moment</p>
+          <div class="text-center py-4">
+            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <p class="text-secondary mb-0">Aucun participant inscrit pour le moment</p>
+          </div>
         <% end %>
       </div>
     </div>

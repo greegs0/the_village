@@ -19,7 +19,8 @@ lois = User.create!(
   password: "password",
   name: "Lois",
   status: "member",
-  family: family
+  family: family,
+  zipcode: 85000
 )
 
 steve = User.create!(
@@ -31,11 +32,11 @@ steve = User.create!(
 )
 
 puts "👥 Création des membres de la famille (People)..."
-lois_person = Person.create!(name: "Lois", birthday: Date.new(1985, 5, 15), family: family)
-hal = Person.create!(name: "Hal", birthday: Date.new(1983, 3, 20), family: family)
-malcolm = Person.create!(name: "Malcolm", birthday: Date.new(2010, 6, 10), family: family)
-reese = Person.create!(name: "Reese", birthday: Date.new(2008, 2, 14), family: family)
-dewey = Person.create!(name: "Dewey", birthday: Date.new(2012, 9, 25), family: family)
+lois_person = Person.create!(name: "Lois", birthday: Date.new(1985, 5, 15), family: family, zipcode: 85000)
+hal = Person.create!(name: "Hal", birthday: Date.new(1983, 3, 20), family: family, zipcode: 85000)
+malcolm = Person.create!(name: "Malcolm", birthday: Date.new(2010, 6, 10), family: family, zipcode: 85000)
+reese = Person.create!(name: "Reese", birthday: Date.new(2008, 2, 14), family: family, zipcode: 85000)
+dewey = Person.create!(name: "Dewey", birthday: Date.new(2012, 9, 25), family: family, zipcode: 85000)
 
 all_people = [lois_person, hal, malcolm, reese, dewey]
 other_people = [hal, malcolm, reese, dewey]

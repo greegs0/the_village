@@ -1,29 +1,62 @@
 <%# Navbar %>
 <%= render 'shared/navbar' %>
 
+<!-- SVG Gradient Definitions -->
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+</svg>
+
 <div class="container-fluid px-4 px-lg-5 py-4">
   <!-- Hero Section -->
   <div class="text-center mb-5">
-    <div class="fs-1 mb-3">🌍</div>
-    <h1 class="display-5 fw-normal mb-3">Événements Communautaires</h1>
+    <div class="hero-icon mx-auto mb-3">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M2 12h20"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+    </div>
+    <h1 class="display-5 fw-normal mb-3 page-title">Événements Communautaires</h1>
     <p class="lead text-secondary mb-4">
       Découvres et participe aux événements organisés dans ta région. Rencontre tes voisins et créez des liens !
     </p>
-    <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
-      <span class="me-2">+</span>Crée un événement dans ta région
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Crée un événement dans ta région
     </button>
   </div>
 
   <!-- View Toggle -->
-  <ul class="nav nav-pills bg-light rounded-3 p-1 mb-4 justify-content-center" style="max-width: 400px; margin: 0 auto;">
-    <li class="nav-item flex-fill" role="presentation">
-      <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#listView" type="button">
-        📋 Liste
+  <ul class="nav nav-pills p-1 mb-4 justify-content-center rounded-3 view-toggle" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active view-tab" data-bs-toggle="pill" data-bs-target="#listView" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        Liste
       </button>
     </li>
-    <li class="nav-item flex-fill" role="presentation">
-      <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#mapView" type="button">
-        🗺️ Carte
+    <li class="nav-item" role="presentation">
+      <button class="nav-link view-tab" data-bs-toggle="pill" data-bs-target="#mapView" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+          <line x1="8" y1="2" x2="8" y2="18"/>
+          <line x1="16" y1="6" x2="16" y2="22"/>
+        </svg>
+        Carte
       </button>
     </li>
   </ul>
@@ -41,16 +74,24 @@
 
     <div class="tab-pane fade" id="mapView">
       <div class="container" style="max-width: 1200px;">
-        <h2 class="text-center mb-4">Tes événements par région</h2>
+        <h2 class="text-center mb-4 section-title">Tes événements par région</h2>
 
         <!-- Search Form -->
         <div class="mb-4">
-          <label for="locationSearch" class="form-label">Entre un code postal ou une adresse</label>
-          <input type="text" class="form-control" id="locationSearch" placeholder="ex : 65010">
+          <label for="locationSearch" class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Entre un code postal ou une adresse</label>
+          <div class="input-group search-bar-da">
+            <span class="input-group-text">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+            </span>
+            <input type="text" class="form-control" id="locationSearch" placeholder="ex : 65010">
+          </div>
         </div>
 
         <!-- Map Container -->
-        <div id="map" style="height: 500px; border-radius: 1rem;"></div>
+        <div id="map" class="map-container"></div>
       </div>
     </div>
   </div>
@@ -59,10 +100,10 @@
 <!-- Modal Créer un événement communautaire -->
 <div class="modal fade" id="createCommunityEventModal" tabindex="-1" aria-labelledby="createCommunityEventModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4">
+    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-medium" id="createCommunityEventModalLabel">Crée un événement communautaire</h5>
+          <h5 class="modal-title fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="createCommunityEventModalLabel">Crée un événement communautaire</h5>
           <p class="text-secondary small mb-0">Organise un événement et invite tes voisins à participer</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -108,3 +149,96 @@
     }
   });
 </script>
+
+<style>
+  /* Hero section */
+  .hero-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-title {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-title {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* View toggle tabs */
+  .view-toggle {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .view-tab {
+    background: transparent;
+    border: none;
+    color: #6B7280;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  .view-tab:hover {
+    color: #667eea;
+  }
+
+  .view-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border-radius: 0.5rem;
+  }
+
+  /* Search bar DA */
+  .search-bar-da {
+    background: white;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .search-bar-da:focus-within {
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .search-bar-da .input-group-text {
+    background: transparent;
+    border: none;
+    padding-left: 16px;
+  }
+
+  .search-bar-da .form-control {
+    border: none;
+    background: transparent;
+    padding: 12px 16px 12px 8px;
+  }
+
+  .search-bar-da .form-control:focus {
+    box-shadow: none;
+  }
+
+  /* Map container */
+  .map-container {
+    height: 500px;
+    border-radius: 16px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    overflow: hidden;
+  }
+</style>

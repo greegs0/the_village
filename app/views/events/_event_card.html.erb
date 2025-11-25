@@ -1,26 +1,42 @@
-<!-- Event Card 1 -->
+<!-- Event Card -->
 <div class="col-lg-6">
-  <div class="card border rounded-4 h-100">
+  <div class="card event-card rounded-4 h-100">
     <div class="card-body p-4">
       <div class="d-flex justify-content-between align-items-start mb-3">
         <div>
           <div class="d-flex gap-2 mb-2">
-            <span class="badge bg-primary"><%= event.category %></span>
-            <span class="badge bg-light text-dark">
-              <span class="me-1">👥</span><%= event.participations_count %>/<%= event.max_participations %>
+            <span class="badge category-badge"><%= event.category %></span>
+            <span class="badge participants-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <%= event.participations_count %>/<%= event.max_participations %>
             </span>
           </div>
-          <h5 class="mb-0"><%= event.name %></h5>
+          <h5 class="mb-0 fw-semibold"><%= event.name %></h5>
         </div>
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#participantsModal<%= event.id %>">Inscrit</button>
+        <button type="button" class="btn btn-sm btn-status" data-bs-toggle="modal" data-bs-target="#participantsModal<%= event.id %>">Inscrit</button>
       </div>
 
       <div class="d-flex flex-column gap-2 mb-3">
         <div class="d-flex align-items-center text-secondary small">
-          <span class="me-2">📅</span><%= event.date %>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" class="me-2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <%= event.date %>
         </div>
         <div class="d-flex align-items-center text-secondary small">
-          <span class="me-2">📍</span><%= event.place %>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" class="me-2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <%= event.place %>
         </div>
       </div>
 
@@ -28,11 +44,10 @@
         <%= event.description %>
       </p>
 
-      <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+      <div class="d-flex justify-content-between align-items-center pt-3 border-top" style="border-color: rgba(102, 126, 234, 0.1) !important;">
         <div class="d-flex align-items-center gap-2">
-          <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
-                style="width: 32px; height: 32px;">
-            <span class="small fw-medium"><%= event.user.name.split.map(&:first).join %></span>
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <span class="small fw-medium text-white"><%= event.user.name.split.map(&:first).join %></span>
           </div>
           <div>
             <div class="small text-secondary">Organisé par</div>
@@ -41,25 +56,46 @@
         </div>
         <% if event.user == current_user %>
           <div class="d-flex gap-2">
-            <%= link_to edit_event_path(event), class: "btn btn-sm btn-outline-primary" do %>
-              <span class="me-1">✏️</span>Modifier
+            <%= link_to edit_event_path(event), class: "btn btn-sm btn-edit-event" do %>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              Modifier
             <% end %>
-            <%= link_to event_path(event), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet événement ?" }, class: "btn btn-sm btn-outline-danger" do %>
-              <span class="me-1">🗑️</span>Supprimer
+            <%= link_to event_path(event), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet événement ?" }, class: "btn btn-sm btn-delete-event" do %>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Supprimer
             <% end %>
           </div>
         <% end %>
       </div>
 
-      <div class="d-flex gap-2 mt-3 pt-3 border-top">
-        <button type="button" class="btn btn-sm btn-outline-secondary action-btn like-btn">
-          <span class="me-1">👍</span><span class="like-count">8</span>
+      <div class="d-flex gap-2 mt-3 pt-3 border-top" style="border-color: rgba(102, 126, 234, 0.1) !important;">
+        <button type="button" class="btn btn-sm btn-action like-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+          </svg>
+          <span class="like-count">8</span>
         </button>
-        <button type="button" class="btn btn-sm btn-outline-secondary action-btn" data-bs-toggle="modal" data-bs-target="#commentModal">
-          <span class="me-1">💬</span><span class="comment-count">5</span>
+        <button type="button" class="btn btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#commentModal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="comment-count">5</span>
         </button>
-        <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 action-btn" data-bs-toggle="modal" data-bs-target="#shareModal">
-          <span class="me-1">📤</span>Partager
+        <button type="button" class="btn btn-sm btn-action flex-grow-1" data-bs-toggle="modal" data-bs-target="#shareModal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Partager
         </button>
       </div>
     </div>
@@ -68,3 +104,94 @@
 
 <!-- Modal Participants -->
 <%= render "participants_modal", event: event %>
+
+<style>
+  /* Event card */
+  .event-card {
+    border: 1px solid rgba(102, 126, 234, 0.15) !important;
+    transition: all 0.3s ease;
+  }
+
+  .event-card:hover {
+    border-color: rgba(102, 126, 234, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  }
+
+  /* Category badge */
+  .category-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 500;
+  }
+
+  /* Participants badge */
+  .participants-badge {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    color: #667eea;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Status button */
+  .btn-status {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
+    border: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-status:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    color: #764ba2;
+  }
+
+  /* Edit button */
+  .btn-edit-event {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit-event:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #764ba2;
+  }
+
+  /* Delete button */
+  .btn-delete-event {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-delete-event:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #b91c1c;
+  }
+
+  /* Action buttons */
+  .btn-action {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.15);
+    color: #667eea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-action:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-color: rgba(102, 126, 234, 0.3);
+    color: #764ba2;
+  }
+</style>

@@ -1,792 +1,1163 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta charset="utf-8" />
-  <meta name="csrf-token" content="<%= form_authenticity_token %>">
-  <title>Calendrier Familial - The Village</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" href="globals.css" />
-  <link rel="stylesheet" href="style-responsive.css" />
-</head>
-<body>
-  <!-- Navigation -->
-  <%= render 'shared/navbar' %>
-  <%= yield %>
+<%= render 'shared/navbar' %>
 
-  <!-- Main Content -->
-  <div class="container-fluid px-4 px-lg-5 py-4">
-    <!-- Header -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
-      <div>
-        <h1 class="h2 mb-2">Calendrier Familial</h1>
-        <p class="text-secondary mb-0">Organisez les gardes, anniversaires et événements</p>
-      </div>
-      <div class="d-flex gap-2">
-        <%# <button class="btn btn-outline-secondary">
-          <span class="me-2">📤</span>Exporter
-        </button> %>
-        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newEventModal">
-          <span class="me-2">+</span>Nouvel événement
-        </button>
-      </div>
+<!-- SVG Gradient Definitions -->
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="trashGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#b91c1c"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- Main Content -->
+<div class="container-fluid px-4 px-lg-5 py-4">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h2 mb-2 dashboard-title">Calendrier Familial</h1>
+      <p class="text-secondary mb-0">Organisez les gardes, anniversaires et événements</p>
     </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary-gradient" data-bs-toggle="modal" data-bs-target="#newEventModal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Nouvel événement
+      </button>
+    </div>
+  </div>
 
-    <%# <!-- Tabs -->
-    <ul class="nav nav-pills bg-light rounded-3 p-1 mb-4" role="tablist">
-      <li class="nav-item flex-fill" role="presentation">
-        <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#month" type="button">
-          Vue mensuelle
-        </button>
-      </li> %>
-      <%#<li class="nav-item flex-fill" role="presentation">
-        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#week" type="button">
-          Semaine
-        </button>
-      </li>
-      <li class="nav-item flex-fill" role="presentation">
-        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#list" type="button">
-          Liste
-        </button>
-      </li>%>
-    <%# </ul> %>
-
-    <!-- Tab Content -->
-    <div class="tab-content">
-      <div class="tab-pane fade show active" id="month">
-        <%# <!-- Google Calendar Integration -->
-        <div class="card border rounded-4 mb-4" style="background: linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(250, 245, 255, 1) 100%);">
-          <div class="card-body p-4 d-flex flex-column flex-md-row align-items-center gap-3">
-            <div class="fs-1">📅</div>
-            <div class="flex-grow-1">
-              <h5 class="mb-1">Connectez votre Google Calendar</h5>
-              <p class="text-secondary mb-0 small">
-                Importez automatiquement vos rendez-vous et gardez tout synchronisé en temps réel.
-              </p>
-            </div>
-            <button class="btn btn-outline-dark">
-              <span class="me-2">🔗</span>Connecter Google Calendar
-            </button>
-          </div>
-        </div> %>
-
-        <!-- Calendar -->
-        <div class="card border rounded-4 mb-4">
-          <div class="card-body p-3 p-md-4">
-            <!-- Calendar Header -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <div class="d-flex align-items-center gap-2">
-                <%= link_to "◀", family_family_events_path(@family, date: (@current_date - 1.month).to_s), class: "btn btn-sm btn-outline-secondary" %>
-                <h5 class="mb-0"><%= I18n.l(@current_date, format: :month_and_year) %></h5>
-                <%= link_to "▶", family_family_events_path(@family, date: (@current_date + 1.month).to_s), class: "btn btn-sm btn-outline-secondary" %>
-              </div>
-              <%= link_to "Aujourd'hui", family_family_events_path(@family), class: "btn btn-sm btn-outline-secondary" %>
-            </div>
-
-            <!-- Calendar Grid -->
-            <div class="table-responsive">
-              <table class="table table-bordered text-center">
-                <thead>
-                  <tr>
-                    <th class="bg-light">Lun</th>
-                    <th class="bg-light">Mar</th>
-                    <th class="bg-light">Mer</th>
-                    <th class="bg-light">Jeu</th>
-                    <th class="bg-light">Ven</th>
-                    <th class="bg-light">Sam</th>
-                    <th class="bg-light">Dim</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% @calendar_weeks.each do |week| %>
-                    <tr>
-                      <% week.each do |day| %>
-                        <%
-                          is_today = day == Date.today
-                          is_weekend = day.saturday? || day.sunday?
-                          is_current_month = day.month == @current_date.month
-                          # Select events that occur on this day (including multi-day events)
-                          day_events = @family_events.select do |e|
-                            event_end = e.end_date || e.start_date
-                            day >= e.start_date && day <= event_end
-                          end
-                        %>
-                        <td class="p-2 <%= 'bg-light' if is_weekend %> <%= 'bg-primary bg-opacity-10' if is_today %>" style="width: 14.28%; height: 120px; min-height: 120px; max-height: 120px; min-width: 120px; vertical-align: top; overflow: hidden;">
-                          <div class="fw-medium text-center <%= 'text-primary' if is_today %> <%= 'text-muted' unless is_current_month %>">
-                            <%= day.day %>
-                          </div>
-                          <div style="max-height: 90px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center;">
-                            <% day_events.each do |event| %>
-                              <div class="badge text-white small mb-1"
-                                   style="cursor: pointer; background-color: <%= event.event_color %>; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%;"
-                                   data-bs-toggle="modal"
-                                   data-bs-target="#eventDetailsModal"
-                                   data-event-id="<%= event.id %>"
-                                   data-event-title="<%= event.title %>"
-                                   data-event-type="<%= event.type_name %>"
-                                   data-event-type-value="<%= event.event_type %>"
-                                   data-event-date="<%= event.formatted_date %>"
-                                   data-event-start-date="<%= event.start_date %>"
-                                   data-event-time="<%= event.formatted_time %>"
-                                   data-event-time-value="<%= event.time&.strftime('%H:%M') %>"
-                                   data-event-location="<%= event.location %>"
-                                   data-event-description="<%= event.description %>"
-                                   data-event-assigned="<%= event.assigned_to %>"
-                                   data-event-icon="<%= event.event_icon %>"
-                                   data-event-badge="<%= event.badge_class %>"
-                                   data-event-reminders="<%= event.reminders_enabled %>">
-                                <%= event.title %>
-                              </div>
-                            <% end %>
-                          </div>
-                        </td>
-                      <% end %>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- Unavailability Section -->
-        <div class="card border rounded-4 mb-4">
-          <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <h5 class="mb-1">
-                  <span class="me-2">🚫</span>Indisponibilités
-                </h5>
-                <p class="text-secondary small mb-0">Bloquez des dates où vous n'êtes pas disponible</p>
-              </div>
-              <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#unavailabilityModal">
-                <span class="me-2">+</span>Ajouter
-              </button>
-            </div>
-
-            <div class="d-flex flex-column gap-3">
-              <% unavailabilities = @family_events.select { |e| e.event_type == 'indisponibilite' } %>
-              <% if unavailabilities.any? %>
-                <% unavailabilities.each do |unavail| %>
-                  <div class="d-flex justify-content-between align-items-center bg-light rounded-3 p-3">
-                    <div class="d-flex align-items-center gap-3">
-                      <div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center"
-                           style="width: 40px; height: 40px;">
-                        <span class="fw-medium"><%= unavail.assigned_to&.first&.upcase || '?' %></span>
-                      </div>
-                      <div>
-                        <div class="fw-medium"><%= unavail.assigned_to || 'Non assigné' %> <span class="text-secondary">indisponible</span></div>
-                        <small class="text-secondary"><%= unavail.formatted_date %></small>
-                        <% if unavail.description.present? %>
-                          <div class="small text-muted"><%= unavail.description %></div>
-                        <% end %>
-                      </div>
-                    </div>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-sm btn-link"
-                              data-bs-toggle="modal"
-                              data-bs-target="#eventDetailsModal"
-                              data-event-id="<%= unavail.id %>"
-                              data-event-title="<%= unavail.title %>"
-                              data-event-type="<%= unavail.type_name %>"
-                              data-event-type-value="<%= unavail.event_type %>"
-                              data-event-date="<%= unavail.formatted_date %>"
-                              data-event-start-date="<%= unavail.start_date %>"
-                              data-event-time="<%= unavail.formatted_time %>"
-                              data-event-time-value="<%= unavail.time&.strftime('%H:%M') %>"
-                              data-event-location="<%= unavail.location %>"
-                              data-event-description="<%= unavail.description %>"
-                              data-event-assigned="<%= unavail.assigned_to %>"
-                              data-event-icon="<%= unavail.event_icon %>"
-                              data-event-badge="<%= unavail.badge_class %>"
-                              data-event-reminders="<%= unavail.reminders_enabled %>">
-                        ✏️
-                      </button>
-                    </div>
-                  </div>
-                <% end %>
-              <% else %>
-                <div class="text-center text-muted py-3">
-                  <p class="mb-0">Aucune indisponibilité pour le moment</p>
-                  <small>Cliquez sur "Ajouter" pour bloquer une période</small>
-                </div>
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="month">
+      <!-- Calendar -->
+      <div class="card stat-card rounded-4 mb-4">
+        <div class="card-body p-3 p-md-4">
+          <!-- Calendar Header -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <%= link_to family_family_events_path(@family, date: (@current_date - 1.month).to_s), class: "btn btn-nav-calendar" do %>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              <% end %>
+              <h5 class="mb-0 dashboard-section-title"><%= I18n.l(@current_date, format: :month_and_year) %></h5>
+              <%= link_to family_family_events_path(@family, date: (@current_date + 1.month).to_s), class: "btn btn-nav-calendar" do %>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
               <% end %>
             </div>
+            <%= link_to family_family_events_path(@family), class: "btn btn-today" do %>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              Aujourd'hui
+            <% end %>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="table-responsive">
+            <table class="table calendar-table text-center mb-0">
+              <thead>
+                <tr>
+                  <th class="calendar-header">Lun</th>
+                  <th class="calendar-header">Mar</th>
+                  <th class="calendar-header">Mer</th>
+                  <th class="calendar-header">Jeu</th>
+                  <th class="calendar-header">Ven</th>
+                  <th class="calendar-header">Sam</th>
+                  <th class="calendar-header">Dim</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @calendar_weeks.each do |week| %>
+                  <tr>
+                    <% week.each do |day| %>
+                      <%
+                        is_today = day == Date.today
+                        is_weekend = day.saturday? || day.sunday?
+                        is_current_month = day.month == @current_date.month
+                        day_events = @family_events.select do |e|
+                          event_end = e.end_date || e.start_date
+                          day >= e.start_date && day <= event_end
+                        end
+                      %>
+                      <td class="calendar-cell <%= 'calendar-weekend' if is_weekend %> <%= 'calendar-today' if is_today %>" style="width: 14.28%; height: 120px; min-height: 120px; max-height: 120px; min-width: 120px; vertical-align: top; overflow: hidden; padding: 8px;">
+                        <div class="calendar-day-number <%= 'text-muted' unless is_current_month %>">
+                          <span class="<%= 'today-number' if is_today %>"><%= day.day %></span>
+                        </div>
+                        <div style="max-height: 90px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center;">
+                          <% day_events.each do |event| %>
+                            <div class="badge event-badge text-white small mb-1"
+                                 style="cursor: pointer; background-color: <%= event.event_color %>; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%;"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#eventDetailsModal"
+                                 data-event-id="<%= event.id %>"
+                                 data-event-title="<%= event.title %>"
+                                 data-event-type="<%= event.type_name %>"
+                                 data-event-type-value="<%= event.event_type %>"
+                                 data-event-date="<%= event.formatted_date %>"
+                                 data-event-start-date="<%= event.start_date %>"
+                                 data-event-time="<%= event.formatted_time %>"
+                                 data-event-time-value="<%= event.time&.strftime('%H:%M') %>"
+                                 data-event-location="<%= event.location %>"
+                                 data-event-description="<%= event.description %>"
+                                 data-event-assigned="<%= event.assigned_to %>"
+                                 data-event-icon="<%= event.event_icon %>"
+                                 data-event-badge="<%= event.badge_class %>"
+                                 data-event-reminders="<%= event.reminders_enabled %>">
+                              <%= event.title %>
+                            </div>
+                          <% end %>
+                        </div>
+                      </td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
+      </div>
 
-        <!-- Legend and Upcoming Events -->
-        <div class="row g-4">
-          <div class="col-lg-6">
-            <div class="card border rounded-4 h-100">
-              <div class="card-body p-4">
-                <h5 class="mb-1">Légende</h5>
-                <p class="text-secondary small mb-4">Types d'événements</p>
+      <!-- Unavailability Section -->
+      <div class="card stat-card rounded-4 mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <div class="icon-wrapper me-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" stroke="url(#iconGradient)"/>
+                  <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" stroke="url(#iconGradient)"/>
+                </svg>
+              </div>
+              <div>
+                <h5 class="mb-1 dashboard-section-title">Indisponibilités</h5>
+                <p class="text-secondary small mb-0">Bloquez des dates où vous n'êtes pas disponible</p>
+              </div>
+            </div>
+            <button class="btn btn-add-unavail btn-sm" data-bs-toggle="modal" data-bs-target="#unavailabilityModal">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Ajouter
+            </button>
+          </div>
 
-                <div class="d-flex flex-column gap-2">
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="rounded" style="width: 16px; height: 16px; background-color: #f6339a;"></div>
-                    <span class="small">Anniversaire</span>
+          <div class="d-flex flex-column gap-3">
+            <% unavailabilities = @family_events.select { |e| e.event_type == 'indisponibilite' } %>
+            <% if unavailabilities.any? %>
+              <% unavailabilities.each do |unavail| %>
+                <div class="d-flex justify-content-between align-items-center unavail-item rounded-3 p-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                      <span class="fw-medium text-white"><%= unavail.assigned_to&.first&.upcase || '?' %></span>
+                    </div>
+                    <div>
+                      <div class="fw-medium"><%= unavail.assigned_to || 'Non assigné' %> <span class="text-secondary">indisponible</span></div>
+                      <small class="text-secondary"><%= unavail.formatted_date %></small>
+                      <% if unavail.description.present? %>
+                        <div class="small text-muted"><%= unavail.description %></div>
+                      <% end %>
+                    </div>
                   </div>
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="rounded" style="width: 16px; height: 16px; background-color: #2b7fff;"></div>
-                    <span class="small">Garde d'enfant</span>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-edit-small"
+                            data-bs-toggle="modal"
+                            data-bs-target="#eventDetailsModal"
+                            data-event-id="<%= unavail.id %>"
+                            data-event-title="<%= unavail.title %>"
+                            data-event-type="<%= unavail.type_name %>"
+                            data-event-type-value="<%= unavail.event_type %>"
+                            data-event-date="<%= unavail.formatted_date %>"
+                            data-event-start-date="<%= unavail.start_date %>"
+                            data-event-time="<%= unavail.formatted_time %>"
+                            data-event-time-value="<%= unavail.time&.strftime('%H:%M') %>"
+                            data-event-location="<%= unavail.location %>"
+                            data-event-description="<%= unavail.description %>"
+                            data-event-assigned="<%= unavail.assigned_to %>"
+                            data-event-icon="<%= unavail.event_icon %>"
+                            data-event-badge="<%= unavail.badge_class %>"
+                            data-event-reminders="<%= unavail.reminders_enabled %>">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="url(#iconGradient)"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="url(#iconGradient)"/>
+                      </svg>
+                    </button>
                   </div>
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="rounded" style="width: 16px; height: 16px; background-color: #c6005b;"></div>
-                    <span class="small">Rendez-vous médical</span>
-                  </div>
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="rounded" style="width: 16px; height: 16px; background-color: #00c950;"></div>
-                    <span class="small">Événement scolaire</span>
-                  </div>
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="rounded" style="width: 16px; height: 16px; background-color: #1347e5;"></div>
-                    <span class="small">Vacances</span>
-                  </div>
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="rounded" style="width: 16px; height: 16px; background-color: #6a7282;"></div>
-                    <span class="small">Autre</span>
-                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="text-center py-4 empty-state rounded-3">
+                <div class="mb-2">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" stroke="url(#iconGradient)"/>
+                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" stroke="url(#iconGradient)"/>
+                  </svg>
+                </div>
+                <p class="mb-0 text-muted">Aucune indisponibilité pour le moment</p>
+                <small class="text-muted">Cliquez sur "Ajouter" pour bloquer une période</small>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend and Upcoming Events -->
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="card stat-card rounded-4 h-100">
+            <div class="card-body p-4">
+              <h5 class="mb-1 dashboard-section-title">Légende</h5>
+              <p class="text-secondary small mb-4">Types d'événements</p>
+
+              <div class="d-flex flex-column gap-2">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded" style="width: 16px; height: 16px; background-color: #F0ABFC;"></div>
+                  <span class="small">Anniversaire</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded" style="width: 16px; height: 16px; background-color: #7684ff;"></div>
+                  <span class="small">Garde d'enfant</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded" style="width: 16px; height: 16px; background-color: #FDA4AF;"></div>
+                  <span class="small">Rendez-vous médical</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded" style="width: 16px; height: 16px; background-color: #75e79f;"></div>
+                  <span class="small">Événement scolaire</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded" style="width: 16px; height: 16px; background-color: #7DD3FC;"></div>
+                  <span class="small">Vacances</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded" style="width: 16px; height: 16px; background-color: #ffe181;"></div>
+                  <span class="small">Autre</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="col-lg-6">
-            <div class="card border rounded-4 h-100">
-              <div class="card-body p-4">
-                <h5 class="mb-1">Prochains événements</h5>
-                <p class="text-secondary small mb-4">Dans les 7 prochains jours</p>
+        <div class="col-lg-6">
+          <div class="card stat-card rounded-4 h-100">
+            <div class="card-body p-4">
+              <h5 class="mb-1 dashboard-section-title">Prochains événements</h5>
+              <p class="text-secondary small mb-4">Dans les 7 prochains jours</p>
 
-                <div class="d-flex flex-column gap-3">
-                  <% if @upcoming_events.any? %>
-                    <% @upcoming_events.each do |event| %>
-                      <div class="d-flex align-items-center gap-3">
-                        <div class="rounded" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: <%= event.event_color %>;">
-                          <span style="font-size: 18px;"><%= event.event_icon %></span>
-                        </div>
-                        <div>
-                          <div class="fw-medium"><%= event.title %></div>
-                          <small class="text-secondary">
-                            <%= l(event.start_date, format: :short) %>
-                            <% if event.time.present? %>
-                              - <%= event.time.strftime("%H:%M") %>
-                            <% end %>
-                          </small>
-                        </div>
+              <div class="d-flex flex-column gap-3">
+                <% if @upcoming_events.any? %>
+                  <% @upcoming_events.each do |event| %>
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="rounded event-icon-box" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: <%= event.event_color %>20; border: 1px solid <%= event.event_color %>40;">
+                        <span style="font-size: 18px;"><%= event.event_icon %></span>
                       </div>
-                    <% end %>
-                  <% else %>
-                    <div class="text-center text-muted py-3">
-                      <p class="mb-0">Aucun événement à venir dans les 7 prochains jours</p>
+                      <div>
+                        <div class="fw-medium"><%= event.title %></div>
+                        <small class="text-secondary">
+                          <%= l(event.start_date, format: :short) %>
+                          <% if event.time.present? %>
+                            - <%= event.time.strftime("%H:%M") %>
+                          <% end %>
+                        </small>
+                      </div>
                     </div>
                   <% end %>
-                </div>
+                <% else %>
+                  <div class="text-center py-4 empty-state rounded-3">
+                    <div class="mb-2">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <defs>
+                          <linearGradient id="emptyCalendarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea"/>
+                            <stop offset="100%" style="stop-color:#764ba2"/>
+                          </linearGradient>
+                        </defs>
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="url(#emptyCalendarGradient)"/>
+                        <line x1="16" y1="2" x2="16" y2="6" stroke="url(#emptyCalendarGradient)"/>
+                        <line x1="8" y1="2" x2="8" y2="6" stroke="url(#emptyCalendarGradient)"/>
+                        <line x1="3" y1="10" x2="21" y2="10" stroke="url(#emptyCalendarGradient)"/>
+                        <circle cx="8" cy="14" r="1" fill="url(#emptyCalendarGradient)"/>
+                        <circle cx="12" cy="14" r="1" fill="url(#emptyCalendarGradient)"/>
+                        <circle cx="16" cy="14" r="1" fill="url(#emptyCalendarGradient)"/>
+                        <circle cx="8" cy="18" r="1" fill="url(#emptyCalendarGradient)"/>
+                        <circle cx="12" cy="18" r="1" fill="url(#emptyCalendarGradient)"/>
+                      </svg>
+                    </div>
+                    <p class="mb-0 text-muted">Aucun événement à venir dans les 7 prochains jours</p>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="tab-pane fade" id="week">
-        <p class="text-center text-muted py-5">Vue semaine à venir</p>
+  </div>
+</div>
+
+<!-- Modal Indisponibilité -->
+<div class="modal fade" id="unavailabilityModal" tabindex="-1" aria-labelledby="unavailabilityModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
+      <div class="modal-header border-0 pb-0">
+        <div>
+          <h5 class="modal-title fw-medium dashboard-section-title" id="unavailabilityModalLabel">Bloquer une période d'indisponibilité</h5>
+          <p class="text-secondary small mb-0">Indiquez quand vous n'êtes pas disponible pour les tâches familiales</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <div class="modal-body pt-3">
+        <%= form_with(model: [@family, @family_event || FamilyEvent.new], local: true, html: { id: 'unavailabilityForm' }) do |f| %>
+          <%= f.hidden_field :event_type, value: 'indisponibilite' %>
 
-      <div class="tab-pane fade" id="list">
-        <p class="text-center text-muted py-5">Vue liste à venir</p>
+          <!-- Qui est indisponible -->
+          <div class="mb-3">
+            <%= f.label :assigned_to, "Qui est indisponible ?", class: "form-label fw-medium" %>
+            <%= f.select :assigned_to, options_for_select(
+              [['Sélectionner un membre', '']] + @family_members.map { |member| [member.name, member.name] }
+            ), {}, { class: "form-select form-select-custom", required: true } %>
+          </div>
+
+          <!-- Date de début et Date de fin -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <%= f.label :start_date, "Date de début", class: "form-label fw-medium" %>
+              <%= f.date_field :start_date, class: "form-control form-control-custom", required: true %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :end_date, "Date de fin", class: "form-label fw-medium" %>
+              <%= f.date_field :end_date, class: "form-control form-control-custom" %>
+            </div>
+          </div>
+
+          <!-- Raison (optionnel) -->
+          <div class="mb-4">
+            <%= f.label :description, "Raison (optionnel)", class: "form-label fw-medium" %>
+            <%= f.text_field :description, class: "form-control form-control-custom", placeholder: "Ex: Déplacement professionnel" %>
+          </div>
+
+          <%= f.hidden_field :reminders_enabled, value: false %>
+
+          <!-- Submit Button -->
+          <%= f.submit "Bloquer cette période", class: "btn btn-primary-gradient w-100" %>
+        <% end %>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Modal Indisponibilité -->
-  <div class="modal fade" id="unavailabilityModal" tabindex="-1" aria-labelledby="unavailabilityModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content rounded-4">
-        <div class="modal-header border-0 pb-0">
-          <div>
-            <h5 class="modal-title fw-medium" id="unavailabilityModalLabel">Bloquer une période d'indisponibilité</h5>
-            <p class="text-secondary small mb-0">Indiquez quand vous n'êtes pas disponible pour les tâches familiales</p>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal Nouvel Événement -->
+<div class="modal fade" id="newEventModal" tabindex="-1" aria-labelledby="newEventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
+      <div class="modal-header border-0 pb-0">
+        <div>
+          <h5 class="modal-title fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="newEventModalLabel">Créer un nouvel événement</h5>
+          <p class="text-secondary small mb-0">Ajoutez un événement au calendrier familial</p>
         </div>
-        <div class="modal-body pt-3">
-          <%= form_with(model: [@family, @family_event || FamilyEvent.new], local: true, html: { id: 'unavailabilityForm' }) do |f| %>
-            <%= f.hidden_field :event_type, value: 'indisponibilite' %>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <%= form_with(model: [@family, @family_event || FamilyEvent.new], local: true, html: { id: 'newEventForm' }) do |f| %>
+          <!-- Titre -->
+          <div class="mb-3">
+            <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Titre</label>
+            <%= f.text_field :title, class: "form-control form-control-custom", placeholder: "Ex: Garde Lucas", required: true %>
+          </div>
 
-            <!-- Qui est indisponible -->
-            <div class="mb-3">
-              <%= f.label :assigned_to, "Qui est indisponible ?", class: "form-label fw-medium" %>
+          <!-- Type d'événement et Assigné à -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Type d'événement</label>
+              <%= f.select :event_type, options_for_select([
+                ['Choisir un type', ''],
+                ['Anniversaire', 'anniversaire'],
+                ['Garde d\'enfant', 'garde'],
+                ['Rendez-vous médical', 'medical'],
+                ['Événement scolaire', 'scolaire'],
+                ['Vacances', 'vacances'],
+                ['Autre', 'autre']
+              ]), {}, { class: "form-select form-select-custom", required: true } %>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Assigné à</label>
               <%= f.select :assigned_to, options_for_select(
-                [['Sélectionner un membre', '']] + @family_members.map { |member| [member.name, member.name] }
-              ), {}, { class: "form-select", required: true } %>
+                [['Qui s\'en occupe?', '']] + @family_members.map { |member| [member.name, member.name] } + [['Toute la famille', 'Toute la famille']]
+              ), {}, { class: "form-select form-select-custom" } %>
             </div>
-
-            <!-- Date de début et Date de fin -->
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <%= f.label :start_date, "Date de début", class: "form-label fw-medium" %>
-                <%= f.date_field :start_date, class: "form-control", required: true %>
-              </div>
-              <div class="col-md-6">
-                <%= f.label :end_date, "Date de fin", class: "form-label fw-medium" %>
-                <%= f.date_field :end_date, class: "form-control" %>
-              </div>
-            </div>
-
-            <!-- Raison (optionnel) -->
-            <div class="mb-4">
-              <%= f.label :description, "Raison (optionnel)", class: "form-label fw-medium" %>
-              <%= f.text_field :description, class: "form-control", placeholder: "Ex: Déplacement professionnel" %>
-            </div>
-
-            <%= f.hidden_field :reminders_enabled, value: false %>
-
-            <!-- Submit Button -->
-            <%= f.submit "Bloquer cette période", class: "btn btn-dark w-100" %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Nouvel Événement -->
-  <div class="modal fade" id="newEventModal" tabindex="-1" aria-labelledby="newEventModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content rounded-4">
-        <div class="modal-header border-0 pb-0">
-          <div>
-            <h5 class="modal-title fw-medium" id="newEventModalLabel">Créer un nouvel événement</h5>
-            <p class="text-secondary small mb-0">Ajoutez un événement au calendrier familial</p>
           </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body pt-3">
-          <%= form_with(model: [@family, @family_event || FamilyEvent.new], local: true, html: { id: 'newEventForm' }) do |f| %>
-            <!-- Titre -->
-            <div class="mb-3">
-              <%= f.label :title, "Titre", class: "form-label fw-medium" %>
-              <%= f.text_field :title, class: "form-control", placeholder: "Ex: Garde Lucas", required: true %>
-            </div>
 
-            <!-- Type d'événement et Assigné à -->
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <%= f.label :event_type, "Type d'événement", class: "form-label fw-medium" %>
-                <%= f.select :event_type, options_for_select([
-                  ['Choisir un type', ''],
-                  ['Anniversaire', 'anniversaire'],
-                  ['Garde d\'enfant', 'garde'],
-                  ['Rendez-vous médical', 'medical'],
-                  ['Événement scolaire', 'scolaire'],
-                  ['Vacances', 'vacances'],
-                  ['Autre', 'autre']
-                ]), {}, { class: "form-select", required: true } %>
-              </div>
-              <div class="col-md-6">
-                <%= f.label :assigned_to, "Assigné à", class: "form-label fw-medium" %>
-                <%= f.select :assigned_to, options_for_select(
-                  [['Qui s\'en occupe?', '']] + @family_members.map { |member| [member.name, member.name] } + [['Toute la famille', 'Toute la famille']]
-                ), {}, { class: "form-select" } %>
-              </div>
+          <!-- Date et Heure -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Date</label>
+              <%= f.date_field :start_date, class: "form-control form-control-custom", required: true %>
             </div>
-
-            <!-- Date et Heure -->
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <%= f.label :start_date, "Date", class: "form-label fw-medium" %>
-                <%= f.date_field :start_date, class: "form-control", required: true %>
-              </div>
-              <div class="col-md-6">
-                <%= f.label :time, "Heure", class: "form-label fw-medium" %>
-                <%= f.time_field :time, class: "form-control" %>
-              </div>
+            <div class="col-md-6">
+              <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Heure</label>
+              <%= f.time_field :time, class: "form-control form-control-custom" %>
             </div>
+          </div>
 
-            <!-- Lieu -->
-            <div class="mb-3">
-              <%= f.label :location, "Lieu", class: "form-label fw-medium" %>
-              <%= f.text_field :location, class: "form-control", placeholder: "Ex: École primaire" %>
+          <!-- Lieu -->
+          <div class="mb-3">
+            <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Lieu</label>
+            <%= f.text_field :location, class: "form-control form-control-custom", placeholder: "Ex: École primaire" %>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Description</label>
+            <%= f.text_area :description, rows: 3, class: "form-control form-control-custom", placeholder: "Détails supplémentaires..." %>
+          </div>
+
+          <!-- Activer les rappels -->
+          <div class="form-check mb-3">
+            <div class="custom-checkbox-wrapper">
+              <%= f.check_box :reminders_enabled, class: "custom-checkbox", checked: true %>
+              <label for="family_event_reminders_enabled" class="custom-checkbox-label">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </label>
             </div>
+            <label class="form-check-label fw-medium ms-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Activer les rappels</label>
+          </div>
 
-            <!-- Description -->
-            <div class="mb-3">
-              <%= f.label :description, "Description", class: "form-label fw-medium" %>
-              <%= f.text_area :description, rows: 3, class: "form-control", placeholder: "Détails supplémentaires..." %>
-            </div>
+          <!-- Partager avec d'autres familles -->
+          <div class="mb-4">
+            <label class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Partager avec d'autres familles (optionnel)</label>
+            <p class="text-secondary small mb-0">
+              Vous pouvez partager cet événement avec vos familles connectées depuis la page Connexions
+            </p>
+          </div>
 
-            <!-- Activer les rappels -->
-            <div class="form-check mb-3">
-              <%= f.check_box :reminders_enabled, class: "form-check-input", checked: true %>
-              <%= f.label :reminders_enabled, "Activer les rappels", class: "form-check-label fw-medium" %>
-            </div>
-
-            <!-- Partager avec d'autres familles -->
-            <div class="mb-3">
-              <label class="form-label fw-medium">Partager avec d'autres familles (optionnel)</label>
-              <p class="text-secondary small mb-2">
-                Vous pouvez partager cet événement avec vos familles connectées depuis la page Connexions
-              </p>
-            </div>
-
-            <!-- Submit Button -->
-            <%= f.submit "Créer l'événement", class: "btn btn-dark w-100" %>
-          <% end %>
-        </div>
+          <!-- Submit Button -->
+          <%= f.submit "Créer l'événement", class: "btn btn-primary-gradient w-100" %>
+        <% end %>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Modal Détails Événement -->
-  <div class="modal fade" id="eventDetailsModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content rounded-4">
-        <div class="modal-header border-0 pb-0">
-          <div class="d-flex align-items-center">
-            <div class="rounded-circle bg-primary-light d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
-              <span class="text-primary fs-5" id="eventDetailsIcon">🕒</span>
+<!-- Modal Détails Événement -->
+<div class="modal fade" id="eventDetailsModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
+      <div class="modal-header border-0 pb-0">
+        <div class="d-flex align-items-center">
+          <div class="icon-wrapper me-3" id="eventDetailsIconWrapper">
+            <span class="fs-5" id="eventDetailsIcon"></span>
+          </div>
+          <div>
+            <h5 class="modal-title fw-medium mb-0 dashboard-section-title" id="eventDetailsModalLabel">Garde Lucas - École</h5>
+            <span class="badge" id="eventDetailsTypeBadge">Garde d'enfant</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <div class="d-flex flex-column gap-3 mb-4">
+          <div class="d-flex align-items-start gap-3">
+            <div class="icon-wrapper-small">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" stroke="url(#iconGradient)"/>
+                <line x1="16" y1="2" x2="16" y2="6" stroke="url(#iconGradient)"/>
+                <line x1="8" y1="2" x2="8" y2="6" stroke="url(#iconGradient)"/>
+                <line x1="3" y1="10" x2="21" y2="10" stroke="url(#iconGradient)"/>
+              </svg>
             </div>
             <div>
-              <h5 class="modal-title fw-medium mb-0" id="eventDetailsModalLabel">Garde Lucas - École</h5>
-              <span class="badge bg-light text-dark" id="eventDetailsTypeBadge">Garde d'enfant</span>
+              <div class="fw-medium">Date et heure</div>
+              <small class="text-secondary" id="eventDetailsDate">mercredi 19 novembre 2025</small>
+              <small class="text-secondary d-block" id="eventDetailsTime">16:30</small>
             </div>
           </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="d-flex align-items-start gap-3">
+            <div class="icon-wrapper-small">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="url(#iconGradient)"/>
+                <circle cx="12" cy="10" r="3" stroke="url(#iconGradient)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="fw-medium">Lieu</div>
+              <small class="text-secondary" id="eventDetailsLocation">École primaire</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-start gap-3">
+            <div class="icon-wrapper-small">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="17" y1="10" x2="3" y2="10" stroke="url(#iconGradient)"/>
+                <line x1="21" y1="6" x2="3" y2="6" stroke="url(#iconGradient)"/>
+                <line x1="21" y1="14" x2="3" y2="14" stroke="url(#iconGradient)"/>
+                <line x1="17" y1="18" x2="3" y2="18" stroke="url(#iconGradient)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="fw-medium">Description</div>
+              <small class="text-secondary" id="eventDetailsDescription">Récupérer Lucas à l'école</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-start gap-3">
+            <div class="icon-wrapper-small">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="url(#iconGradient)"/>
+                <circle cx="12" cy="7" r="4" stroke="url(#iconGradient)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="fw-medium">Assigné à</div>
+              <span class="badge badge-assigned" id="eventDetailsAssigned">M Marc</span>
+            </div>
+          </div>
         </div>
-        <div class="modal-body pt-3">
-          <div class="d-flex flex-column gap-3 mb-4">
-            <div class="d-flex align-items-start gap-2">
-              <span class="text-secondary">📅</span>
-              <div>
-                <div class="fw-medium">Date et heure</div>
-                <small class="text-secondary" id="eventDetailsDate">mercredi 19 novembre 2025</small>
-                <small class="text-secondary d-block" id="eventDetailsTime">16:30</small>
-              </div>
-            </div>
-            <div class="d-flex align-items-start gap-2">
-              <span class="text-secondary">📍</span>
-              <div>
-                <div class="fw-medium">Lieu</div>
-                <small class="text-secondary" id="eventDetailsLocation">École primaire</small>
-              </div>
-            </div>
-            <div class="d-flex align-items-start gap-2">
-              <span class="text-secondary">●</span>
-              <div>
-                <div class="fw-medium">Description</div>
-                <small class="text-secondary" id="eventDetailsDescription">Récupérer Lucas à l'école</small>
-              </div>
-            </div>
-            <div class="d-flex align-items-start gap-2">
-              <span class="text-secondary">🧑‍🤝‍🧑</span>
-              <div>
-                <div class="fw-medium">Assigné à</div>
-                <span class="badge bg-light text-dark" id="eventDetailsAssigned">M Marc</span>
-              </div>
-            </div>
-          </div>
 
-          <div class="alert alert-info d-flex align-items-center gap-3 p-3 mb-3 mx-3" role="alert" id="eventDetailsReminder">
-            <span class="fs-5">🔔</span>
-            <small>Les rappels sont activés pour cet événement</small>
-          </div>
+        <div class="alert alert-reminder d-flex align-items-center gap-3 p-3 mb-3" role="alert" id="eventDetailsReminder">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="url(#iconGradient)"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="url(#iconGradient)"/>
+          </svg>
+          <small>Les rappels sont activés pour cet événement</small>
+        </div>
 
-          <div class="d-flex justify-content-between gap-2">
-            <button type="button" class="btn btn-outline-secondary flex-grow-1" id="modifyEventBtn">Modifier</button>
-            <button type="button" class="btn btn-danger flex-grow-1" id="deleteEventBtn">Supprimer</button>
-          </div>
+        <div class="d-flex justify-content-between gap-2">
+          <button type="button" class="btn btn-edit-event flex-grow-1" id="modifyEventBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Modifier
+          </button>
+          <button type="button" class="btn btn-delete-event flex-grow-1" id="deleteEventBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="m19 6-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6m5 0V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2"/>
+            </svg>
+            Supprimer
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
-  <script>
-    let pageInitialized = false;
+<style>
+  /* Primary gradient button */
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
 
-    function initializeFamilyEventsPage() {
-      // Prevent double initialization
-      if (pageInitialized) {
-        console.log('Page already initialized, skipping');
-        return;
-      }
-      pageInitialized = true;
-      console.log('Initializing family events page');
+  .btn-primary-gradient:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
 
-      // Initialize Flatpickr for date and time fields
-      flatpickr("#family_event_start_date", {
-        locale: "fr",
-        dateFormat: "Y-m-d",
-        altInput: true,
-        altFormat: "d/m/Y",
-        allowInput: true
-      });
+  /* Calendar navigation buttons */
+  .btn-nav-calendar {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
 
-      flatpickr("#family_event_time", {
-        locale: "fr",
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true,
-        allowInput: true
-      });
+  .btn-nav-calendar:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    transform: scale(1.05);
+  }
 
-      // For unavailability modal
-      flatpickr("#family_event_start_date_unavail", {
-        locale: "fr",
-        dateFormat: "Y-m-d",
-        altInput: true,
-        altFormat: "d/m/Y",
-        allowInput: true
-      });
+  /* Today button */
+  .btn-today {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
 
-      flatpickr("#family_event_end_date", {
-        locale: "fr",
-        dateFormat: "Y-m-d",
-        altInput: true,
-        altFormat: "d/m/Y",
-        allowInput: true
-      });
+  .btn-today:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #764ba2;
+  }
 
-      const eventDetailsModal = document.getElementById('eventDetailsModal');
-      const newEventModal = document.getElementById('newEventModal');
+  /* Calendar table */
+  .calendar-table {
+    border-collapse: separate;
+    border-spacing: 4px;
+  }
 
-      if (!eventDetailsModal || !newEventModal) {
-        console.log('Modals not found, skipping initialization');
-        return;
-      }
+  .calendar-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border: none !important;
+    padding: 12px;
+    font-weight: 600;
+    color: #667eea;
+    border-radius: 8px;
+    text-transform: capitalize;
+    font-size: 0.85rem;
+  }
 
-      // Get action buttons from the event details modal
-      const modifyEventBtn = document.getElementById('modifyEventBtn');
-      const duplicateEventBtn = document.getElementById('duplicateEventBtn');
-      const deleteEventBtn = document.getElementById('deleteEventBtn');
+  .calendar-cell {
+    border: 1px solid rgba(102, 126, 234, 0.1) !important;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    background: white;
+  }
 
-      let currentEventId = null;
-      let currentEventData = null;
+  .calendar-cell:hover {
+    border-color: rgba(102, 126, 234, 0.3) !important;
+    background: rgba(102, 126, 234, 0.02);
+  }
 
-      // Function to update modal content from data attributes
-      function updateModalContent(badge) {
-        try {
-          const eventData = {
-            id: badge.dataset.eventId || '',
-            title: badge.dataset.eventTitle || 'Sans titre',
-            type: badge.dataset.eventType || 'Autre',
-            typeValue: badge.dataset.eventTypeValue || '',
-            date: badge.dataset.eventDate || '',
-            startDate: badge.dataset.eventStartDate || '',
-            time: badge.dataset.eventTime || '',
-            timeValue: badge.dataset.eventTimeValue || '',
-            location: badge.dataset.eventLocation || '',
-            description: badge.dataset.eventDescription || '',
-            assignedTo: badge.dataset.eventAssigned || '',
-            icon: badge.dataset.eventIcon || '📌',
-            badgeClass: badge.dataset.eventBadge || 'bg-secondary',
-            reminders: badge.dataset.eventReminders === 'true'
-          };
+  .calendar-weekend {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+  }
 
-          console.log('Event data loaded:', eventData);
+  .calendar-today {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%) !important;
+    border: 1px solid rgba(102, 126, 234, 0.3) !important;
+  }
 
-          currentEventId = eventData.id;
-          currentEventData = eventData;
+  .calendar-day-number {
+    font-weight: 500;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    color: #374151;
+  }
 
-          // Update title
-          const titleElement = document.getElementById('eventDetailsModalLabel');
-          if (titleElement) titleElement.textContent = eventData.title;
+  .calendar-day-number.text-muted {
+    color: #9ca3af !important;
+  }
 
-          // Update icon
-          const iconElement = document.getElementById('eventDetailsIcon');
-          if (iconElement) iconElement.textContent = eventData.icon;
+  .today-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
 
-          // Update badge type
-          const typeBadge = document.getElementById('eventDetailsTypeBadge');
-          if (typeBadge) {
-            typeBadge.className = `badge ${eventData.badgeClass} text-white`;
-            typeBadge.textContent = eventData.type;
-          }
+  /* Event badges */
+  .event-badge {
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    transition: all 0.2s ease;
+  }
 
-          // Update date
-          const dateElement = document.getElementById('eventDetailsDate');
-          if (dateElement) dateElement.textContent = eventData.date || 'Non spécifié';
+  .event-badge:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
 
-          // Update time
-          const timeElement = document.getElementById('eventDetailsTime');
-          if (timeElement) timeElement.textContent = eventData.time || 'Non spécifié';
+  /* Icon wrappers */
+  .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  }
 
-          // Update location
-          const locationElement = document.getElementById('eventDetailsLocation');
-          if (locationElement) locationElement.textContent = eventData.location || 'Non spécifié';
+  .icon-wrapper-small {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  }
 
-          // Update description
-          const descriptionElement = document.getElementById('eventDetailsDescription');
-          if (descriptionElement) descriptionElement.textContent = eventData.description || 'Aucune description';
+  /* Add unavailability button */
+  .btn-add-unavail {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
 
-          // Update assigned to
-          const assignedElement = document.getElementById('eventDetailsAssigned');
-          if (assignedElement) assignedElement.textContent = eventData.assignedTo || 'Non assigné';
+  .btn-add-unavail:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #764ba2;
+  }
 
-          // Show/hide reminder alert based on event data
-          const reminderAlert = document.getElementById('eventDetailsReminder');
-          if (reminderAlert) {
-            reminderAlert.style.display = eventData.reminders ? 'flex' : 'none';
-          }
-        } catch (error) {
-          console.error('Error updating modal content:', error);
+  /* Unavailability items */
+  .unavail-item {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.12);
+    transition: all 0.2s ease;
+  }
+
+  .unavail-item:hover {
+    border-color: rgba(102, 126, 234, 0.25);
+  }
+
+  /* Edit small button */
+  .btn-edit-small {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit-small:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    transform: scale(1.05);
+  }
+
+  /* Empty state */
+  .empty-state {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+    border: 1px dashed rgba(102, 126, 234, 0.2);
+  }
+
+  /* Form controls */
+  .form-control-custom,
+  .form-select-custom {
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .form-control-custom:focus,
+  .form-select-custom:focus {
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  }
+
+  /* Custom checkbox */
+  .custom-checkbox-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+  }
+
+  .custom-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+  }
+
+  .custom-checkbox-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .custom-checkbox-label svg {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .custom-checkbox:checked + .custom-checkbox-label {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+  }
+
+  .custom-checkbox:checked + .custom-checkbox-label svg {
+    opacity: 1;
+  }
+
+  /* Badge assigned */
+  .badge-assigned {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+  }
+
+  /* Alert reminder */
+  .alert-reminder {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.15);
+    border-radius: 10px;
+    color: #667eea;
+  }
+
+  /* Modal action buttons */
+  .btn-edit-event {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit-event:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #764ba2;
+  }
+
+  .btn-delete-event {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-delete-event:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #b91c1c;
+  }
+
+  /* Event icon box */
+  .event-icon-box {
+    border-radius: 10px;
+  }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+<script>
+  let pageInitialized = false;
+
+  function initializeFamilyEventsPage() {
+    // Prevent double initialization
+    if (pageInitialized) {
+      console.log('Page already initialized, skipping');
+      return;
+    }
+    pageInitialized = true;
+    console.log('Initializing family events page');
+
+    // Initialize Flatpickr for date and time fields
+    flatpickr("#family_event_start_date", {
+      locale: "fr",
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "d/m/Y",
+      allowInput: true
+    });
+
+    flatpickr("#family_event_time", {
+      locale: "fr",
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: true,
+      allowInput: true
+    });
+
+    // For unavailability modal
+    flatpickr("#family_event_start_date_unavail", {
+      locale: "fr",
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "d/m/Y",
+      allowInput: true
+    });
+
+    flatpickr("#family_event_end_date", {
+      locale: "fr",
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "d/m/Y",
+      allowInput: true
+    });
+
+    const eventDetailsModal = document.getElementById('eventDetailsModal');
+    const newEventModal = document.getElementById('newEventModal');
+
+    if (!eventDetailsModal || !newEventModal) {
+      console.log('Modals not found, skipping initialization');
+      return;
+    }
+
+    // Get action buttons from the event details modal
+    const modifyEventBtn = document.getElementById('modifyEventBtn');
+    const duplicateEventBtn = document.getElementById('duplicateEventBtn');
+    const deleteEventBtn = document.getElementById('deleteEventBtn');
+
+    let currentEventId = null;
+    let currentEventData = null;
+
+    // Function to update modal content from data attributes
+    function updateModalContent(badge) {
+      try {
+        const eventData = {
+          id: badge.dataset.eventId || '',
+          title: badge.dataset.eventTitle || 'Sans titre',
+          type: badge.dataset.eventType || 'Autre',
+          typeValue: badge.dataset.eventTypeValue || '',
+          date: badge.dataset.eventDate || '',
+          startDate: badge.dataset.eventStartDate || '',
+          time: badge.dataset.eventTime || '',
+          timeValue: badge.dataset.eventTimeValue || '',
+          location: badge.dataset.eventLocation || '',
+          description: badge.dataset.eventDescription || '',
+          assignedTo: badge.dataset.eventAssigned || '',
+          icon: badge.dataset.eventIcon || '',
+          badgeClass: badge.dataset.eventBadge || 'bg-secondary',
+          reminders: badge.dataset.eventReminders === 'true'
+        };
+
+        console.log('Event data loaded:', eventData);
+
+        currentEventId = eventData.id;
+        currentEventData = eventData;
+
+        // Update title
+        const titleElement = document.getElementById('eventDetailsModalLabel');
+        if (titleElement) titleElement.textContent = eventData.title;
+
+        // Update icon
+        const iconElement = document.getElementById('eventDetailsIcon');
+        if (iconElement) iconElement.textContent = eventData.icon;
+
+        // Update badge type
+        const typeBadge = document.getElementById('eventDetailsTypeBadge');
+        if (typeBadge) {
+          typeBadge.className = `badge ${eventData.badgeClass} text-white`;
+          typeBadge.textContent = eventData.type;
         }
-      }
 
-      // Add click listeners using event delegation for dynamic content
-      document.body.addEventListener('click', function(e) {
-        const target = e.target.closest('[data-bs-toggle="modal"][data-bs-target="#eventDetailsModal"]');
-        if (target) {
-          e.preventDefault();
-          updateModalContent(target);
+        // Update date
+        const dateElement = document.getElementById('eventDetailsDate');
+        if (dateElement) dateElement.textContent = eventData.date || 'Non spécifié';
+
+        // Update time
+        const timeElement = document.getElementById('eventDetailsTime');
+        if (timeElement) timeElement.textContent = eventData.time || 'Non spécifié';
+
+        // Update location
+        const locationElement = document.getElementById('eventDetailsLocation');
+        if (locationElement) locationElement.textContent = eventData.location || 'Non spécifié';
+
+        // Update description
+        const descriptionElement = document.getElementById('eventDetailsDescription');
+        if (descriptionElement) descriptionElement.textContent = eventData.description || 'Aucune description';
+
+        // Update assigned to
+        const assignedElement = document.getElementById('eventDetailsAssigned');
+        if (assignedElement) assignedElement.textContent = eventData.assignedTo || 'Non assigné';
+
+        // Show/hide reminder alert based on event data
+        const reminderAlert = document.getElementById('eventDetailsReminder');
+        if (reminderAlert) {
+          reminderAlert.style.display = eventData.reminders ? 'flex' : 'none';
         }
-      });
-
-      // Event listener for "Modifier" button
-      if (modifyEventBtn) {
-        modifyEventBtn.addEventListener('click', function() {
-          if (currentEventId && currentEventData) {
-            // Update the form action to use PATCH method for editing
-            const form = document.getElementById('newEventForm');
-            if (form) {
-              form.action = `/families/<%= @family.id %>/family_events/${currentEventId}`;
-
-              // Add hidden field for PATCH method if it doesn't exist
-              let methodField = form.querySelector('input[name="_method"]');
-              if (!methodField) {
-                methodField = document.createElement('input');
-                methodField.type = 'hidden';
-                methodField.name = '_method';
-                form.appendChild(methodField);
-              }
-              methodField.value = 'patch';
-
-              // Fill the form with current event data using stored data
-              const titleInput = form.querySelector('#family_event_title');
-              const startDateInput = form.querySelector('#family_event_start_date');
-              const timeInput = form.querySelector('#family_event_time');
-              const locationInput = form.querySelector('#family_event_location');
-              const descriptionInput = form.querySelector('#family_event_description');
-              const assignedSelect = form.querySelector('#family_event_assigned_to');
-              const typeSelect = form.querySelector('#family_event_event_type');
-              const remindersCheckbox = form.querySelector('#family_event_reminders_enabled');
-
-              if (titleInput) titleInput.value = currentEventData.title || '';
-              if (startDateInput) startDateInput.value = currentEventData.startDate || '';
-              if (timeInput) timeInput.value = currentEventData.timeValue || '';
-              if (locationInput) locationInput.value = currentEventData.location || '';
-              if (descriptionInput) descriptionInput.value = currentEventData.description || '';
-              if (assignedSelect) assignedSelect.value = currentEventData.assignedTo || '';
-              if (typeSelect) typeSelect.value = currentEventData.typeValue || '';
-              if (remindersCheckbox) remindersCheckbox.checked = currentEventData.reminders;
-
-              // Update modal title
-              document.getElementById('newEventModalLabel').textContent = 'Modifier l\'événement';
-
-              // Update submit button text
-              const submitBtn = form.querySelector('input[type="submit"]');
-              if (submitBtn) submitBtn.value = 'Modifier l\'événement';
-            }
-          }
-
-          bootstrap.Modal.getInstance(eventDetailsModal).hide();
-          const newEventBootstrapModal = new bootstrap.Modal(newEventModal);
-          newEventBootstrapModal.show();
-        });
+      } catch (error) {
+        console.error('Error updating modal content:', error);
       }
+    }
 
-      // Event listener for "Dupliquer" button
-      if (duplicateEventBtn) {
-        duplicateEventBtn.addEventListener('click', function() {
-          // TODO: Load event data into new form
-          bootstrap.Modal.getInstance(eventDetailsModal).hide();
-          const newEventBootstrapModal = new bootstrap.Modal(newEventModal);
-          newEventBootstrapModal.show();
-        });
+    // Add click listeners using event delegation for dynamic content
+    document.body.addEventListener('click', function(e) {
+      const target = e.target.closest('[data-bs-toggle="modal"][data-bs-target="#eventDetailsModal"]');
+      if (target) {
+        e.preventDefault();
+        updateModalContent(target);
       }
+    });
 
-      // Event listener for "Supprimer" button
-      if (deleteEventBtn) {
-        deleteEventBtn.addEventListener('click', function() {
-          console.log('Delete button clicked, currentEventId:', currentEventId);
-          if (!currentEventId) {
-            alert('Erreur: Aucun événement sélectionné');
-            return;
-          }
-          if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
-            console.log('Deleting event with ID:', currentEventId);
-            // Submit delete request via form
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/families/<%= @family.id %>/family_events/${currentEventId}`;
-
-            const methodInput = document.createElement('input');
-            methodInput.type = 'hidden';
-            methodInput.name = '_method';
-            methodInput.value = 'delete';
-
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = 'authenticity_token';
-            csrfInput.value = document.querySelector('meta[name="csrf-token"]').content;
-
-            form.appendChild(methodInput);
-            form.appendChild(csrfInput);
-            document.body.appendChild(form);
-            form.submit();
-          }
-        });
-      }
-
-      // Reset form when opening "New Event" modal (not from Modifier button)
-      document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#newEventModal"]').forEach(button => {
-        button.addEventListener('click', function() {
+    // Event listener for "Modifier" button
+    if (modifyEventBtn) {
+      modifyEventBtn.addEventListener('click', function() {
+        if (currentEventId && currentEventData) {
+          // Update the form action to use PATCH method for editing
           const form = document.getElementById('newEventForm');
           if (form) {
-            // Reset form to create mode
-            form.action = `/families/<%= @family.id %>/family_events`;
-            form.reset();
+            form.action = `/families/<%= @family.id %>/family_events/${currentEventId}`;
 
-            // Remove PATCH method field if it exists
-            const methodField = form.querySelector('input[name="_method"]');
-            if (methodField) {
-              methodField.remove();
+            // Add hidden field for PATCH method if it doesn't exist
+            let methodField = form.querySelector('input[name="_method"]');
+            if (!methodField) {
+              methodField = document.createElement('input');
+              methodField.type = 'hidden';
+              methodField.name = '_method';
+              form.appendChild(methodField);
             }
+            methodField.value = 'patch';
 
-            // Reset modal title and button
-            document.getElementById('newEventModalLabel').textContent = 'Créer un nouvel événement';
+            // Fill the form with current event data using stored data
+            const titleInput = form.querySelector('#family_event_title');
+            const startDateInput = form.querySelector('#family_event_start_date');
+            const timeInput = form.querySelector('#family_event_time');
+            const locationInput = form.querySelector('#family_event_location');
+            const descriptionInput = form.querySelector('#family_event_description');
+            const assignedSelect = form.querySelector('#family_event_assigned_to');
+            const typeSelect = form.querySelector('#family_event_event_type');
+            const remindersCheckbox = form.querySelector('#family_event_reminders_enabled');
+
+            if (titleInput) titleInput.value = currentEventData.title || '';
+            if (startDateInput) startDateInput.value = currentEventData.startDate || '';
+            if (timeInput) timeInput.value = currentEventData.timeValue || '';
+            if (locationInput) locationInput.value = currentEventData.location || '';
+            if (descriptionInput) descriptionInput.value = currentEventData.description || '';
+            if (assignedSelect) assignedSelect.value = currentEventData.assignedTo || '';
+            if (typeSelect) typeSelect.value = currentEventData.typeValue || '';
+            if (remindersCheckbox) remindersCheckbox.checked = currentEventData.reminders;
+
+            // Update modal title
+            document.getElementById('newEventModalLabel').textContent = 'Modifier l\'événement';
+
+            // Update submit button text
             const submitBtn = form.querySelector('input[type="submit"]');
-            if (submitBtn) submitBtn.value = 'Créer l\'événement';
+            if (submitBtn) submitBtn.value = 'Modifier l\'événement';
           }
-        });
+        }
+
+        bootstrap.Modal.getInstance(eventDetailsModal).hide();
+        const newEventBootstrapModal = new bootstrap.Modal(newEventModal);
+        newEventBootstrapModal.show();
       });
     }
 
-    // Reset initialization flag before page navigation
-    document.addEventListener('turbo:before-visit', function() {
-      console.log('Resetting pageInitialized flag');
-      pageInitialized = false;
+    // Event listener for "Dupliquer" button
+    if (duplicateEventBtn) {
+      duplicateEventBtn.addEventListener('click', function() {
+        // TODO: Load event data into new form
+        bootstrap.Modal.getInstance(eventDetailsModal).hide();
+        const newEventBootstrapModal = new bootstrap.Modal(newEventModal);
+        newEventBootstrapModal.show();
+      });
+    }
+
+    // Event listener for "Supprimer" button
+    if (deleteEventBtn) {
+      deleteEventBtn.addEventListener('click', function() {
+        console.log('Delete button clicked, currentEventId:', currentEventId);
+        if (!currentEventId) {
+          alert('Erreur: Aucun événement sélectionné');
+          return;
+        }
+        if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+          console.log('Deleting event with ID:', currentEventId);
+          // Submit delete request via form
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = `/families/<%= @family.id %>/family_events/${currentEventId}`;
+
+          const methodInput = document.createElement('input');
+          methodInput.type = 'hidden';
+          methodInput.name = '_method';
+          methodInput.value = 'delete';
+
+          const csrfInput = document.createElement('input');
+          csrfInput.type = 'hidden';
+          csrfInput.name = 'authenticity_token';
+          csrfInput.value = document.querySelector('meta[name="csrf-token"]').content;
+
+          form.appendChild(methodInput);
+          form.appendChild(csrfInput);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    }
+
+    // Reset form when opening "New Event" modal (not from Modifier button)
+    document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#newEventModal"]').forEach(button => {
+      button.addEventListener('click', function() {
+        const form = document.getElementById('newEventForm');
+        if (form) {
+          // Reset form to create mode
+          form.action = `/families/<%= @family.id %>/family_events`;
+          form.reset();
+
+          // Remove PATCH method field if it exists
+          const methodField = form.querySelector('input[name="_method"]');
+          if (methodField) {
+            methodField.remove();
+          }
+
+          // Reset modal title and button
+          document.getElementById('newEventModalLabel').textContent = 'Créer un nouvel événement';
+          const submitBtn = form.querySelector('input[type="submit"]');
+          if (submitBtn) submitBtn.value = 'Créer l\'événement';
+        }
+      });
     });
+  }
 
-    // Initialize on DOMContentLoaded (for regular page loads)
-    document.addEventListener('DOMContentLoaded', initializeFamilyEventsPage);
+  // Reset initialization flag before page navigation
+  document.addEventListener('turbo:before-visit', function() {
+    console.log('Resetting pageInitialized flag');
+    pageInitialized = false;
+  });
 
-    // Initialize on turbo:load (for Turbo navigation)
-    document.addEventListener('turbo:load', function() {
-      pageInitialized = false;
-      initializeFamilyEventsPage();
-    });
+  // Initialize on DOMContentLoaded (for regular page loads)
+  document.addEventListener('DOMContentLoaded', initializeFamilyEventsPage);
 
-    // Also try turbo:render for frame updates
-    document.addEventListener('turbo:render', function() {
-      pageInitialized = false;
-      initializeFamilyEventsPage();
-    });
-  </script>
+  // Initialize on turbo:load (for Turbo navigation)
+  document.addEventListener('turbo:load', function() {
+    pageInitialized = false;
+    initializeFamilyEventsPage();
+  });
 
-</body>
-</html>
+  // Also try turbo:render for frame updates
+  document.addEventListener('turbo:render', function() {
+    pageInitialized = false;
+    initializeFamilyEventsPage();
+  });
+</script>

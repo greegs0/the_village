@@ -6,8 +6,9 @@
     <%= f.input :name,
                 label: "Titre de l'événement",
                 required: true,
+                label_html: { class: "form-label fw-medium", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" },
                 input_html: {
-                  class: "form-control",
+                  class: "form-control form-control-da",
                   placeholder: "Ex: Apéro voisins"
                 } %>
   </div>
@@ -17,8 +18,9 @@
     <%= f.input :date, as: :string,
                 label: "Date",
                 required: true,
+                label_html: { class: "form-label fw-medium", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" },
                 input_html: {
-                  class: "form-control",
+                  class: "form-control form-control-da",
                   placeholder: "jj/mm/aaaa"
                 } %>
   </div>
@@ -28,8 +30,9 @@
     <%= f.input :place,
                 label: "Lieu",
                 required: true,
+                label_html: { class: "form-label fw-medium", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" },
                 input_html: {
-                  class: "form-control",
+                  class: "form-control form-control-da",
                   placeholder: "Ex : Parc du quartier"
                 } %>
   </div>
@@ -50,10 +53,11 @@
                 required: true,
                 prompt: "Sélectionner une catégorie",
                 input_html: {
-                  class: "form-select"
+                  class: "form-select form-control-da"
                 },
                 label_html: {
-                  class: "form-label fw-medium"
+                  class: "form-label fw-medium",
+                  style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
                 } %>
   </div>
 
@@ -63,8 +67,9 @@
                 as: :text,
                 label: "Description",
                 required: true,
+                label_html: { class: "form-label fw-medium", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" },
                 input_html: {
-                  class: "form-control",
+                  class: "form-control form-control-da",
                   rows: 4,
                   placeholder: "Ex : Décrivez votre événement..."
                 } %>
@@ -75,19 +80,45 @@
     <%= f.input :max_participations,
                 label: "Nombre maximum de participants (optionnel)",
                 required: false,
+                label_html: { class: "form-label fw-medium", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" },
                 input_html: {
-                  class: "form-control",
+                  class: "form-control form-control-da",
                   placeholder: "Ex : 20"
                 } %>
   </div>
 
   <div class="d-flex justify-content-end gap-2">
     <% if local_assigns[:in_modal] %>
-      <%= f.button :button, "Annuler", class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
-      <%= f.button :submit, "Créer l'événement", class: "btn btn-dark" %>
+      <%= f.button :button, "Annuler", class: "btn btn-outline-da", data: { bs_dismiss: "modal" } %>
+      <%= f.button :submit, "Créer l'événement", class: "btn btn-primary" %>
     <% else %>
-      <%= link_to "Annuler", events_path, class: "btn btn-outline-secondary" %>
-      <%= f.button :submit, "Enregistrer les modifications", class: "btn btn-dark" %>
+      <%= link_to "Annuler", events_path, class: "btn btn-outline-da" %>
+      <%= f.button :submit, "Enregistrer les modifications", class: "btn btn-primary" %>
     <% end %>
   </div>
 <% end %>
+
+<style>
+  .form-control-da {
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .form-control-da:focus {
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .btn-outline-da {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-da:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #764ba2;
+  }
+</style>
