@@ -7,7 +7,7 @@ class FamiliesController < ApplicationController
     @people = @family.people.order(birthday: :desc)                    # du plus jeune au plus vieux
     @tasks  = Task.all # Toutes les tâches pour l'instant
     @events = @family.family_events.where("start_date >= ?", Date.today).order(start_date: :asc, time: :asc).limit(5)
-    # @files  = @family.files.order(created_at: :desc).limit(10)
+    @documents_count = @family.documents.count
 
     # Activité récente - Tâches complétées récemment (max 5)
     @recent_completed_tasks = Task.where(status: true)
