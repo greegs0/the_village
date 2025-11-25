@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:edit, :update, :destroy]
-  before_action :authorize_user, only: [:edit, :update, :destroy]
+  before_action :set_event, only: [:update, :destroy]
+  before_action :authorize_user, only: [:update, :destroy]
 
   def index
     @events=Event.all
@@ -17,14 +17,11 @@ class EventsController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def update
     if @event.update(event_params)
       redirect_to events_path, notice: "Evénement modifié avec succès"
     else
-      render :edit, status: :unprocessable_entity
+      redirect_to events_path, alert: "Erreur lors de la modification de l'événement"
     end
   end
 
@@ -46,6 +43,6 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:name, :date, :place, :description, :category, :max_participations )
+    params.require(:event).permit(:name, :date, :place, :description, :category, :max_participations, :address, :latitude, :longitude)
   end
 end

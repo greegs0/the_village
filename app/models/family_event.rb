@@ -30,6 +30,14 @@ class FamilyEvent < ApplicationRecord
           month_end, month_start, month_start, month_end)
   }
 
+  # Scope pour récupérer les événements avec des coordonnées
+  scope :with_coordinates, -> { where.not(latitude: nil, longitude: nil) }
+
+  # Vérifie si l'événement a des coordonnées valides
+  def has_coordinates?
+    latitude.present? && longitude.present?
+  end
+
   # Méthode pour obtenir le nom du type d'événement
   def type_name
     EVENT_TYPES.dig(event_type, :name) || 'Autre'

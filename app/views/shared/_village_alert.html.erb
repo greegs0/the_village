@@ -1,0 +1,399 @@
+<%# Village Alert Component - Système d'alertes personnalisé avec Village Assistant %>
+<%# Types: success, warning, error, info, confirm %>
+
+<div id="village-alert-container"
+     data-controller="village-alert"
+     data-village-alert-auto-hide-value="true"
+     data-village-alert-duration-value="5000">
+
+  <!-- Alert Modal (pour les notifications) -->
+  <div class="village-alert"
+       data-village-alert-target="alert"
+       style="display: none;">
+    <div class="village-alert-backdrop" data-action="click->village-alert#close"></div>
+    <div class="village-alert-content">
+      <div class="village-alert-header">
+        <div class="village-alert-icon-header">
+          <%= image_tag "village-assistant-icon-v2.svg", alt: "Village Assistant", class: "village-alert-icon-img" %>
+        </div>
+        <div class="village-alert-title-wrapper">
+          <span class="village-alert-name">Village Assistant</span>
+          <span class="village-alert-subtitle" data-village-alert-target="subtitle">vous informe</span>
+        </div>
+        <button class="village-alert-close" data-action="click->village-alert#close" aria-label="Fermer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="village-alert-body">
+        <div class="village-alert-avatar" data-village-alert-target="avatarWrapper">
+          <%= image_tag "village-assistant-avatar.svg", alt: "Village Assistant", class: "village-alert-avatar-img" %>
+          <div class="village-alert-status" data-village-alert-target="status">
+            <!-- Status icon inserted by JS based on type -->
+          </div>
+        </div>
+        <div class="village-alert-bubble">
+          <p class="village-alert-message" data-village-alert-target="message">
+            <!-- Message inserted by JS -->
+          </p>
+        </div>
+      </div>
+      <div class="village-alert-actions" data-village-alert-target="actions" style="display: none;">
+        <button class="village-alert-btn village-alert-btn-cancel" data-action="click->village-alert#cancel">
+          Annuler
+        </button>
+        <button class="village-alert-btn village-alert-btn-confirm" data-action="click->village-alert#confirm">
+          Confirmer
+        </button>
+      </div>
+      <div class="village-alert-progress" data-village-alert-target="progress">
+        <div class="village-alert-progress-bar" data-village-alert-target="progressBar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Village Alert Container */
+  .village-alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+    animation: villageAlertFadeIn 0.2s ease;
+  }
+
+  @keyframes villageAlertFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes villageAlertSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes villageAlertSlideOut {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+  }
+
+  .village-alert-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+  }
+
+  .village-alert-content {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25), 0 8px 24px rgba(0, 0, 0, 0.1);
+    max-width: 480px;
+    width: 90%;
+    overflow: hidden;
+    animation: villageAlertSlideIn 0.3s ease;
+    border: 1px solid rgba(102, 126, 234, 0.15);
+  }
+
+  .village-alert.closing .village-alert-content {
+    animation: villageAlertSlideOut 0.2s ease forwards;
+  }
+
+  /* Header */
+  .village-alert-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .village-alert-icon-header {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    margin: -10px 0;
+  }
+
+  .village-alert-icon-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .village-alert-title-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .village-alert-name {
+    font-weight: 600;
+    font-size: 17px;
+  }
+
+  .village-alert-subtitle {
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  .village-alert-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+  }
+
+  .village-alert-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+
+  /* Body */
+  .village-alert-body {
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .village-alert-avatar {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    position: relative;
+  }
+
+  .village-alert-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .village-alert-status {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+  }
+
+  .village-alert-status svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .village-alert-status.success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+
+  .village-alert-status.error {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+  }
+
+  .village-alert-status.warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+  }
+
+  .village-alert-status.info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .village-alert-status.confirm {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .village-alert-bubble {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border-radius: 16px;
+    border-top-left-radius: 4px;
+    padding: 16px 18px;
+    position: relative;
+  }
+
+  .village-alert-bubble::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 16px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid rgba(102, 126, 234, 0.08);
+  }
+
+  .village-alert-message {
+    margin: 0;
+    font-size: 15px;
+    color: #374151;
+    line-height: 1.6;
+  }
+
+  /* Actions (pour confirm) */
+  .village-alert-actions {
+    display: flex;
+    gap: 14px;
+    padding: 0 24px 24px;
+    justify-content: flex-end;
+  }
+
+  .village-alert-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+
+  .village-alert-btn-cancel {
+    background: #f3f4f6;
+    color: #6b7280;
+  }
+
+  .village-alert-btn-cancel:hover {
+    background: #e5e7eb;
+    color: #374151;
+  }
+
+  .village-alert-btn-confirm {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .village-alert-btn-confirm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  /* Confirm danger variant - utilise le gradient DA */
+  .village-alert-btn-confirm.danger {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .village-alert-btn-confirm.danger:hover {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  /* Progress bar */
+  .village-alert-progress {
+    height: 3px;
+    background: #f3f4f6;
+  }
+
+  .village-alert-progress-bar {
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 100%;
+    transform-origin: left;
+    transition: transform linear;
+  }
+
+  /* Toast variant (petit, en bas à droite) */
+  .village-alert.toast {
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 20px;
+    pointer-events: none;
+  }
+
+  .village-alert.toast .village-alert-backdrop {
+    display: none;
+  }
+
+  .village-alert.toast .village-alert-content {
+    pointer-events: auto;
+    max-width: 360px;
+  }
+
+  .village-alert.toast .village-alert-header {
+    padding: 12px 16px;
+  }
+
+  .village-alert.toast .village-alert-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .village-alert.toast .village-alert-body {
+    padding: 16px;
+  }
+
+  .village-alert.toast .village-alert-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .village-alert.toast .village-alert-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .village-alert.toast .village-alert-message {
+    font-size: 14px;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .village-alert {
+      padding-top: 60px;
+    }
+
+    .village-alert-content {
+      width: 95%;
+      margin: 0 10px;
+    }
+
+    .village-alert.toast {
+      padding: 10px;
+    }
+
+    .village-alert.toast .village-alert-content {
+      max-width: 100%;
+    }
+  }
+</style>

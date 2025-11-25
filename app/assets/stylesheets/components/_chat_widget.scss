@@ -15,8 +15,8 @@
 }
 
 .chat-widget-button {
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   border: none;
   background: $gradient-primary;
@@ -38,8 +38,8 @@
   }
 
   .chat-widget-icon {
-    width: 36px;
-    height: 36px;
+    width: 64px;
+    height: 64px;
   }
 }
 
@@ -49,6 +49,65 @@
   }
   50% {
     box-shadow: 0 4px 20px rgba($color-primary, 0.6);
+  }
+}
+
+// ============================================================
+// CHAT WIDGET POPUP (Notification bubble)
+// ============================================================
+.chat-widget-popup {
+  position: absolute;
+  bottom: 82px;
+  right: 0;
+  background: $color-white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba($color-primary, 0.15);
+  animation: popupLife 6s ease-in-out forwards;
+
+  // Text with gradient
+  .chat-widget-popup-text {
+    background: $gradient-primary;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  // Arrow pointing to button
+  .chat-widget-popup-arrow {
+    position: absolute;
+    bottom: -8px;
+    right: 24px;
+    width: 16px;
+    height: 16px;
+    background: $color-white;
+    border-right: 1px solid rgba($color-primary, 0.15);
+    border-bottom: 1px solid rgba($color-primary, 0.15);
+    transform: rotate(45deg);
+  }
+}
+
+@keyframes popupLife {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  8% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  85% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.9);
+    visibility: hidden;
   }
 }
 
@@ -183,12 +242,12 @@
   }
 
   .chat-widget-button {
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
 
     .chat-widget-icon {
-      width: 32px;
-      height: 32px;
+      width: 56px;
+      height: 56px;
     }
   }
 }

@@ -1,14 +1,15 @@
-<div class="modal fade" id="participantsModal<%= event.id %>" tabindex="-1" aria-labelledby="participantsModalLabel<%= event.id %>" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
-      <div class="modal-header border-0">
+<div class="village-dialog" id="participantsModal<%= event.id %>" style="display: none;">
+  <div class="village-dialog-backdrop" onclick="VillageModal.close('participantsModal<%= event.id %>')"></div>
+  <div class="village-dialog-container">
+    <div class="village-dialog-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2); background: white;">
+      <div class="village-dialog-header border-0 p-4 pb-2">
         <div>
-          <h5 class="modal-title fw-semibold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="participantsModalLabel<%= event.id %>">Participants inscrits</h5>
+          <h5 class="fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Participants inscrits</h5>
           <p class="text-secondary small mb-0"><%= event.participations_count || 0 %> participant<%= (event.participations_count || 0) > 1 ? 's' : '' %> inscrit<%= (event.participations_count || 0) > 1 ? 's' : '' %></p>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" onclick="VillageModal.close('participantsModal<%= event.id %>')" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="village-dialog-body p-4 pt-2">
         <% participants = generate_fake_participants(event.participations_count || 0) %>
         <% if participants.any? %>
           <ul class="list-group list-group-flush">

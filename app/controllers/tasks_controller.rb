@@ -38,7 +38,7 @@ class TasksController < ApplicationController
     @task = @family.tasks.new(task_params)
 
     if @task.save
-      redirect_to family_tasks_path(@family), notice: 'Task was successfully created.'
+      redirect_to family_tasks_path(@family), notice: 'Tâche créée avec succès.'
     else
       @tasks = @family.tasks
       render :index, status: :unprocessable_entity
@@ -48,7 +48,7 @@ class TasksController < ApplicationController
   # PATCH/PUT /families/:family_id/tasks/:id
   def update
     if @task.update(task_params)
-      redirect_to family_task_path(@family, @task), notice: 'Task was successfully updated.'
+      redirect_to family_task_path(@family, @task), notice: 'Tâche modifiée avec succès.'
     else
       render :show, status: :unprocessable_entity
     end

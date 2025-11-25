@@ -37,6 +37,21 @@
                 } %>
   </div>
 
+  <!-- Adresse -->
+  <div class="mb-3">
+    <%= f.input :address,
+                label: "Adresse",
+                required: false,
+                label_html: { class: "form-label fw-medium", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" },
+                input_html: {
+                  class: "form-control form-control-da",
+                  placeholder: "Ex : 12 Rue de la Paix, 75002 Paris",
+                  id: "event_address_input"
+                } %>
+    <%= f.hidden_field :latitude, id: "event_latitude" %>
+    <%= f.hidden_field :longitude, id: "event_longitude" %>
+  </div>
+
   <!-- Catégorie-->
   <div class="mb-3">
     <%= f.input :category,
@@ -88,8 +103,11 @@
   </div>
 
   <div class="d-flex justify-content-end gap-2">
-    <% if local_assigns[:in_modal] %>
-      <%= f.button :button, "Annuler", class: "btn btn-outline-da", data: { bs_dismiss: "modal" } %>
+    <% if local_assigns[:in_modal] && local_assigns[:modal_id] %>
+      <button type="button" class="btn btn-outline-da" onclick="VillageModal.close('<%= modal_id %>')">Annuler</button>
+      <%= f.button :submit, event.persisted? ? "Enregistrer" : "Créer l'événement", class: "btn btn-primary" %>
+    <% elsif local_assigns[:in_modal] %>
+      <button type="button" class="btn btn-outline-da" data-bs-dismiss="modal">Annuler</button>
       <%= f.button :submit, "Créer l'événement", class: "btn btn-primary" %>
     <% else %>
       <%= link_to "Annuler", events_path, class: "btn btn-outline-da" %>
@@ -109,6 +127,34 @@
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
 
+  /* Override validation colors - gradient DA */
+  .form-control-da.is-valid,
+  .form-control-da:valid:not(:placeholder-shown) {
+    border-color: #667eea !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23667eea' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
+  }
+
+  .form-select.form-control-da.is-valid,
+  .form-select.form-control-da:valid:not([value=""]) {
+    border-color: #667eea !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23667eea' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
+  }
+
+  .was-validated .form-control-da:valid,
+  .form-control-da.is-valid {
+    border-color: #667eea !important;
+  }
+
+  .was-validated .form-control-da:valid:focus,
+  .form-control-da.is-valid:focus {
+    border-color: #764ba2 !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+  }
+
+  .valid-feedback {
+    color: #667eea !important;
+  }
+
   .btn-outline-da {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
     border: 1px solid rgba(102, 126, 234, 0.2);
@@ -122,3 +168,49 @@
     color: #764ba2;
   }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const addressInput = document.getElementById('event_address_input');
+  const latitudeField = document.getElementById('event_latitude');
+  const longitudeField = document.getElementById('event_longitude');
+
+  if (addressInput) {
+    let debounceTimer;
+
+    addressInput.addEventListener('blur', function() {
+      const address = this.value.trim();
+      if (address.length > 5) {
+        geocodeAddress(address);
+      }
+    });
+
+    function geocodeAddress(address) {
+      // Utiliser l'API Nominatim (OpenStreetMap) pour le géocodage
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`;
+
+      fetch(url, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const result = data[0];
+          latitudeField.value = result.lat;
+          longitudeField.value = result.lon;
+          // Feedback visuel
+          addressInput.style.borderColor = '#10b981';
+          setTimeout(() => {
+            addressInput.style.borderColor = '';
+          }, 2000);
+        }
+      })
+      .catch(error => {
+        console.log('Geocoding error:', error);
+      });
+    }
+  }
+});
+</script>

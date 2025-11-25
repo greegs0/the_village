@@ -7,12 +7,12 @@
             <!-- Logo -->
             <div class="text-center mb-4">
               <%= image_tag "the-village-icon.svg", alt: "The Village Logo", class: "mb-3", style: "width: 80px; height: 80px;" %>
-              <h1 class="h4 mb-2">Bienvenue sur The Village</h1>
-              <p class="text-secondary">Connectez-vous pour rejoindre votre communauté</p>
+              <h1 class="h4 mb-2 auth-title">Bienvenue sur The Village</h1>
+              <p class="auth-subtitle">Connectez-vous pour rejoindre votre communauté</p>
             </div>
 
             <!-- Tabs -->
-            <ul class="nav nav-pills nav-fill bg-light rounded-3 p-1 mb-4">
+            <ul class="nav nav-pills nav-fill rounded-3 p-1 mb-4 auth-tabs">
               <li class="nav-item">
                 <button class="nav-link active">Connexion</button>
               </li>
@@ -30,10 +30,11 @@
                             required: false,
                             autofocus: true,
                             label: "Email",
+                            label_html: { class: "auth-label" },
                             input_html: {
                               autocomplete: "email",
                               placeholder: "votreemail@exemple.com",
-                              class: "form-control"
+                              class: "form-control auth-input"
                             } %>
               </div>
 
@@ -41,17 +42,18 @@
                 <%= f.input :password,
                             required: false,
                             label: "Mot de passe",
+                            label_html: { class: "auth-label" },
                             input_html: {
                               autocomplete: "current-password",
                               placeholder: "••••••••",
-                              class: "form-control"
+                              class: "form-control auth-input"
                             } %>
               </div>
 
-              <%= f.button :submit, "Se connecter", class: "btn btn-dark w-100 mb-3" %>
+              <%= f.button :submit, "Se connecter", class: "btn btn-primary w-100 mb-3" %>
 
               <div class="text-center">
-                <%= link_to "Mot de passe oublié ?", new_user_password_path, class: "text-decoration-none" %>
+                <%= link_to "Mot de passe oublié ?", new_user_password_path, class: "auth-link" %>
               </div>
             <% end %>
           </div>
@@ -60,3 +62,66 @@
     </div>
   </div>
 </div>
+
+<style>
+  .auth-title {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+
+  .auth-subtitle {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .auth-label {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 500;
+  }
+
+  .auth-tabs {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  }
+
+  .auth-tabs .nav-link {
+    color: #667eea;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .auth-tabs .nav-link:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  }
+
+  .auth-tabs .nav-link.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+    -webkit-text-fill-color: white;
+  }
+
+  .auth-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  }
+
+  .auth-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .auth-link:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,5 +1,3 @@
-
-
 <!-- SVG Gradient Definitions -->
 <svg width="0" height="0" style="position: absolute;">
   <defs>
@@ -11,86 +9,172 @@
 </svg>
 
 <div class="container-fluid px-4 px-lg-5 py-4">
-  <!-- Hero Section -->
-  <div class="text-center mb-5">
-    <div class="hero-icon mx-auto mb-3">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M2 12h20"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+    <div class="mb-3 mb-md-0">
+      <h1 class="h2 mb-2 dashboard-title">Événements</h1>
+      <p class="text-secondary mb-0">Découvre et participe aux événements organisés dans ta région</p>
     </div>
-    <h1 class="display-5 fw-normal mb-3 page-title">Événements Communautaires</h1>
-    <p class="lead text-secondary mb-4">
-      Découvres et participe aux événements organisés dans ta région. Rencontre tes voisins et créez des liens !
-    </p>
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
         <line x1="12" y1="5" x2="12" y2="19"/>
         <line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
-      Crée un événement dans ta région
+      Créer un événement
     </button>
   </div>
 
-  <!-- View Toggle -->
-  <ul class="nav nav-pills p-1 mb-4 justify-content-center rounded-3 view-toggle" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active view-tab" data-bs-toggle="pill" data-bs-target="#listView" type="button">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-          <line x1="8" y1="6" x2="21" y2="6"/>
-          <line x1="8" y1="12" x2="21" y2="12"/>
-          <line x1="8" y1="18" x2="21" y2="18"/>
-          <line x1="3" y1="6" x2="3.01" y2="6"/>
-          <line x1="3" y1="12" x2="3.01" y2="12"/>
-          <line x1="3" y1="18" x2="3.01" y2="18"/>
-        </svg>
-        Liste
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link view-tab" data-bs-toggle="pill" data-bs-target="#mapView" type="button">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-          <line x1="8" y1="2" x2="8" y2="18"/>
-          <line x1="16" y1="6" x2="16" y2="22"/>
-        </svg>
-        Carte
-      </button>
-    </li>
-  </ul>
-
-  <!-- Tab Content -->
-  <div class="tab-content">
-    <div class="tab-pane fade show active" id="listView">
-      <!-- Events Grid -->
-      <div class="row g-4">
-        <% @events.each do |event| %>
-          <%= render "event_card", event: event %>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="tab-pane fade" id="mapView">
-      <div class="container" style="max-width: 1200px;">
-        <h2 class="text-center mb-4 section-title">Tes événements par région</h2>
-
-        <!-- Search Form -->
-        <div class="mb-4">
-          <label for="locationSearch" class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Entre un code postal ou une adresse</label>
-          <div class="input-group search-bar-da">
-            <span class="input-group-text">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="m21 21-4.35-4.35"/>
+  <!-- Stats Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="card stat-card rounded-4 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon me-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
-            </span>
-            <input type="text" class="form-control" id="locationSearch" placeholder="ex : 65010">
+            </div>
+            <div>
+              <div class="stat-value"><%= @events.count %></div>
+              <div class="stat-label">Événements</div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card stat-card rounded-4 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon me-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div>
+              <div class="stat-value"><%= @events.where('date >= ?', Date.today).count %></div>
+              <div class="stat-label">À venir</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card stat-card rounded-4 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon me-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div>
+              <div class="stat-value"><%= @events.sum(:participations_count) rescue 0 %></div>
+              <div class="stat-label">Participants</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card stat-card rounded-4 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon me-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <div class="stat-value"><%= @events.select(:place).distinct.count rescue 0 %></div>
+              <div class="stat-label">Lieux</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Map Container -->
-        <div id="map" class="map-container"></div>
+  <!-- View Toggle & Content -->
+  <div class="card stat-card rounded-4">
+    <div class="card-header bg-transparent border-0 p-3">
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
+        <h5 class="mb-0 dashboard-section-title">Liste des événements</h5>
+        <ul class="nav nav-pills p-1 rounded-3 view-toggle" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active view-tab" data-bs-toggle="pill" data-bs-target="#listView" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                <line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              Liste
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link view-tab" data-bs-toggle="pill" data-bs-target="#mapView" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+                <line x1="8" y1="2" x2="8" y2="18"/>
+                <line x1="16" y1="6" x2="16" y2="22"/>
+              </svg>
+              Carte
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-body p-3">
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="listView">
+          <% if @events.any? %>
+            <!-- Events Grid -->
+            <div class="row g-4">
+              <% @events.each do |event| %>
+                <%= render "event_card", event: event %>
+              <% end %>
+            </div>
+          <% else %>
+            <!-- Empty State -->
+            <div class="text-center py-5">
+              <div class="empty-state-icon mx-auto mb-3">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+              <h5 class="mb-2" style="color: #374151;">Aucun événement pour le moment</h5>
+              <p class="text-secondary mb-3">Sois le premier à organiser un événement dans ta région !</p>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCommunityEventModal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Créer un événement
+              </button>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="tab-pane fade" id="mapView">
+          <!-- Map Container -->
+          <div id="map" class="map-container"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -102,7 +186,7 @@
     <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="createCommunityEventModalLabel">Crée un événement communautaire</h5>
+          <h5 class="modal-title fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="createCommunityEventModalLabel">Créer un événement</h5>
           <p class="text-secondary small mb-0">Organise un événement et invite tes voisins à participer</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -114,72 +198,224 @@
   </div>
 </div>
 
+<!-- Custom Dialog Handler (100% indépendant de Bootstrap) -->
+<script>
+window.VillageModal = {
+  open: function(dialogId) {
+    var dialog = document.getElementById(dialogId);
+    if (!dialog) return;
+    // Déplacer vers le body pour éviter les problèmes de positionnement
+    if (dialog.parentNode !== document.body) {
+      document.body.appendChild(dialog);
+    }
+    dialog.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  },
+
+  close: function(dialogId) {
+    var dialog = document.getElementById(dialogId);
+    if (!dialog) return;
+    dialog.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+};
+
+// Fermer avec Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.village-dialog').forEach(function(d) {
+      d.style.display = 'none';
+    });
+    document.body.style.overflow = '';
+  }
+});
+</script>
+
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Initialize map when the map tab is shown
+  // Variables globales pour la carte (nécessaire pour Turbo)
+  window.VillageMap = window.VillageMap || {};
+  window.VillageMap.map = null;
+  window.VillageMap.markersById = {};
+
+  // Données des événements
+  window.VillageMap.events = [
+    <% @events.with_coordinates.each do |event| %>
+    {
+      id: <%= event.id %>,
+      lat: <%= event.latitude %>,
+      lng: <%= event.longitude %>,
+      name: "<%= j(event.name) %>",
+      date: "<%= event.date&.strftime('%d/%m/%Y') %>",
+      place: "<%= j(event.place || '') %>",
+      address: "<%= j(event.address || '') %>",
+      category: "<%= j(event.category || '') %>"
+    },
+    <% end %>
+  ];
+
+  window.VillageMap.initMap = function() {
+    const mapContainer = document.getElementById('map');
+    if (!mapContainer) return;
+
+    // Détruire l'ancienne carte si elle existe
+    if (window.VillageMap.map) {
+      window.VillageMap.map.remove();
+      window.VillageMap.map = null;
+      window.VillageMap.markersById = {};
+    }
+
+    // Centre par défaut sur Paris
+    let defaultCenter = [48.8566, 2.3522];
+    let defaultZoom = 12;
+
+    // Si des événements existent, centrer sur le premier
+    if (window.VillageMap.events.length > 0) {
+      defaultCenter = [window.VillageMap.events[0].lat, window.VillageMap.events[0].lng];
+    }
+
+    window.VillageMap.map = L.map('map').setView(defaultCenter, defaultZoom);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }).addTo(window.VillageMap.map);
+
+    // Icône personnalisée avec le gradient violet
+    const customIcon = L.divIcon({
+      className: 'custom-marker',
+      html: '<div class="marker-pin"></div>',
+      iconSize: [30, 42],
+      iconAnchor: [15, 42],
+      popupAnchor: [0, -42]
+    });
+
+    // Ajouter les marqueurs pour chaque événement
+    const markers = [];
+    window.VillageMap.events.forEach(function(event) {
+      const popupContent = `
+        <div class="event-popup">
+          <strong>${event.name}</strong>
+          ${event.date ? '<br><small>📅 ' + event.date + '</small>' : ''}
+          ${event.address ? '<br><small>📍 ' + event.address + '</small>' : ''}
+          ${event.category ? '<br><span class="badge bg-primary mt-1">' + event.category + '</span>' : ''}
+        </div>
+      `;
+      const marker = L.marker([event.lat, event.lng], { icon: customIcon })
+        .addTo(window.VillageMap.map)
+        .bindPopup(popupContent);
+      markers.push(marker);
+      window.VillageMap.markersById[event.id] = marker;
+    });
+
+    // Ajuster la vue pour afficher tous les marqueurs
+    if (markers.length > 1) {
+      const group = L.featureGroup(markers);
+      window.VillageMap.map.fitBounds(group.getBounds().pad(0.1));
+    } else if (markers.length === 0) {
+      // Aucun événement avec coordonnées, afficher message
+      L.popup()
+        .setLatLng(defaultCenter)
+        .setContent('<em>Aucun événement localisé pour le moment</em>')
+        .openOn(window.VillageMap.map);
+    }
+  };
+
+  // Fonction pour afficher un événement sur la carte
+  window.VillageMap.showEventOnMap = function(eventId, lat, lng) {
     const mapTab = document.querySelector('button[data-bs-target="#mapView"]');
-    let map = null;
+    const mapPane = document.getElementById('mapView');
 
-    if (mapTab) {
-      mapTab.addEventListener('shown.bs.tab', function() {
-        if (!map) {
-          // Initialize the map centered on department 65 (Hautes-Pyrénées)
-          map = L.map('map').setView([43.0, 0.0], 9);
+    // Activer l'onglet carte et initialiser si nécessaire
+    if (mapTab && mapPane && !mapPane.classList.contains('active')) {
+      const tab = new bootstrap.Tab(mapTab);
+      tab.show();
+    }
 
-          // Add OpenStreetMap tiles
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 19
-          }).addTo(map);
+    // Attendre que la carte soit initialisée
+    setTimeout(function() {
+      // Initialiser la carte si elle ne l'est pas encore
+      if (!window.VillageMap.map) {
+        window.VillageMap.initMap();
+      }
 
-          // Add a marker for the department center
-          L.marker([43.0, 0.0]).addTo(map)
-            .bindPopup('Département 65 - Hautes-Pyrénées')
-            .openPopup();
-        } else {
-          // Invalidate size to ensure proper rendering when switching tabs
-          setTimeout(function() {
-            map.invalidateSize();
-          }, 100);
+      setTimeout(function() {
+        if (window.VillageMap.map && window.VillageMap.markersById[eventId]) {
+          // Centrer sur le marqueur et zoomer
+          window.VillageMap.map.setView([lat, lng], 16);
+          // Ouvrir le popup
+          window.VillageMap.markersById[eventId].openPopup();
+          // Animation du marqueur
+          const markerElement = window.VillageMap.markersById[eventId].getElement();
+          if (markerElement) {
+            markerElement.classList.add('marker-highlight');
+            setTimeout(() => markerElement.classList.remove('marker-highlight'), 2000);
+          }
         }
+      }, 100);
+    }, 200);
+  };
+
+  // Setup de la carte quand l'onglet est affiché
+  function setupMapTab() {
+    const mapTab = document.querySelector('button[data-bs-target="#mapView"]');
+    if (mapTab && !mapTab._villageMapSetup) {
+      mapTab._villageMapSetup = true;
+      mapTab.addEventListener('shown.bs.tab', function() {
+        setTimeout(window.VillageMap.initMap, 50);
       });
     }
-  });
+
+    // Si l'onglet carte est déjà actif
+    const mapPane = document.getElementById('mapView');
+    if (mapPane && mapPane.classList.contains('active')) {
+      setTimeout(window.VillageMap.initMap, 50);
+    }
+  }
+
+  // Exécuter au chargement
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupMapTab);
+  } else {
+    setupMapTab();
+  }
+
+  // Support Turbo Drive
+  document.addEventListener('turbo:load', setupMapTab);
+  document.addEventListener('turbo:render', setupMapTab);
 </script>
 
 <style>
-  /* Hero section */
-  .hero-icon {
-    width: 64px;
-    height: 64px;
+  /* Stats */
+  .stat-icon {
+    width: 44px;
+    height: 44px;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border-radius: 50%;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .page-title {
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .section-title {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .stat-label {
+    font-size: 0.75rem;
+    color: #6B7280;
   }
 
   /* View toggle tabs */
   .view-toggle {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-    max-width: 300px;
-    margin: 0 auto;
   }
 
   .view-tab {
@@ -187,8 +423,9 @@
     border: none;
     color: #6B7280;
     font-weight: 500;
+    font-size: 13px;
     transition: all 0.3s ease;
-    padding: 10px 24px;
+    padding: 8px 16px;
     display: flex;
     align-items: center;
   }
@@ -203,41 +440,220 @@
     border-radius: 0.5rem;
   }
 
-  /* Search bar DA */
-  .search-bar-da {
-    background: white;
-    border: 1px solid rgba(102, 126, 234, 0.2);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .search-bar-da:focus-within {
-    border-color: rgba(102, 126, 234, 0.5);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  }
-
-  .search-bar-da .input-group-text {
-    background: transparent;
-    border: none;
-    padding-left: 16px;
-  }
-
-  .search-bar-da .form-control {
-    border: none;
-    background: transparent;
-    padding: 12px 16px 12px 8px;
-  }
-
-  .search-bar-da .form-control:focus {
-    box-shadow: none;
+  /* Empty state */
+  .empty-state-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Map container */
   .map-container {
     height: 500px;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px solid rgba(102, 126, 234, 0.2);
     overflow: hidden;
   }
+
+  /* Custom marker styles */
+  .custom-marker {
+    background: transparent;
+    border: none;
+  }
+
+  .marker-highlight .marker-pin {
+    animation: marker-bounce 0.5s ease-in-out 3;
+  }
+
+  @keyframes marker-bounce {
+    0%, 100% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(-10px); }
+  }
+
+  .marker-pin {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+  }
+
+  .marker-pin::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    margin: 8px 0 0 8px;
+    background: #fff;
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  /* Event popup styles */
+  .event-popup {
+    min-width: 150px;
+  }
+
+  .event-popup strong {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .event-popup small {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .event-popup .badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    -webkit-text-fill-color: white;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+    border: 1px solid rgba(102, 126, 234, 0.15);
+  }
+
+  .leaflet-popup-tip {
+    background: white;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+  }
+
+  .leaflet-popup-close-button {
+    color: #667eea !important;
+  }
+
+  .leaflet-popup-close-button:hover {
+    color: #764ba2 !important;
+  }
+
+  /* Event card styles */
+  .event-card {
+    border: 1px solid rgba(102, 126, 234, 0.15) !important;
+    transition: all 0.3s ease;
+  }
+
+  .event-card:hover {
+    border-color: rgba(102, 126, 234, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  }
+
+  .category-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 500;
+  }
+
+  .participants-badge {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    color: #667eea;
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-status {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
+    border: none;
+    font-weight: 500;
+  }
+
+  .btn-status:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    color: #764ba2;
+  }
+
+  .btn-status:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .btn-edit-event {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit-event:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #764ba2;
+  }
+
+  .btn-delete-event {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-delete-event:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #b91c1c;
+  }
+
+  /* Village Dialog - système 100% custom */
+  .village-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .village-dialog-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .village-dialog-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    width: calc(100% - 2rem);
+    max-width: 500px;
+  }
+
+  .village-dialog-content {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .village-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
 </style>

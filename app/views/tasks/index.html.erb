@@ -9,6 +9,10 @@
       <stop offset="0%" style="stop-color:#667eea"/>
       <stop offset="100%" style="stop-color:#764ba2"/>
     </linearGradient>
+    <linearGradient id="successGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
   </defs>
 </svg>
 
@@ -25,7 +29,7 @@
     </button>
   </div>
 
-  <div class="row g-4">
+  <div class="row g-4 tasks-row">
     <!-- Task List -->
     <div class="col-lg-8">
       <div class="card stat-card rounded-4">
@@ -55,9 +59,9 @@
                 <div id="ongoing-tasks-container">
                   <% ongoing_tasks.each_with_index do |task, index| %>
                     <div class="rounded-3 p-3 mb-3 d-flex align-items-center gap-3 task-item <%= 'hidden-task' if index >= 5 %>" data-task-type="ongoing" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%); border: 1px solid rgba(102, 126, 234, 0.12);">
-                      <%= form_with(url: toggle_status_family_task_path(@family, task), method: :patch, local: true, class: "m-0") do %>
+                      <%= form_with(url: toggle_status_family_task_path(@family, task), method: :patch, local: true, class: "m-0 task-toggle-form") do %>
                         <div class="task-checkbox">
-                          <%= check_box_tag 'status', '1', task.status, class: "form-check-input m-0", onchange: "this.form.submit()" %>
+                          <%= check_box_tag 'status', '1', task.status, class: "form-check-input m-0 task-complete-checkbox", data: { was_checked: task.status } %>
                         </div>
                       <% end %>
                       <div class="flex-grow-1">
@@ -112,9 +116,9 @@
                 <div id="completed-tasks-container">
                   <% completed_tasks.each_with_index do |task, index| %>
                     <div class="rounded-3 p-3 mb-3 d-flex align-items-center gap-3 task-item <%= 'hidden-task' if index >= 5 %>" data-task-type="completed" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%); border: 1px solid rgba(102, 126, 234, 0.12); opacity: 0.7;">
-                      <%= form_with(url: toggle_status_family_task_path(@family, task), method: :patch, local: true, class: "m-0") do %>
+                      <%= form_with(url: toggle_status_family_task_path(@family, task), method: :patch, local: true, class: "m-0 task-toggle-form") do %>
                         <div class="task-checkbox">
-                          <%= check_box_tag 'status', '1', task.status, class: "form-check-input m-0", onchange: "this.form.submit()" %>
+                          <%= check_box_tag 'status', '1', task.status, class: "form-check-input m-0 task-complete-checkbox", data: { was_checked: task.status } %>
                         </div>
                       <% end %>
                       <div class="flex-grow-1">
@@ -168,9 +172,9 @@
     </div>
 
     <!-- Sidebar -->
-    <div class="col-lg-4">
+    <div class="col-lg-4 sidebar-col">
       <!-- Distribution by Person -->
-      <div class="card stat-card rounded-4 mb-4">
+      <div class="card stat-card rounded-4 mb-4 sticky-sidebar">
         <div class="card-body p-3 p-md-4">
           <h6 class="mb-1 dashboard-section-title">Répartition par personne</h6>
           <p class="text-secondary small mb-4">Tâches en cours assignées</p>
@@ -212,14 +216,14 @@
   <div class="row g-4 mt-2">
     <!-- Pie Chart with Stimulus Controller -->
     <div class="col-lg-6">
-      <div class="card stat-card rounded-4">
-        <div class="card-body p-3 p-md-4">
+      <div class="card stat-card rounded-4 h-100">
+        <div class="card-body p-3 p-md-4 d-flex flex-column">
           <h6 class="mb-1 dashboard-section-title">Répartition globale de toutes les tâches</h6>
           <p class="text-secondary small mb-4">Qui en fait le plus depuis le début de l'année ?</p>
 
           <% if @tasks_by_person.any? && @tasks.count > 0 %>
             <% colors = ["#7684ffff", "#F0ABFC", "#FDA4AF", "#ffe181ff", "#75e79fff", "#7DD3FC"] %>
-            <div class="text-center">
+            <div class="text-center flex-grow-1 d-flex flex-column justify-content-center">
               <!-- Camembert avec Stimulus -->
               <%
                 labels = @tasks_by_person.map do |data|
@@ -276,7 +280,7 @@
 
     <!-- Individual Contribution -->
     <div class="col-lg-6">
-      <div class="card stat-card rounded-4">
+      <div class="card stat-card rounded-4 h-100">
         <div class="card-body p-3 p-md-4">
           <h6 class="mb-1 dashboard-section-title">Contribution individuelle</h6>
           <p class="text-secondary small mb-4">La to-do en volume par personne</p>
@@ -371,7 +375,24 @@
   </div>
 </div>
 
+<%# La confirmation de tâche utilise maintenant Village Alert %>
+
 <style>
+  /* Sticky sidebar */
+  .tasks-row {
+    align-items: stretch;
+  }
+
+  .sidebar-col {
+    position: relative;
+  }
+
+  .sticky-sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 56px;
+  }
+
   .hidden-task {
     display: none !important;
   }
@@ -395,10 +416,16 @@
   }
 
   .task-checkbox .form-check-input {
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(102, 126, 234, 0.4);
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(102, 126, 234, 0.5);
     cursor: pointer;
+    background-color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
   }
 
   .task-checkbox .form-check-input:checked {
@@ -406,9 +433,25 @@
     border-color: #667eea;
   }
 
+  .task-checkbox .form-check-input:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
   .task-checkbox .form-check-input:focus {
     box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
     border-color: rgba(102, 126, 234, 0.5);
+  }
+
+  .task-checkbox .form-check-input:hover {
+    border-color: #667eea;
   }
 
   /* Form validation colors */
@@ -416,6 +459,21 @@
   .form-select:focus {
     border-color: rgba(102, 126, 234, 0.5) !important;
     box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+  }
+
+  /* Button primary gradient */
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary-gradient:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
   }
 </style>
 
@@ -444,4 +502,51 @@
       showLessBtn.style.display = 'none';
     }
   }
+
+  // Handle task completion with Village Alert
+  function initTaskCheckboxes() {
+    const checkboxes = document.querySelectorAll('.task-complete-checkbox');
+
+    checkboxes.forEach(function(checkbox) {
+      // Remove any existing listeners by cloning
+      const newCheckbox = checkbox.cloneNode(true);
+      checkbox.parentNode.replaceChild(newCheckbox, checkbox);
+
+      const wasChecked = newCheckbox.dataset.wasChecked === 'true';
+
+      newCheckbox.addEventListener('change', function(e) {
+        const form = this.closest('.task-toggle-form');
+
+        // Only show alert when completing a task (unchecked -> checked)
+        if (!wasChecked && this.checked) {
+          e.preventDefault();
+
+          // Submit via fetch to avoid page reload
+          fetch(form.action, {
+            method: 'PATCH',
+            headers: {
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+              'Accept': 'text/html'
+            }
+          }).then(() => {
+            // Show Village Alert success message
+            if (window.VillageAlert) {
+              window.VillageAlert.success("Bien joué ! Bravo pour ta contribution au Village. 🎉");
+            }
+            // Reload page after alert closes (5s duration + 0.5s margin)
+            setTimeout(() => {
+              window.location.reload();
+            }, 5500);
+          });
+        } else {
+          // For unchecking, just submit normally
+          form.submit();
+        }
+      });
+    });
+  }
+
+  // Support both regular page load and Turbo navigation
+  document.addEventListener('DOMContentLoaded', initTaskCheckboxes);
+  document.addEventListener('turbo:load', initTaskCheckboxes);
 </script>

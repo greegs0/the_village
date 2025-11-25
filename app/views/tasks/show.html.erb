@@ -232,28 +232,7 @@
   </div>
 </div>
 
-<!-- Confirmation Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 shadow" style="border: 1px solid rgba(102, 126, 234, 0.2);">
-      <div class="modal-body text-center p-4">
-        <div class="mb-3">
-          <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 80px; height: 80px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#successGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="url(#successGradient)"/>
-              <polyline points="22 4 12 14.01 9 11.01" stroke="url(#successGradient)"/>
-            </svg>
-          </div>
-        </div>
-        <h5 class="fw-bold mb-3 dashboard-section-title">Bien joué !</h5>
-        <p class="text-secondary mb-4">
-          Bravo pour ta contribution au Village. Retrouve toutes les tâches réalisées dans la liste des tâches terminées.
-        </p>
-        <button type="button" class="btn btn-primary-gradient w-100" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
+<%# La confirmation de tâche utilise maintenant Village Alert %>
 
 <style>
   .icon-wrapper {
@@ -388,32 +367,50 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  function initTaskStatusCheckbox() {
     const checkbox = document.getElementById('task-status-checkbox');
     const form = document.getElementById('task-status-form');
-    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
 
-    if (checkbox && form) {
-      const wasChecked = checkbox.checked;
+    if (!checkbox || !form) return;
 
-      checkbox.addEventListener('change', function(e) {
-        // Si la tâche passe de non cochée à cochée
-        if (!wasChecked && this.checked) {
-          e.preventDefault();
-          // Afficher la modale de confirmation
-          confirmationModal.show();
+    // Clone to remove existing listeners
+    const newCheckbox = checkbox.cloneNode(true);
+    checkbox.parentNode.replaceChild(newCheckbox, checkbox);
 
-          // Soumettre le formulaire après que la modale soit fermée
-          document.getElementById('confirmationModal').addEventListener('hidden.bs.modal', function() {
-            form.submit();
-          }, { once: true });
-        } else {
-          // Si on décoche, soumettre directement sans modale
-          form.submit();
-        }
-      });
-    }
-  });
+    const wasChecked = newCheckbox.checked;
+
+    newCheckbox.addEventListener('change', function(e) {
+      // Si la tâche passe de non cochée à cochée
+      if (!wasChecked && this.checked) {
+        e.preventDefault();
+
+        // Soumettre le formulaire via fetch pour éviter le rechargement
+        fetch(form.action, {
+          method: 'PATCH',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'text/html'
+          }
+        }).then(() => {
+          // Afficher la notification Village Alert après la soumission
+          if (window.VillageAlert) {
+            window.VillageAlert.success("Bien joué ! Bravo pour ta contribution au Village. 🎉");
+          }
+          // Reload page after alert closes (5s duration + 0.5s margin)
+          setTimeout(() => {
+            window.location.reload();
+          }, 5500);
+        });
+      } else {
+        // Si on décoche, soumettre directement sans modale
+        form.submit();
+      }
+    });
+  }
+
+  // Support both regular page load and Turbo navigation
+  document.addEventListener('DOMContentLoaded', initTaskStatusCheckbox);
+  document.addEventListener('turbo:load', initTaskStatusCheckbox);
 </script>
 
 

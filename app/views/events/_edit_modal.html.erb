@@ -1,0 +1,17 @@
+<div class="village-dialog" id="editEventModal<%= event.id %>" style="display: none;">
+  <div class="village-dialog-backdrop" onclick="VillageModal.close('editEventModal<%= event.id %>')"></div>
+  <div class="village-dialog-container">
+    <div class="village-dialog-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2); background: white;">
+      <div class="village-dialog-header border-0 p-4 pb-0">
+        <div>
+          <h5 class="fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Modifier l'événement</h5>
+          <p class="text-secondary small mb-0">Mettez à jour les informations de votre événement</p>
+        </div>
+        <button type="button" class="btn-close" onclick="VillageModal.close('editEventModal<%= event.id %>')" aria-label="Close"></button>
+      </div>
+      <div class="village-dialog-body p-4">
+        <%= render "form", event: event, in_modal: true, modal_id: "editEventModal#{event.id}" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1083,13 +1083,28 @@
 
     // Event listener for "Supprimer" button
     if (deleteEventBtn) {
-      deleteEventBtn.addEventListener('click', function() {
+      deleteEventBtn.addEventListener('click', async function() {
         console.log('Delete button clicked, currentEventId:', currentEventId);
         if (!currentEventId) {
-          alert('Erreur: Aucun événement sélectionné');
+          if (window.VillageAlert) {
+            window.VillageAlert.error('Aucun événement sélectionné');
+          }
           return;
         }
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+
+        // Utiliser Village Alert pour la confirmation
+        let confirmed = false;
+        if (window.VillageAlert) {
+          confirmed = await window.VillageAlert.confirm('Êtes-vous sûr de vouloir supprimer cet événement ?', {
+            danger: true,
+            confirmText: 'Supprimer',
+            cancelText: 'Annuler'
+          });
+        } else {
+          confirmed = confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');
+        }
+
+        if (confirmed) {
           console.log('Deleting event with ID:', currentEventId);
           // Submit delete request via form
           const form = document.createElement('form');
