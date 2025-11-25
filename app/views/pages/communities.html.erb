@@ -458,7 +458,18 @@
       </div>
 
       <div class="tab-pane fade" id="mapView">
-        <p class="text-center text-muted py-5">Vue carte à venir</p>
+        <div class="container" style="max-width: 1200px;">
+          <h2 class="text-center mb-4">Tes événements par région</h2>
+
+          <!-- Search Form -->
+          <div class="mb-4">
+            <label for="locationSearch" class="form-label">Entre un code postal ou une adresse</label>
+            <input type="text" class="form-control" id="locationSearch" placeholder="ex : 65010">
+          </div>
+
+          <!-- Map Container -->
+          <div id="map" style="height: 500px; border-radius: 1rem;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -496,6 +507,41 @@
           this.classList.toggle('btn-outline-secondary');
         });
       });
+    });
+  </script>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize map when the map tab is shown
+      const mapTab = document.querySelector('button[data-bs-target="#mapView"]');
+      let map = null;
+
+      if (mapTab) {
+        mapTab.addEventListener('shown.bs.tab', function() {
+          if (!map) {
+            // Initialize the map centered on department 65 (Hautes-Pyrénées)
+            map = L.map('map').setView([43.0, 0.0], 9);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+              maxZoom: 19
+            }).addTo(map);
+
+            // Add a marker for the department center
+            L.marker([43.0, 0.0]).addTo(map)
+              .bindPopup('Département 65 - Hautes-Pyrénées')
+              .openPopup();
+          } else {
+            // Invalidate size to ensure proper rendering when switching tabs
+            setTimeout(function() {
+              map.invalidateSize();
+            }, 100);
+          }
+        });
+      }
     });
   </script>
 </body>
@@ -819,7 +865,18 @@
       </div>
 
       <div class="tab-pane fade" id="mapView">
-        <p class="text-center text-muted py-5">Vue carte à venir</p>
+        <div class="container" style="max-width: 1200px;">
+          <h2 class="text-center mb-4">Tes événements par région</h2>
+
+          <!-- Search Form -->
+          <div class="mb-4">
+            <label for="locationSearch" class="form-label">Entre un code postal ou une adresse</label>
+            <input type="text" class="form-control" id="locationSearch" placeholder="ex : 65010">
+          </div>
+
+          <!-- Map Container -->
+          <div id="map" style="height: 500px; border-radius: 1rem;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -993,6 +1050,41 @@
           }
         });
       });
+    });
+  </script>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize map when the map tab is shown
+      const mapTab = document.querySelector('button[data-bs-target="#mapView"]');
+      let map = null;
+
+      if (mapTab) {
+        mapTab.addEventListener('shown.bs.tab', function() {
+          if (!map) {
+            // Initialize the map centered on department 65 (Hautes-Pyrénées)
+            map = L.map('map').setView([43.0, 0.0], 9);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+              maxZoom: 19
+            }).addTo(map);
+
+            // Add a marker for the department center
+            L.marker([43.0, 0.0]).addTo(map)
+              .bindPopup('Département 65 - Hautes-Pyrénées')
+              .openPopup();
+          } else {
+            // Invalidate size to ensure proper rendering when switching tabs
+            setTimeout(function() {
+              map.invalidateSize();
+            }, 100);
+          }
+        });
+      }
     });
   </script>
 </body>
