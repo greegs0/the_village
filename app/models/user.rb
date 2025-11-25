@@ -9,6 +9,7 @@ class User < ApplicationRecord
   enum status: { member: "member", helper: "helper" }
   has_many :tasks, dependent: :destroy
   has_many :documents, dependent: :nullify
+  has_many :chats, dependent: :destroy
 
   # Sert à pouvoir faire current_user.member? ou .helper? plus tard dans les autorisations etc
   def member?

@@ -26,6 +26,9 @@
 
   <body>
     <%= render "shared/flashes" %>
+    <!-- Navigation -->
+    <%= render 'shared/navbar' unless action_name == "home" %>
     <%= yield %>
+    <%= render "shared/chat_widget" %>
   </body>
 </html>

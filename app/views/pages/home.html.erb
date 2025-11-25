@@ -70,19 +70,21 @@
       <div class="container">
         <div class="row align-items-center g-4">
           <div class="col-lg-6">
-            <div class="badge bg-primary-light text-primary rounded-pill px-3 py-2 mb-3">
+            <div class="badge rounded-pill px-3 py-2 mb-3" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">
               Pour les familles, amis et proches
             </div>
-            <h1 class="display-3 fw-normal mb-3">The Village</h1>
-            <p class="fs-4 text-secondary mb-3">
+            <h1 class="display-3 fw-normal mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">The Village</h1>
+            <p class="fs-4 mb-3" style="color: #9CA3AF;">
               Il faut tout un village pour élever une famille heureuse.
             </p>
-            <p class="fs-6 text-secondary mb-4">
+            <p class="fs-6 mb-4" style="color: #9CA3AF;">
               Contactez facilement vos proches pour obtenir l'aide dont vous avez besoin.
             </p>
-            <%= link_to new_user_registration_path, class: "btn btn-dark d-inline-flex align-items-center gap-2" do %>
+            <%= link_to new_user_registration_path, class: "btn d-inline-flex align-items-center gap-2" , style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;" do %>
               <span>Commencer</span>
-              <img src="https://c.animaapp.com/mi50r8aoRoWtz0/img/icon.svg" alt="" width="16" height="16" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
             <% end %>
           </div>
           <div class="col-lg-6">
@@ -106,58 +108,57 @@
     <section class="features-section py-5">
       <div class="container">
         <div class="text-center mb-5">
-          <h2 class="display-6 fw-normal mb-3">Tout ce dont votre Village a besoin</h2>
-          <p class="text-secondary fs-5">
+          <h2 class="display-6 fw-normal mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Tout ce dont votre Village a besoin</h2>
+          <p class="fs-5" style="color: #6B7280;">
             Trois fonctionnalités puissantes pour garder votre famille et votre communauté connectées
           </p>
         </div>
         <div class="row g-4">
           <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border rounded-4">
+            <div class="card h-100 rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease;">
               <div class="card-body p-4">
-                <img
-                  src="https://c.animaapp.com/mi50r8aoRoWtz0/img/features.svg"
-                  alt=""
-                  width="48"
-                  height="48"
-                  class="mb-3"
-                />
-                <h3 class="h5 mb-3">Connectez-vous facilement avec vos proches</h3>
-                <p class="text-secondary mb-0">
+                <div class="d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <h3 class="h5 mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Connectez-vous facilement avec vos proches</h3>
+                <p class="mb-0" style="color: #6B7280;">
                   Restez en contact avec votre famille et vos amis grâce à la messagerie intégrée et aux actualités partagées
                 </p>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border rounded-4">
+            <div class="card h-100 rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease;">
               <div class="card-body p-4">
-                <img
-                  src="https://c.animaapp.com/mi50r8aoRoWtz0/img/features-2.svg"
-                  alt=""
-                  width="48"
-                  height="48"
-                  class="mb-3"
-                />
-                <h3 class="h5 mb-3">Gérez les tâches de votre famille</h3>
-                <p class="text-secondary mb-0">
+                <div class="d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                  </svg>
+                </div>
+                <h3 class="h5 mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Gérez les tâches de votre famille</h3>
+                <p class="mb-0" style="color: #6B7280;">
                   Organisez les tâches ménagères, assignez les responsabilités et suivez leur réalisation ensemble
                 </p>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border rounded-4">
+            <div class="card h-100 rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease;">
               <div class="card-body p-4">
-                <img
-                  src="https://c.animaapp.com/mi50r8aoRoWtz0/img/features-1.svg"
-                  alt=""
-                  width="48"
-                  height="48"
-                  class="mb-3"
-                />
-                <h3 class="h5 mb-3">Connectez-vous avec d'autres familles</h3>
-                <p class="text-secondary mb-0">
+                <div class="d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                </div>
+                <h3 class="h5 mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Connectez-vous avec d'autres familles</h3>
+                <p class="mb-0" style="color: #6B7280;">
                   Créez un réseau communautaire avec les familles voisines pour le soutien et les activités partagées
                 </p>
               </div>
@@ -171,30 +172,37 @@
     <section class="testimonials-section py-5">
       <div class="container">
         <div class="text-center mb-5">
-          <h2 class="display-6 fw-normal mb-3">Aimé par les familles partout</h2>
-          <p class="text-secondary fs-5">
+          <h2 class="display-6 fw-normal mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Aimé par les familles partout</h2>
+          <p class="fs-5" style="color: #6B7280;">
             Découvrez comment The Village fait une différence pour de vraies familles
           </p>
         </div>
         <div class="row g-4">
           <div class="col-lg-4">
-            <div class="card h-100 border rounded-4">
+            <div class="card h-100 rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease;">
               <div class="card-body p-4">
-                <img
-                  src="https://c.animaapp.com/mi50r8aoRoWtz0/img/testimonials.svg"
-                  alt="5 étoiles"
-                  class="mb-3"
-                  height="20"
-                />
+                <div class="d-flex gap-1 mb-3">
+                  <% 5.times do |i| %>
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                      <defs>
+                        <linearGradient id="starGradient<%= i %>" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" style="stop-color:#667eea"/>
+                          <stop offset="100%" style="stop-color:#764ba2"/>
+                        </linearGradient>
+                      </defs>
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#starGradient<%= i %>)"/>
+                    </svg>
+                  <% end %>
+                </div>
                 <blockquote class="mb-4">
-                  <p class="fst-italic text-secondary">
+                  <p class="fst-italic" style="color: #4B5563;">
                     "Les analyses ont ouvert nos yeux ! Nous n'avions aucune idée du déséquilibre dans la répartition
                     des tâches. Maintenant nous pouvons voir exactement qui fait quoi et faire des ajustements
                     équitables. Cela a transformé notre foyer !"
                   </p>
                 </blockquote>
                 <div class="d-flex align-items-center">
-                  <div class="avatar-circle me-3">
+                  <div class="rounded-circle overflow-hidden me-3" style="width: 48px; height: 48px; border: 2px solid rgba(102, 126, 234, 0.3);">
                     <img
                       src="https://c.animaapp.com/mi50r8aoRoWtz0/img/primitive-img.png"
                       alt="Sophie Durand"
@@ -203,29 +211,36 @@
                   </div>
                   <div>
                     <div class="fw-medium">Sophie Durand</div>
-                    <div class="text-secondary small">Mère de 3 enfants</div>
+                    <div class="small" style="color: #667eea;">Mère de 3 enfants</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="card h-100 border rounded-4">
+            <div class="card h-100 rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease;">
               <div class="card-body p-4">
-                <img
-                  src="https://c.animaapp.com/mi50r8aoRoWtz0/img/testimonials.svg"
-                  alt="5 étoiles"
-                  class="mb-3"
-                  height="20"
-                />
+                <div class="d-flex gap-1 mb-3">
+                  <% 5.times do |i| %>
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                      <defs>
+                        <linearGradient id="starGradient<%= i %>" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" style="stop-color:#667eea"/>
+                          <stop offset="100%" style="stop-color:#764ba2"/>
+                        </linearGradient>
+                      </defs>
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#starGradient<%= i %>)"/>
+                    </svg>
+                  <% end %>
+                </div>
                 <blockquote class="mb-4">
-                  <p class="fst-italic text-secondary">
+                  <p class="fst-italic" style="color: #4B5563;">
                     "The Village a révolutionné notre famille. Nous sommes plus organisés et connectés que jamais
                     auparavant."
                   </p>
                 </blockquote>
                 <div class="d-flex align-items-center">
-                  <div class="avatar-circle me-3">
+                  <div class="rounded-circle overflow-hidden me-3" style="width: 48px; height: 48px; border: 2px solid rgba(102, 126, 234, 0.3);">
                     <img
                       src="https://c.animaapp.com/mi50r8aoRoWtz0/img/primitive-img-1.png"
                       alt="Thomas Martin"
@@ -234,29 +249,36 @@
                   </div>
                   <div>
                     <div class="fw-medium">Thomas Martin</div>
-                    <div class="text-secondary small">Père de 2 enfants</div>
+                    <div class="small" style="color: #667eea;">Père de 2 enfants</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="card h-100 border rounded-4">
+            <div class="card h-100 rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease;">
               <div class="card-body p-4">
-                <img
-                  src="https://c.animaapp.com/mi50r8aoRoWtz0/img/testimonials.svg"
-                  alt="5 étoiles"
-                  class="mb-3"
-                  height="20"
-                />
+                <div class="d-flex gap-1 mb-3">
+                  <% 5.times do |i| %>
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                      <defs>
+                        <linearGradient id="starGradient<%= i %>" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" style="stop-color:#667eea"/>
+                          <stop offset="100%" style="stop-color:#764ba2"/>
+                        </linearGradient>
+                      </defs>
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#starGradient<%= i %>)"/>
+                    </svg>
+                  <% end %>
+                </div>
                 <blockquote class="mb-4">
-                  <p class="fst-italic text-secondary">
+                  <p class="fst-italic" style="color: #4B5563;">
                     "Se connecter avec d'autres familles de notre quartier a créé un réseau de soutien incroyable. Nous
                     nous entraidons tout le temps maintenant !"
                   </p>
                 </blockquote>
                 <div class="d-flex align-items-center">
-                  <div class="avatar-circle me-3">
+                  <div class="rounded-circle overflow-hidden me-3" style="width: 48px; height: 48px; border: 2px solid rgba(102, 126, 234, 0.3);">
                     <img
                       src="https://c.animaapp.com/mi50r8aoRoWtz0/img/primitive-img-2.png"
                       alt="Emma Leroy"
@@ -265,7 +287,7 @@
                   </div>
                   <div>
                     <div class="fw-medium">Emma Leroy</div>
-                    <div class="text-secondary small">Organisatrice communautaire</div>
+                    <div class="small" style="color: #667eea;">Organisatrice communautaire</div>
                   </div>
                 </div>
               </div>

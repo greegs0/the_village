@@ -28,6 +28,20 @@ class FamiliesController < ApplicationController
                                   .count
     @weekly_total = weekly_tasks.count
     @weekly_percentage = @weekly_total > 0 ? ((@weekly_completed.to_f / @weekly_total) * 100).round : 0
+
+    # Chats
+    @chats = current_user.chats.recent
+
+    # Si un chat_id est passé en paramètre, on l'utilise, sinon on prend le premier
+    if params[:chat_id].present?
+      @current_chat = current_user.chats.find_by(id: params[:chat_id])
+    end
+
+    # Si pas de chat trouvé ou pas de paramètre, on prend le premier ou on en crée un
+    @current_chat ||= @chats.first || current_user.chats.create(title: "Nouvelle conversation")
+
+    @messages = @current_chat.messages.chronological
+    @message = Message.new
   end
 
   def new

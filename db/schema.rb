@@ -55,6 +55,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_095733) do
     t.index ["family_id"], name: "index_documents_on_family_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
+ActiveRecord::Schema[7.1].define(version: 2025_11_25_120001) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "chats", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -102,6 +112,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_095733) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["family_id"], name: "index_folders_on_family_id"
+  create_table "messages", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.string "role", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id", "created_at"], name: "index_messages_on_chat_id_and_created_at"
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -157,6 +175,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_095733) do
   add_foreign_key "events", "users"
   add_foreign_key "family_events", "families"
   add_foreign_key "folders", "families"
+  add_foreign_key "chats", "users"
+  add_foreign_key "events", "users"
+  add_foreign_key "family_events", "families"
+  add_foreign_key "messages", "chats"
   add_foreign_key "people", "families"
   add_foreign_key "tasks", "families"
   add_foreign_key "tasks", "people", column: "assignee_id"

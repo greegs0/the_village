@@ -85,54 +85,116 @@
     margin-left: auto;
   }
 
+  // Style de base pour tous les liens de la navbar
   .nav-item {
     .nav-link {
       color: $color-black;
       padding: $spacing-xs $spacing-md;
-      transition: $transition-all-fast;
-      text-decoration: none;
+      text-decoration: none !important;
+      position: relative;
+      background: $gradient-primary;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 500;
+      border: none !important;
+
+      // Soulignement qui apparaît au hover
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
 
       &:hover {
-        color: $blue;
-      }
-
-      &.active {
-        color: $blue;
-        font-weight: 500;
-      }
-    }
-
-    &.dropdown {
-      .dropdown-toggle {
-        display: flex;
-        align-items: center;
-        gap: $spacing-xxs;
+        opacity: 0.8;
+        text-decoration: none !important;
 
         &::after {
-          margin-left: $spacing-xxs;
+          width: 80%;
         }
       }
 
-      .dropdown-menu {
-        border: 1px solid $color-gray-border;
+      // Dropdown toggle - effet inversé (soulignement visible par défaut, disparaît au hover)
+      &.dropdown-toggle {
+        display: flex;
+        align-items: center;
+
+        // Supprimer la flèche Bootstrap
+        &::after {
+          display: none !important;
+        }
+
+        // Soulignement visible par défaut
+        &::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 80%;
+          height: 2px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          transition: all 0.3s ease;
+          transform: translateX(-50%);
+        }
+
+        // Au hover, le soulignement disparaît
+        &:hover::before {
+          width: 0;
+        }
+      }
+
+      &.active {
+        opacity: 1;
+      }
+    }
+
+    // Dropdown menu styles
+    &.dropdown .dropdown-menu {
+      border: 1px solid rgba($color-primary, 0.2);
+      border-radius: $radius-sm;
+      box-shadow: 0 4px 16px rgba($color-primary, 0.12);
+      margin-top: $spacing-xs;
+      padding: $spacing-xs;
+
+      .dropdown-item {
+        padding: $spacing-xs $spacing-md;
+        transition: all 0.2s ease;
         border-radius: $radius-sm;
-        box-shadow: $shadow-card;
-        margin-top: $spacing-xs;
+        font-weight: 500;
+        position: relative;
 
-        .dropdown-item {
-          padding: $spacing-xs $spacing-md;
-          color: $color-black;
-          transition: $transition-all-fast;
+        // Soulignement qui apparaît au hover
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 2px;
+          left: $spacing-md;
+          width: 0;
+          height: 2px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          transition: all 0.3s ease;
+        }
 
-          &:hover {
-            background-color: $color-gray-lightest;
-            color: $blue;
+        &:hover {
+          background-color: transparent;
+
+          &::after {
+            width: calc(80% - #{$spacing-md});
           }
+        }
 
-          &.active {
-            background-color: $color-blue-light;
-            color: $blue;
-          }
+        &.active {
+          background: $gradient-primary;
+          -webkit-background-clip: padding-box;
+          -webkit-text-fill-color: $color-white;
+          background-clip: padding-box;
         }
       }
     }

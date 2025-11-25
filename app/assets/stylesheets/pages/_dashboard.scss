@@ -4,34 +4,136 @@
 // Styles spécifiques au dashboard principal
 // ============================================================
 
-// Village Assistant Card
-.card-header {
-  &[style*="background: linear-gradient"] {
-    border: none;
+// Titre principal du dashboard
+.dashboard-title {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Titres des sections/cartes
+.dashboard-section-title {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ============================================================
+// STATS CARDS
+// ============================================================
+.stat-card {
+  border: 1px solid rgba($color-primary, 0.25) !important;
+  transition: $transition-transform;
+
+  &:hover {
+    transform: $transform-hover-sm;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.15);
+  }
+
+  .card-body {
+    padding: 0.75rem 1rem !important;
   }
 }
 
-// Chart/Progress bars
-.progress-chart {
-  circle {
-    transition: stroke-dashoffset 0.5s ease;
+.stat-number {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.75rem !important;
+}
+
+// ============================================================
+// ACTIVITY SECTION
+// ============================================================
+.gradient-link {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 
-// Quick actions pills
-.quick-actions {
-  .btn.rounded-pill {
-    background: linear-gradient(90deg, #dbeafe 0%, #f3e8ff 100%);
-    border: none;
-    font-size: 11px;
-    padding: 4px 12px;
+.activity-avatar {
+  width: 36px;
+  height: 36px;
+  background: $gradient-primary;
+  color: $color-white;
+  font-size: 13px;
+}
+
+// ============================================================
+// VILLAGE ASSISTANT
+// ============================================================
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-// Dark input wrapper (Village Assistant)
-.dark-input-wrapper {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%);
-  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
-  border-radius: $radius-sm;
-  padding: $spacing-xs;
+.village-assistant-header {
+  background: linear-gradient(90deg,
+    $color-primary 0%,
+    $color-primary-dark 25%,
+    $color-primary 50%,
+    $color-primary-dark 75%,
+    $color-primary 100%);
+  background-size: 200% 100%;
+  animation: gradient-shift 45s ease infinite;
+}
+
+// Input avec border gradient
+.input-gradient-border {
+  position: relative;
+  padding: 2px;
+  border-radius: $radius-md;
+  background: $gradient-primary;
+
+  .input-inner {
+    background: $color-white;
+    border-radius: $radius-md;
+    padding: $spacing-xs;
+  }
+}
+
+// ============================================================
+// CHAT SIDEBAR
+// ============================================================
+.chat-item {
+  transition: $transition-all-fast;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &:hover {
+    background: rgba($color-primary, 0.05) !important;
+    border-color: rgba($color-primary, 0.15);
+    transform: translateX(2px);
+  }
+
+  &.chat-item-active {
+    background: $gradient-primary-lighter !important;
+    border-color: rgba($color-primary, 0.3);
+
+    &:hover {
+      transform: translateX(0);
+    }
+  }
+}
+
+// Auto-scroll pour les messages
+.messages-container {
+  scroll-behavior: smooth;
 }
