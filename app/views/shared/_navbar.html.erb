@@ -42,17 +42,18 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
             <%= link_to "Tableau de bord", families_path, class: "nav-link" %>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
               Gestion
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to "Tâches", family_tasks_path(current_user.family), class: "dropdown-item" %></li>
-              <li><%= link_to "Calendrier", family_family_events_path(current_user.family), class: "dropdown-item" %></li>
-              <li><%= link_to "Documents", families_documents_path, class: "dropdown-item" %></li>
-              <li><%= link_to "Membres", new_person_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Tâches", family_tasks_path(current_user.family), class: "dropdown-item", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" %></li>
+              <li><%= link_to "Calendrier", family_family_events_path(current_user.family), class: "dropdown-item", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" %></li>
+              <li><%= link_to "Documents", families_documents_path, class: "dropdown-item", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" %></li>
+              <li><%= link_to "Membres", new_person_path, class: "dropdown-item", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" %></li>
             </ul>
           </li>
           <li class="nav-item">
