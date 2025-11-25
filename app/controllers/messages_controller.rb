@@ -7,6 +7,9 @@ class MessagesController < ApplicationController
     @message.role = "user"
 
     if @message.save
+      # Générer un titre si c'est le premier message utilisateur
+      generate_chat_title_if_needed
+
       # Appeler l'API de l'Assistant IA
       generate_assistant_response
       redirect_to families_path(chat_id: @chat.id)
@@ -35,5 +38,18 @@ class MessagesController < ApplicationController
       role: "assistant",
       content: response_content
     )
+  end
+
+  def generate_chat_title_if_needed
+    # Générer un titre seulement si :
+    # 1. Le chat a le titre par défaut "Nouvelle conversation"
+    # 2. C'est le premier message utilisateur (excluant le message de bienvenue)
+    user_messages_count = @chat.messages.where(role: "user").count
+
+    if @chat.title == "Nouvelle conversation" && user_messages_count == 1
+      openai_service = OpenaiService.new
+      generated_title = openai_service.generate_chat_title(@message.content)
+      @chat.update(title: generated_title)
+    end
   end
 end

@@ -37,6 +37,35 @@ class OpenaiService
     end
   end
 
+  # Génère un titre court et descriptif pour le chat basé sur le premier message
+  def generate_chat_title(first_user_message)
+    begin
+      response = @client.chat(
+        parameters: {
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "system",
+              content: "Tu es un assistant qui génère des titres courts et descriptifs pour des conversations. Le titre doit être en français, faire 3-5 mots maximum, et résumer le sujet principal de la question. Ne mets pas de guillemets, de points ou de majuscules inutiles. Exemples : 'Vaccins pour bébé', 'Organisation des tâches', 'Activités week-end'"
+            },
+            {
+              role: "user",
+              content: "Génère un titre court (3-5 mots) pour cette conversation : #{first_user_message}"
+            }
+          ],
+          temperature: 0.5,
+          max_tokens: 20
+        }
+      )
+
+      title = response.dig("choices", 0, "message", "content")&.strip
+      title.presence || "Nouvelle conversation"
+    rescue => e
+      Rails.logger.error "OpenAI Title Generation Error: #{e.message}"
+      "Nouvelle conversation"
+    end
+  end
+
   private
 
   def build_system_message(family_context)
@@ -87,7 +116,12 @@ class OpenaiService
         - Membres : #{family_context[:members_info]}
         - Code postal : #{family_context[:zipcodes]}
         - Tâches actives : #{family_context[:tasks_count]}
-        - Événements à venir : #{family_context[:events_count]}
+        - Événements familiaux à venir : #{family_context[:events_count]}
+
+        Événements locaux disponibles (à suggérer pour des activités) :
+        #{family_context[:local_events]}
+
+        IMPORTANT : Quand l'utilisateur cherche des idées d'activités, propose-lui ces événements locaux en les adaptant aux âges de ses enfants.
       TEXT
     end
 

@@ -40,13 +40,22 @@ class ApplicationController < ActionController::Base
     # Récupérer les zipcodes uniques
     zipcodes = family.people.pluck(:zipcode).compact.uniq.join(", ")
 
+    # Récupérer les événements locaux à venir (suggestions d'activités)
+    local_events = Event.where('date >= ?', Date.today)
+                        .order(:date)
+                        .limit(10)
+                        .map do |event|
+      "#{event.name} (#{I18n.l(event.date, format: :short)}) - #{event.place} [#{event.category}]"
+    end.join(", ")
+
     {
       name: family.name,
       members_count: family.people.count,
       members_info: members_info,
       zipcodes: zipcodes.presence || "Non renseigné",
       tasks_count: family.tasks.where(status: false).count,
-      events_count: family.family_events.where('start_date >= ?', Date.today).count
+      events_count: family.family_events.where('start_date >= ?', Date.today).count,
+      local_events: local_events.presence || "Aucun événement local disponible"
     }
   end
 end
