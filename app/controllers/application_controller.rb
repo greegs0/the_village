@@ -30,10 +30,11 @@ class ApplicationController < ActionController::Base
     family = current_user.family
     return nil unless family
 
-    # Récupérer les informations des membres
+    # Récupérer les informations des membres avec dates d'anniversaire
     members_info = family.people.map do |person|
       info = person.name
       info += " (#{person.age} ans)" if person.age
+      info += " - anniversaire: #{I18n.l(person.birthday, format: :long)}" if person.birthday
       info
     end.join(", ")
 
