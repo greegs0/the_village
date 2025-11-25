@@ -20,13 +20,23 @@ class MessagesController < ApplicationController
       end
 
       # Appeler l'API de l'Assistant IA seulement si aucune action n'a été exécutée
+      assistant_message = nil
       unless actions_executed
-        generate_assistant_response
+        assistant_message = generate_assistant_response
+      else
+        # Récupérer le dernier message de l'assistant (message de confirmation)
+        assistant_message = @chat.messages.where(role: "assistant").order(created_at: :desc).first
       end
 
-      redirect_to families_path(chat_id: @chat.id)
+      respond_to do |format|
+        format.html { redirect_to families_path(chat_id: @chat.id) }
+        format.json { render json: { message: @message, assistant_message: assistant_message }, status: :created }
+      end
     else
-      redirect_to families_path(chat_id: @chat.id), alert: 'Erreur lors de l\'envoi du message.'
+      respond_to do |format|
+        format.html { redirect_to families_path(chat_id: @chat.id), alert: 'Erreur lors de l\'envoi du message.' }
+        format.json { render json: { errors: @message.errors }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -45,7 +55,7 @@ class MessagesController < ApplicationController
     openai_service = OpenaiService.new
     response_content = openai_service.chat_completion(@chat.messages.chronological, family_context)
 
-    # Créer la réponse de l'assistant
+    # Créer la réponse de l'assistant et la retourner
     @chat.messages.create!(
       role: "assistant",
       content: response_content

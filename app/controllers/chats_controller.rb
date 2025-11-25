@@ -18,10 +18,17 @@ class ChatsController < ApplicationController
 
     if @chat.save
       # Ajouter un message de bienvenue automatique avec le contexte de la famille
-      add_welcome_message
-      redirect_to families_path(chat_id: @chat.id)
+      welcome_message = add_welcome_message
+
+      respond_to do |format|
+        format.html { redirect_to families_path(chat_id: @chat.id) }
+        format.json { render json: { chat: @chat, welcome_message: welcome_message }, status: :created }
+      end
     else
-      redirect_to families_path, alert: 'Erreur lors de la création du chat.'
+      respond_to do |format|
+        format.html { redirect_to families_path, alert: 'Erreur lors de la création du chat.' }
+        format.json { render json: { errors: @chat.errors }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -60,6 +67,7 @@ class ChatsController < ApplicationController
       "Bonjour ! Je suis l'assistant de The Village. Comment puis-je vous aider aujourd'hui ?"
     end
 
+    # Créer et retourner le message de bienvenue
     @chat.messages.create!(
       role: "assistant",
       content: welcome_text

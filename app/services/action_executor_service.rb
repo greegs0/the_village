@@ -136,16 +136,21 @@ class ActionExecutorService
     # Si pas de date, utiliser aujourd'hui
     return Date.today unless start_date
 
-    # Si c'est un anniversaire et que la date est dans le passé, calculer la prochaine occurrence
-    if event_type == 'anniversaire' && start_date < Date.today
-      # Calculer la prochaine occurrence de cet anniversaire
-      next_birthday = Date.new(Date.today.year, start_date.month, start_date.day)
-
-      # Si l'anniversaire de cette année est déjà passé, prendre l'année prochaine
-      next_birthday = next_birthday.next_year if next_birthday < Date.today
-
-      Rails.logger.info "🎂 Anniversaire ajusté de #{start_date} à #{next_birthday}"
-      return next_birthday
+    # Si la date est dans le passé, ajuster selon le type d'événement
+    if start_date < Date.today
+      if event_type == 'anniversaire'
+        # Pour les anniversaires : calculer la prochaine occurrence annuelle
+        next_birthday = Date.new(Date.today.year, start_date.month, start_date.day)
+        next_birthday = next_birthday.next_year if next_birthday < Date.today
+        Rails.logger.info "🎂 Anniversaire ajusté de #{start_date} à #{next_birthday}"
+        return next_birthday
+      else
+        # Pour les autres événements : ajuster à la même date de l'année courante/suivante
+        adjusted_date = Date.new(Date.today.year, start_date.month, start_date.day)
+        adjusted_date = adjusted_date.next_year if adjusted_date < Date.today
+        Rails.logger.info "📅 Événement ajusté de #{start_date} à #{adjusted_date}"
+        return adjusted_date
+      end
     end
 
     start_date

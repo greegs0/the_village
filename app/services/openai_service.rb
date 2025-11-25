@@ -79,6 +79,8 @@ class OpenaiService
               content: <<~TEXT
                 Tu es un parseur qui extrait les actions suggérées d'un message d'assistant.
 
+                Date actuelle : #{I18n.l(Date.today, format: :long)}
+
                 Contexte de la famille :
                 - Membres : #{family_context[:members_info]}
 
@@ -105,9 +107,11 @@ class OpenaiService
                    - Les tâches moyennes : 1-2 semaines avant l'événement
                    - Les tâches peu urgentes : 3-4 semaines avant l'événement
                 4. L'événement DOIT avoir une start_date :
-                   - Cherche la date explicitement mentionnée dans le message (ex: "15 janvier 2026")
+                   - IMPORTANT : Cherche la date EXACTE mentionnée dans le message avec l'ANNÉE si elle est spécifiée (ex: "28/11/2025" → "2025-11-28", "15 janvier 2026" → "2026-01-15")
+                   - Si l'utilisateur dit "demain", "la semaine prochaine", calcule la date à partir d'aujourd'hui
                    - Pour un anniversaire, extrais la date d'anniversaire du membre mentionné dans le contexte
                    - Si aucune date n'est mentionnée, utilise une date future logique (ex: dans 1 mois)
+                   - TOUJOURS utiliser l'année 2025 ou ultérieure, JAMAIS 2023 ou 2024
                 5. Ne pas créer de tâches en double
                 6. Si aucune tâche n'est suggérée, retourne "tasks": []
                 7. Si aucun événement n'est suggéré, retourne "event": null
