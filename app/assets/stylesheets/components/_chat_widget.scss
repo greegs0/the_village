@@ -11,7 +11,7 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 1000;
+  z-index: 1001; // Au-dessus de la sidebar
 }
 
 .chat-widget-button {
@@ -118,7 +118,7 @@
   position: fixed;
   bottom: 100px;
   right: 24px;
-  z-index: 999;
+  z-index: 1001; // Au-dessus de la sidebar
   width: 380px;
   max-height: 600px;
   border-radius: 16px;

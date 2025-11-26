@@ -1,0 +1,107 @@
+<div class="app-sidebar" data-controller="sidebar">
+  <!-- Logo -->
+  <div class="sidebar-logo-section">
+    <%= link_to families_path, class: "sidebar-brand" do %>
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="sidebar-logo-svg">
+        <defs>
+          <linearGradient id="sidebarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <g transform="translate(25, 25)">
+          <!-- Main house -->
+          <path d="M 15 30 L 35 12 L 55 30 L 55 60 L 15 60 Z" fill="url(#sidebarGrad)" stroke="#5568D3" stroke-width="2.5"/>
+          <rect x="28" y="42" width="14" height="18" fill="#ffffff" opacity="0.95" rx="1"/>
+          <circle cx="28" cy="26" r="3" fill="#ffffff" opacity="0.98"/>
+          <circle cx="42" cy="26" r="3" fill="#ffffff" opacity="0.98"/>
+          <!-- Small houses -->
+          <path d="M 0 42 L 15 30 L 30 42 L 30 60 L 0 60 Z" fill="#667eea" opacity="0.85"/>
+          <rect x="10" y="50" width="10" height="10" fill="#ffffff" opacity="0.8" rx="0.5"/>
+          <path d="M 40 42 L 55 30 L 70 42 L 70 60 L 40 60 Z" fill="#764ba2" opacity="0.85"/>
+          <rect x="52" y="50" width="10" height="10" fill="#ffffff" opacity="0.8" rx="0.5"/>
+          <!-- Trees -->
+          <circle cx="8" cy="64" r="4" fill="#10b981" opacity="0.7"/>
+          <rect x="7" y="64" width="2" height="6" fill="#059669"/>
+          <circle cx="62" cy="64" r="4" fill="#10b981" opacity="0.7"/>
+          <rect x="61" y="64" width="2" height="6" fill="#059669"/>
+        </g>
+      </svg>
+      <span class="sidebar-brand-text">The Village</span>
+    <% end %>
+  </div>
+
+  <!-- Search bar -->
+  <div class="sidebar-search-section">
+    <div class="sidebar-search-box">
+      <input type="text" placeholder="Rechercher..." data-action="input->sidebar#handleSearch keydown->sidebar#handleSearchShortcut">
+      <i class="fas fa-search"></i>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-navigation">
+    <!-- Section principale -->
+    <div class="sidebar-nav-group">
+      <div class="sidebar-nav-label">PERSONNEL</div>
+
+      <%= link_to families_path, class: "sidebar-nav-link #{controller_name == 'families' && action_name == 'show' ? 'active' : ''}" do %>
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      <% end %>
+
+      <%= link_to family_tasks_path(current_user.family), class: "sidebar-nav-link #{controller_name == 'tasks' ? 'active' : ''}" do %>
+        <i class="fas fa-check-square"></i>
+        <span>Tâches</span>
+        <% if defined?(@sidebar_pending_tasks_count) && @sidebar_pending_tasks_count > 0 %>
+          <span class="nav-badge"><%= @sidebar_pending_tasks_count %></span>
+        <% end %>
+      <% end %>
+
+      <%= link_to family_family_events_path(current_user.family), class: "sidebar-nav-link #{controller_name == 'family_events' ? 'active' : ''}" do %>
+        <i class="fas fa-calendar-alt"></i>
+        <span>Calendrier</span>
+        <% if defined?(@sidebar_today_events_count) && @sidebar_today_events_count > 0 %>
+          <span class="nav-badge"><%= @sidebar_today_events_count %></span>
+        <% end %>
+      <% end %>
+
+      <%= link_to families_documents_path, class: "sidebar-nav-link #{controller_name == 'pages' && action_name == 'families_documents' ? 'active' : ''}" do %>
+        <i class="fas fa-folder-open"></i>
+        <span>Documents</span>
+      <% end %>
+
+      <%= link_to new_person_path, class: "sidebar-nav-link #{controller_name == 'people' ? 'active' : ''}" do %>
+        <i class="fas fa-user-friends"></i>
+        <span>Membres</span>
+      <% end %>
+    </div>
+
+    <!-- Section communauté -->
+    <div class="sidebar-nav-group">
+      <div class="sidebar-nav-label">COMMUNAUTÉ</div>
+
+      <%= link_to events_path, class: "sidebar-nav-link #{controller_name == 'events' ? 'active' : ''}" do %>
+        <i class="fas fa-calendar-week"></i>
+        <span>Événements</span>
+      <% end %>
+    </div>
+  </nav>
+
+  <!-- Today's summary widget -->
+  <div class="sidebar-today-section">
+    <%= render 'shared/sidebar_today_widget',
+        sidebar_today_tasks: @sidebar_today_tasks,
+        sidebar_today_events: @sidebar_today_events %>
+  </div>
+
+  <!-- User section at bottom -->
+  <div class="sidebar-user-section">
+    <div class="sidebar-user-menu">
+      <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "user-menu-item logout" do %>
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Déconnexion</span>
+      <% end %>
+    </div>
+  </div>
+</div>

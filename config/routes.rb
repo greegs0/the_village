@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   }
   root to: "pages#home"
 
+  # Global search
+  get 'search', to: 'searches#global', as: :global_search
+
   # Pages routes
   get 'families', to: 'families#show', as: :families  # Redirect /families to show action
   resources :families, only: [:show, :new, :create, :edit, :update] do

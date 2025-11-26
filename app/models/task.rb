@@ -6,4 +6,13 @@ class Task < ApplicationRecord
   validates :name, presence: true
   validates :user, presence: true
   validates :target_date, presence: true
+
+  # Set default value for status (false = incomplete)
+  after_initialize :set_default_status, if: :new_record?
+
+  private
+
+  def set_default_status
+    self.status ||= false
+  end
 end

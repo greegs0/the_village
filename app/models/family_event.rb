@@ -48,6 +48,9 @@ class FamilyEvent < ApplicationRecord
     EVENT_TYPES.dig(event_type, :color) || '#6a7282'
   end
 
+  # Alias pour la sidebar
+  alias_method :event_type_color, :event_color
+
   # Méthode pour formater la date
   def formatted_date
     if end_date && end_date != start_date
