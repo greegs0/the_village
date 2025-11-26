@@ -199,23 +199,11 @@
     &.active {
       background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
       color: #667eea;
-      border-left: 3px solid #667eea;
-      padding-left: 9px;
       font-weight: 600;
+      box-shadow: inset 3px 0 0 #667eea;
 
       i {
         color: #667eea;
-      }
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 0 3px 3px 0;
       }
     }
   }
