@@ -315,6 +315,14 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
+
+        &:hover {
+          border-color: #667eea;
+          background: rgba(102, 126, 234, 0.05);
+        }
 
         &.checked {
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -323,6 +331,10 @@
           i {
             font-size: 9px;
             color: white;
+          }
+
+          &:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653b8a 100%);
           }
         }
       }
@@ -341,6 +353,38 @@
         white-space: nowrap;
         font-size: 12px;
         line-height: 1.4;
+        color: #4b5563;
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #667eea;
+        }
+      }
+
+      // Task items should be clickable
+      &.task-item {
+        .item-text {
+          cursor: pointer;
+        }
+      }
+
+      // Event items should be clickable
+      &.event-item {
+        text-decoration: none;
+        cursor: pointer;
+        padding: 4px;
+        margin: -4px;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #f9fafb;
+
+          .item-text {
+            color: #667eea;
+          }
+        }
       }
     }
 
@@ -350,6 +394,16 @@
       font-style: italic;
       margin-top: 4px;
       padding-left: 24px;
+
+      a {
+        color: #9ca3af;
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #667eea;
+        }
+      }
     }
 
     .summary-empty {

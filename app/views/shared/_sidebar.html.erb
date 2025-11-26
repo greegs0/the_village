@@ -90,71 +90,9 @@
 
   <!-- Today's summary widget -->
   <div class="sidebar-today-section">
-    <div class="today-widget">
-      <div class="today-widget-header">
-        <div class="today-icon-title">
-          <i class="fas fa-calendar-day"></i>
-          <span>Aujourd'hui</span>
-        </div>
-        <span class="today-date"><%= l(Date.today, format: :short) %></span>
-      </div>
-
-      <!-- Tasks summary -->
-      <div class="today-summary-block">
-        <div class="summary-title">
-          <i class="fas fa-tasks"></i>
-          <span>Tâches</span>
-        </div>
-        <% if defined?(@sidebar_today_tasks) && @sidebar_today_tasks&.any? %>
-          <div class="summary-items">
-            <% @sidebar_today_tasks.first(3).each do |task| %>
-              <div class="summary-item">
-                <div class="task-checkbox <%= 'checked' if task.status == true %>">
-                  <% if task.status == true %>
-                    <i class="fas fa-check"></i>
-                  <% end %>
-                </div>
-                <span class="item-text"><%= task.name.truncate(28) %></span>
-              </div>
-            <% end %>
-            <% if @sidebar_today_tasks.count > 3 %>
-              <div class="summary-more">+<%= @sidebar_today_tasks.count - 3 %> de plus</div>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="summary-empty">
-            <i class="fas fa-check-circle"></i>
-            <span>Rien aujourd'hui</span>
-          </div>
-        <% end %>
-      </div>
-
-      <!-- Events summary -->
-      <div class="today-summary-block">
-        <div class="summary-title">
-          <i class="fas fa-calendar"></i>
-          <span>Événements</span>
-        </div>
-        <% if defined?(@sidebar_today_events) && @sidebar_today_events&.any? %>
-          <div class="summary-items">
-            <% @sidebar_today_events.first(2).each do |event| %>
-              <div class="summary-item">
-                <span class="event-dot" style="background-color: <%= event.event_type_color || '#667eea' %>;"></span>
-                <span class="item-text"><%= event.title.truncate(25) %></span>
-              </div>
-            <% end %>
-            <% if @sidebar_today_events.count > 2 %>
-              <div class="summary-more">+<%= @sidebar_today_events.count - 2 %> de plus</div>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="summary-empty">
-            <i class="fas fa-calendar-check"></i>
-            <span>Rien prévu</span>
-          </div>
-        <% end %>
-      </div>
-    </div>
+    <%= render 'shared/sidebar_today_widget',
+        sidebar_today_tasks: @sidebar_today_tasks,
+        sidebar_today_events: @sidebar_today_events %>
   </div>
 
   <!-- User section at bottom -->

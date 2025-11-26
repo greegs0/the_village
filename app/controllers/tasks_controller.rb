@@ -57,7 +57,22 @@ class TasksController < ApplicationController
   # PATCH /families/:family_id/tasks/:id/toggle_status
   def toggle_status
     @task.update(status: !@task.status)
-    redirect_to family_tasks_path(@family)
+
+    respond_to do |format|
+      format.html { redirect_to family_tasks_path(@family) }
+      format.turbo_stream {
+        # Reload sidebar data for updated counts
+        load_sidebar_data
+        render turbo_stream: turbo_stream.replace(
+          "sidebar-today-widget",
+          partial: "shared/sidebar_today_widget",
+          locals: {
+            sidebar_today_tasks: @sidebar_today_tasks,
+            sidebar_today_events: @sidebar_today_events
+          }
+        )
+      }
+    end
   end
 
   # DELETE /families/:family_id/tasks/:id
@@ -78,5 +93,25 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:name, :target_date, :user_id, :assignee_id, :description)
+  end
+
+  def load_sidebar_data
+    return unless current_user&.family
+
+    family = current_user.family
+    today = Date.today
+
+    # Tasks data - Only count incomplete tasks (in progress)
+    @sidebar_pending_tasks_count = family.tasks.where(status: false).count
+    @sidebar_today_tasks = family.tasks
+                                  .where('target_date = ?', today)
+                                  .where(status: false)
+                                  .limit(5)
+
+    # Events data
+    @sidebar_today_events = family.family_events
+                                  .where('start_date <= ? AND end_date >= ?', today, today)
+                                  .limit(3)
+    @sidebar_today_events_count = @sidebar_today_events.count
   end
 end
