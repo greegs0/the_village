@@ -19,37 +19,41 @@
 
   // Logo Section
   .sidebar-logo-section {
-    padding: 20px 16px;
+    padding: 24px 20px;
     border-bottom: 1px solid #f3f4f6;
     flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%);
   }
 
   .sidebar-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 
     &:hover {
       opacity: 0.9;
-      transform: translateX(2px);
+      transform: translateX(3px);
     }
 
     .sidebar-logo-svg {
-      width: 40px;
-      height: 40px;
+      width: 52px;
+      height: 52px;
       flex-shrink: 0;
+      filter: drop-shadow(0 2px 6px rgba(102, 126, 234, 0.15));
     }
 
     .sidebar-brand-text {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 800;
       font-family: 'Nunito', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
     }
   }
 
