@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :load_sidebar_data, unless: :devise_controller?
 
   # Redirect to families page after sign in
   def after_sign_in_path_for(resource)
@@ -14,6 +15,29 @@ class ApplicationController < ActionController::Base
   # Redirect to families page after sign up
   def after_sign_up_path_for(resource)
     new_family_path
+  end
+
+  private
+
+  # Load sidebar data for all authenticated pages
+  def load_sidebar_data
+    return unless current_user&.family
+
+    family = current_user.family
+    today = Date.today
+
+    # Tasks data
+    @sidebar_pending_tasks_count = family.tasks.where(status: ['pending', 'in_progress', false]).count
+    @sidebar_today_tasks = family.tasks
+                                  .where('target_date = ? OR target_date IS NULL', today)
+                                  .where(status: ['pending', 'in_progress', false])
+                                  .limit(5)
+
+    # Events data
+    @sidebar_today_events = family.family_events
+                                  .where('start_date <= ? AND end_date >= ?', today, today)
+                                  .limit(3)
+    @sidebar_today_events_count = @sidebar_today_events.count
   end
 
   protected

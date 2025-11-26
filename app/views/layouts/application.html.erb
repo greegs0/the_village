@@ -24,11 +24,30 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="<%= 'with-sidebar' unless action_name == 'home' %>">
     <%= render "shared/village_alert" %>
-    <!-- Navigation -->
-    <%= render 'shared/navbar' unless action_name == "home" %>
-    <%= yield %>
+
+    <% if action_name == "home" %>
+      <!-- Homepage: Show traditional navbar -->
+      <%= render 'shared/navbar' %>
+    <% else %>
+      <!-- App pages: Show sidebar + mobile controls -->
+      <%= render 'shared/sidebar' %>
+
+      <!-- Mobile sidebar toggle -->
+      <button class="sidebar-mobile-toggle" data-action="click->sidebar#toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Mobile overlay -->
+      <div class="sidebar-overlay" data-action="click->sidebar#closeFromOverlay"></div>
+    <% end %>
+
+    <!-- Main content wrapper -->
+    <div class="<%= 'main-content-wrapper' unless action_name == 'home' %>">
+      <%= yield %>
+    </div>
+
     <%= render "shared/chat_widget" %>
 
     <!-- Nettoyage modals pour Turbo -->
