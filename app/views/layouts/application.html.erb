@@ -28,13 +28,37 @@
     <%= render "shared/village_alert" %>
 
     <% unless action_name == "home" %>
-      <!-- App pages: Show sidebar + mobile controls -->
-      <%= render 'shared/sidebar' %>
+      <!-- Mobile navbar (fixed top with logo + hamburger) -->
+      <div class="mobile-navbar">
+        <%= link_to families_path, class: "mobile-navbar-brand" do %>
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="mobile-logo-svg">
+            <defs>
+              <linearGradient id="mobileGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <g transform="translate(25, 25)">
+              <path d="M 15 30 L 35 12 L 55 30 L 55 60 L 15 60 Z" fill="url(#mobileGrad)" stroke="#5568D3" stroke-width="2.5"/>
+              <rect x="28" y="42" width="14" height="18" fill="#ffffff" opacity="0.95" rx="1"/>
+              <circle cx="28" cy="26" r="3" fill="#ffffff" opacity="0.98"/>
+              <circle cx="42" cy="26" r="3" fill="#ffffff" opacity="0.98"/>
+              <path d="M 0 42 L 15 30 L 30 42 L 30 60 L 0 60 Z" fill="#667eea" opacity="0.85"/>
+              <rect x="10" y="50" width="10" height="10" fill="#ffffff" opacity="0.8" rx="0.5"/>
+              <path d="M 40 42 L 55 30 L 70 42 L 70 60 L 40 60 Z" fill="#764ba2" opacity="0.85"/>
+              <rect x="52" y="50" width="10" height="10" fill="#ffffff" opacity="0.8" rx="0.5"/>
+            </g>
+          </svg>
+          <span class="mobile-brand-text">The Village</span>
+        <% end %>
 
-      <!-- Mobile sidebar toggle -->
-      <button class="sidebar-mobile-toggle" data-action="click->sidebar#toggle">
-        <i class="fas fa-bars"></i>
-      </button>
+        <button class="mobile-hamburger" data-action="click->sidebar#toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- App pages: Show sidebar -->
+      <%= render 'shared/sidebar' %>
 
       <!-- Mobile overlay -->
       <div class="sidebar-overlay" data-action="click->sidebar#closeFromOverlay"></div>
