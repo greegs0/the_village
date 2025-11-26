@@ -15,6 +15,7 @@
   border-right: 1px solid #e5e7eb;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  font-family: 'Work Sans', sans-serif;
 
   // Logo Section
   .sidebar-logo-section {
@@ -44,6 +45,7 @@
     .sidebar-brand-text {
       font-size: 18px;
       font-weight: 700;
+      font-family: 'Nunito', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -78,12 +80,6 @@
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
-    i.fa-search {
-      color: #9ca3af;
-      font-size: 14px;
-      margin-right: 8px;
-    }
-
     input {
       flex: 1;
       background: transparent;
@@ -91,20 +87,17 @@
       outline: none;
       color: #1f2937;
       font-size: 13px;
+      font-family: 'Work Sans', sans-serif;
 
       &::placeholder {
         color: #9ca3af;
       }
     }
 
-    kbd {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-      padding: 2px 6px;
-      font-size: 11px;
-      color: #6b7280;
-      font-family: monospace;
+    i.fa-search {
+      color: #9ca3af;
+      font-size: 14px;
+      margin-left: 8px;
     }
   }
 
@@ -144,6 +137,7 @@
   .sidebar-nav-label {
     font-size: 11px;
     font-weight: 600;
+    font-family: 'Nunito', sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #9ca3af;
@@ -218,157 +212,6 @@
         width: 3px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 0 3px 3px 0;
-      }
-    }
-  }
-
-  // Today's Summary Widget
-  .sidebar-today-section {
-    flex-shrink: 0;
-    padding: 12px;
-    border-top: 1px solid #f3f4f6;
-    background: #f9fafb;
-  }
-
-  .today-widget {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 12px;
-  }
-
-  .today-widget-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f3f4f6;
-
-    .today-icon-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      i {
-        color: #667eea;
-        font-size: 14px;
-      }
-
-      span {
-        font-size: 13px;
-        font-weight: 600;
-        color: #1f2937;
-      }
-    }
-
-    .today-date {
-      font-size: 11px;
-      color: #6b7280;
-      font-weight: 500;
-    }
-  }
-
-  .today-summary-block {
-    margin-bottom: 12px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    .summary-title {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-
-      i {
-        font-size: 12px;
-        color: #9ca3af;
-      }
-
-      span {
-        font-size: 11px;
-        font-weight: 600;
-        color: #6b7280;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-      }
-    }
-
-    .summary-items {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .summary-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: #4b5563;
-
-      .task-checkbox {
-        width: 16px;
-        height: 16px;
-        border: 1.5px solid #d1d5db;
-        border-radius: 4px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-
-        &.checked {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          border-color: #667eea;
-
-          i {
-            font-size: 9px;
-            color: white;
-          }
-        }
-      }
-
-      .event-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
-
-      .item-text {
-        flex: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 12px;
-        line-height: 1.4;
-      }
-    }
-
-    .summary-more {
-      font-size: 11px;
-      color: #9ca3af;
-      font-style: italic;
-      margin-top: 4px;
-      padding-left: 24px;
-    }
-
-    .summary-empty {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 12px 8px;
-      color: #9ca3af;
-      font-size: 11px;
-      font-style: italic;
-
-      i {
-        font-size: 12px;
-        opacity: 0.6;
       }
     }
   }

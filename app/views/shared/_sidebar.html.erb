@@ -2,18 +2,29 @@
   <!-- Logo -->
   <div class="sidebar-logo-section">
     <%= link_to families_path, class: "sidebar-brand" do %>
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="sidebar-logo-svg">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="sidebar-logo-svg">
         <defs>
           <linearGradient id="sidebarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
             <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
           </linearGradient>
         </defs>
-        <g transform="translate(20, 20)">
-          <path d="M 10 20 L 30 5 L 50 20 L 50 45 L 10 45 Z" fill="url(#sidebarGrad)" stroke="#4F46E5" stroke-width="2"/>
-          <rect x="23" y="30" width="14" height="15" fill="#ffffff" opacity="0.9"/>
-          <circle cx="25" cy="18" r="2.5" fill="#ffffff" opacity="0.95"/>
-          <circle cx="35" cy="18" r="2.5" fill="#ffffff" opacity="0.95"/>
+        <g transform="translate(25, 25)">
+          <!-- Main house -->
+          <path d="M 15 30 L 35 12 L 55 30 L 55 60 L 15 60 Z" fill="url(#sidebarGrad)" stroke="#5568D3" stroke-width="2.5"/>
+          <rect x="28" y="42" width="14" height="18" fill="#ffffff" opacity="0.95" rx="1"/>
+          <circle cx="28" cy="26" r="3" fill="#ffffff" opacity="0.98"/>
+          <circle cx="42" cy="26" r="3" fill="#ffffff" opacity="0.98"/>
+          <!-- Small houses -->
+          <path d="M 0 42 L 15 30 L 30 42 L 30 60 L 0 60 Z" fill="#667eea" opacity="0.85"/>
+          <rect x="10" y="50" width="10" height="10" fill="#ffffff" opacity="0.8" rx="0.5"/>
+          <path d="M 40 42 L 55 30 L 70 42 L 70 60 L 40 60 Z" fill="#764ba2" opacity="0.85"/>
+          <rect x="52" y="50" width="10" height="10" fill="#ffffff" opacity="0.8" rx="0.5"/>
+          <!-- Trees -->
+          <circle cx="8" cy="64" r="4" fill="#10b981" opacity="0.7"/>
+          <rect x="7" y="64" width="2" height="6" fill="#059669"/>
+          <circle cx="62" cy="64" r="4" fill="#10b981" opacity="0.7"/>
+          <rect x="61" y="64" width="2" height="6" fill="#059669"/>
         </g>
       </svg>
       <span class="sidebar-brand-text">The Village</span>
@@ -23,9 +34,8 @@
   <!-- Search bar -->
   <div class="sidebar-search-section">
     <div class="sidebar-search-box">
-      <i class="fas fa-search"></i>
       <input type="text" placeholder="Rechercher..." data-action="input->sidebar#handleSearch keydown->sidebar#handleSearchShortcut">
-      <kbd>⌘K</kbd>
+      <i class="fas fa-search"></i>
     </div>
   </div>
 
@@ -78,82 +88,9 @@
     </div>
   </nav>
 
-  <!-- Today's summary widget -->
-  <div class="sidebar-today-section">
-    <div class="today-widget">
-      <div class="today-widget-header">
-        <div class="today-icon-title">
-          <i class="fas fa-calendar-day"></i>
-          <span>Aujourd'hui</span>
-        </div>
-        <span class="today-date"><%= l(Date.today, format: :short) %></span>
-      </div>
-
-      <!-- Tasks summary -->
-      <div class="today-summary-block">
-        <div class="summary-title">
-          <i class="fas fa-tasks"></i>
-          <span>Tâches</span>
-        </div>
-        <% if defined?(@sidebar_today_tasks) && @sidebar_today_tasks&.any? %>
-          <div class="summary-items">
-            <% @sidebar_today_tasks.first(3).each do |task| %>
-              <div class="summary-item">
-                <div class="task-checkbox <%= 'checked' if task.status == 'completed' %>">
-                  <% if task.status == 'completed' %>
-                    <i class="fas fa-check"></i>
-                  <% end %>
-                </div>
-                <span class="item-text"><%= task.name.truncate(28) %></span>
-              </div>
-            <% end %>
-            <% if @sidebar_today_tasks.count > 3 %>
-              <div class="summary-more">+<%= @sidebar_today_tasks.count - 3 %> de plus</div>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="summary-empty">
-            <i class="fas fa-check-circle"></i>
-            <span>Rien aujourd'hui</span>
-          </div>
-        <% end %>
-      </div>
-
-      <!-- Events summary -->
-      <div class="today-summary-block">
-        <div class="summary-title">
-          <i class="fas fa-calendar"></i>
-          <span>Événements</span>
-        </div>
-        <% if defined?(@sidebar_today_events) && @sidebar_today_events&.any? %>
-          <div class="summary-items">
-            <% @sidebar_today_events.first(2).each do |event| %>
-              <div class="summary-item">
-                <span class="event-dot" style="background-color: <%= event.event_type_color || '#667eea' %>;"></span>
-                <span class="item-text"><%= event.title.truncate(25) %></span>
-              </div>
-            <% end %>
-            <% if @sidebar_today_events.count > 2 %>
-              <div class="summary-more">+<%= @sidebar_today_events.count - 2 %> de plus</div>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="summary-empty">
-            <i class="fas fa-calendar-check"></i>
-            <span>Rien prévu</span>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
   <!-- User section at bottom -->
   <div class="sidebar-user-section">
     <div class="sidebar-user-menu">
-      <%= link_to edit_user_registration_path, class: "user-menu-item" do %>
-        <i class="fas fa-cog"></i>
-        <span>Paramètres</span>
-      <% end %>
       <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "user-menu-item logout" do %>
         <i class="fas fa-sign-out-alt"></i>
         <span>Déconnexion</span>
