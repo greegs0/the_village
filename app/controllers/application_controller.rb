@@ -27,10 +27,11 @@ class ApplicationController < ActionController::Base
     today = Date.today
 
     # Tasks data - Only count incomplete tasks (in progress)
-    @sidebar_pending_tasks_count = family.tasks.where(status: false).count
+    # Handle NULL status as incomplete (false)
+    @sidebar_pending_tasks_count = family.tasks.where('status = ? OR status IS NULL', false).count
     @sidebar_today_tasks = family.tasks
                                   .where('target_date = ?', today)
-                                  .where(status: false)
+                                  .where('status = ? OR status IS NULL', false)
                                   .order(created_at: :desc)
                                   .limit(5)
 
@@ -78,7 +79,7 @@ class ApplicationController < ActionController::Base
 
     # Récupérer la répartition des tâches par membre
     tasks_distribution = family.people.map do |person|
-      tasks_count = family.tasks.where(assignee_id: person.id, status: false).count
+      tasks_count = family.tasks.where(assignee_id: person.id).where('status = ? OR status IS NULL', false).count
       "#{person.name}: #{tasks_count} tâche(s)"
     end.join(", ")
 
@@ -87,7 +88,7 @@ class ApplicationController < ActionController::Base
       members_count: family.people.count,
       members_info: members_info,
       zipcodes: zipcodes.presence || "Non renseigné",
-      tasks_count: family.tasks.where(status: false).count,
+      tasks_count: family.tasks.where('status = ? OR status IS NULL', false).count,
       tasks_distribution: tasks_distribution,
       events_count: family.family_events.where('start_date >= ?', Date.today).count,
       local_events: local_events.presence || "Aucun événement local disponible"

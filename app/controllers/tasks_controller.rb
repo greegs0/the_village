@@ -102,10 +102,11 @@ class TasksController < ApplicationController
     today = Date.today
 
     # Tasks data - Only count incomplete tasks (in progress)
-    @sidebar_pending_tasks_count = family.tasks.where(status: false).count
+    # Handle NULL status as incomplete (false)
+    @sidebar_pending_tasks_count = family.tasks.where('status = ? OR status IS NULL', false).count
     @sidebar_today_tasks = family.tasks
                                   .where('target_date = ?', today)
-                                  .where(status: false)
+                                  .where('status = ? OR status IS NULL', false)
                                   .order(created_at: :desc)
                                   .limit(5)
 
