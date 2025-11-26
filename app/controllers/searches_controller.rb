@@ -54,8 +54,9 @@ class SearchesController < ApplicationController
         type: 'document',
         title: doc.name,
         subtitle: "#{doc.file_type&.upcase} - #{number_to_human_size(doc.file_size || 0)}",
-        url: document_path(doc),
-        icon: 'file-alt'
+        url: families_documents_path(document_id: doc.id),
+        icon: 'file-alt',
+        turbo_action: 'advance'
       }
     end
 

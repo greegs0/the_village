@@ -11,7 +11,9 @@ class DocumentsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html
+      format.html do
+        redirect_to families_documents_path(document_id: @document.id)
+      end
       format.json { render json: @document }
     end
   end

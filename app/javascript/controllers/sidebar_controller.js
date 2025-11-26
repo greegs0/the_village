@@ -121,8 +121,9 @@ export default class extends Controller {
 
       items.forEach(item => {
         const iconColor = item.color || '#667eea'
+        const turboAttr = item.type === 'document' ? 'data-turbo="false"' : ''
         html += `
-          <a href="${item.url}" class="search-result-item">
+          <a href="${item.url}" class="search-result-item" ${turboAttr}>
             <div class="search-result-icon" style="color: ${iconColor}">
               <i class="fas fa-${item.icon}"></i>
             </div>

@@ -896,4 +896,37 @@ function deletePreviewDocument() {
     });
   }
 }
+
+<% if @selected_document %>
+// Auto-open preview modal for selected document
+(function() {
+  function openSelectedDocument() {
+    setTimeout(function() {
+      const fakeElement = {
+        dataset: {
+          documentId: '<%= @selected_document.id %>',
+          documentName: '<%= j(@selected_document.name) %>',
+          documentIcon: '<%= @selected_document.icon_display %>',
+          documentType: '<%= @selected_document.file_type %>',
+          documentSize: '<%= @selected_document.file_size_display %>',
+          documentUploader: '<%= @selected_document.uploader_name %>',
+          documentFolder: '<%= @selected_document.folder&.name || "-" %>',
+          documentFavorite: '<%= @selected_document.is_favorite %>',
+          documentTime: '<%= @selected_document.time_ago_display %>',
+          documentDownload: '<%= @selected_document.file.attached? ? download_document_path(@selected_document) : "" %>',
+          documentPreview: '<%= @selected_document.file.attached? ? url_for(@selected_document.file) : "" %>'
+        }
+      };
+      openPreviewModal(fakeElement);
+    }, 300);
+  }
+
+  // Run immediately if page is already loaded (Turbo navigation)
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    openSelectedDocument();
+  } else {
+    document.addEventListener('DOMContentLoaded', openSelectedDocument);
+  }
+})();
+<% end %>
 </script>

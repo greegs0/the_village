@@ -80,18 +80,10 @@ class ApplicationController < ActionController::Base
                         .map { |name, date, place, category| "#{name} (#{I18n.l(date, format: :short)}) - #{place} [#{category}]" }
                         .join(", ")
 
-<<<<<<< HEAD
     # Récupérer la répartition des tâches par membre
-    tasks_distribution = family.people.map do |person|
+    tasks_distribution = people.map do |person|
       tasks_count = family.tasks.where(assignee_id: person.id).where('status = ? OR status IS NULL', false).count
       "#{person.name}: #{tasks_count} tâche(s)"
-=======
-    # Récupérer les stats de tâches en une seule requête groupée
-    tasks_by_assignee = family.tasks.where(status: false).group(:assignee_id).count
-    tasks_distribution = people.map do |person|
-      count = tasks_by_assignee[person.id] || 0
-      "#{person.name}: #{count} tâche(s)"
->>>>>>> 6c448bf1f1c4e96172a8ee95d8d05611fa91434f
     end.join(", ")
 
     {
@@ -99,11 +91,7 @@ class ApplicationController < ActionController::Base
       members_count: people.size,
       members_info: members_info,
       zipcodes: zipcodes.presence || "Non renseigné",
-<<<<<<< HEAD
       tasks_count: family.tasks.where('status = ? OR status IS NULL', false).count,
-=======
-      tasks_count: tasks_by_assignee.values.sum,
->>>>>>> 6c448bf1f1c4e96172a8ee95d8d05611fa91434f
       tasks_distribution: tasks_distribution,
       events_count: family.family_events.where('start_date >= ?', Date.today).count,
       local_events: local_events.presence || "Aucun événement local disponible"
