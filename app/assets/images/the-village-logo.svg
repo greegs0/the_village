@@ -48,8 +48,4 @@
   <text x="125" y="75" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">
     Gestion familiale & communautaire
   </text>
-  
-  <!-- Petit coeur pour l'aspect familial -->
-  <path d="M 380 50 Q 380 45 385 45 Q 390 45 390 50 Q 390 55 385 60 Q 380 55 380 50 M 385 45 Q 390 45 390 50" 
-        fill="#f87171" opacity="0.7"/>
 </svg>

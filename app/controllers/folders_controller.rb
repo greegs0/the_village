@@ -17,7 +17,7 @@ class FoldersController < ApplicationController
             id: doc.id,
             name: doc.name,
             file_type: doc.file_type,
-            file_size: doc.file_size,
+            file_size: doc.file_size_display,
             is_favorite: doc.is_favorite,
             uploader_name: doc.uploader_name,
             folder_name: @folder.name,

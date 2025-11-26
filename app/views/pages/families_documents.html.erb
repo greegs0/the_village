@@ -1,4 +1,6 @@
-<!-- SVG Gradient Definitions -->
+<% content_for :title, "Documents Familiaux - The Village" %>
+
+<!-- SVG Definitions for gradient icons -->
 <svg width="0" height="0" style="position: absolute;">
   <defs>
     <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -16,20 +18,12 @@
       <h1 class="h2 mb-2 dashboard-title">Documents Familiaux</h1>
       <p class="text-secondary mb-0">Organisez et sécurisez vos documents importants</p>
     </div>
-    <div class="d-flex gap-2">
-      <button type="button" class="btn btn-outline-gradient" data-bs-toggle="modal" data-bs-target="#newFolderModal">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-        </svg>
-        Nouveau dossier
+    <div class="d-flex gap-2 flex-wrap">
+      <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFolderModal">
+        <span class="me-2">+</span>Nouveau dossier
       </button>
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="17 8 12 3 7 8"/>
-          <line x1="12" y1="3" x2="12" y2="15"/>
-        </svg>
-        Téléverser
+        <span class="me-2">+</span>Téléverser
       </button>
     </div>
   </div>
@@ -37,204 +31,159 @@
   <!-- Search and Filter -->
   <div class="d-flex flex-column flex-md-row gap-3 mb-4">
     <div class="flex-grow-1">
-      <div class="input-group search-bar-da">
-        <span class="input-group-text">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35"/>
-          </svg>
-        </span>
-        <input type="text" class="form-control" placeholder="Rechercher un document...">
-      </div>
+      <input type="text" class="form-control" id="searchDocuments" placeholder="Rechercher un document...">
     </div>
-    <button type="button" class="btn btn-outline-gradient">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-      </svg>
-      Filtres
-    </button>
+    <div class="dropdown">
+      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+        Filtres
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#" data-filter="all">Tous les documents</a></li>
+        <li><a class="dropdown-item" href="#" data-filter="pdf">PDF</a></li>
+        <li><a class="dropdown-item" href="#" data-filter="images">Images</a></li>
+        <li><a class="dropdown-item" href="#" data-filter="docs">Documents Office</a></li>
+      </ul>
+    </div>
   </div>
 
   <!-- Tabs -->
-  <ul class="nav nav-pills p-1 mb-4 rounded-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active doc-tab" data-bs-toggle="pill" data-bs-target="#folders" type="button">
-        Dossiers
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link doc-tab" data-bs-toggle="pill" data-bs-target="#recent" type="button">
-        Récents
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link doc-tab" data-bs-toggle="pill" data-bs-target="#favorites" type="button">
-        Favoris
-      </button>
-    </li>
-  </ul>
+  <div class="d-flex gap-2 flex-wrap mb-4 tab-buttons" role="tablist">
+    <button class="btn btn-primary rounded-pill" data-bs-toggle="pill" data-bs-target="#folders" type="button" role="tab" aria-selected="true">
+      Dossiers (<%= @folders.count %>)
+    </button>
+    <button class="btn btn-outline-secondary rounded-pill" data-bs-toggle="pill" data-bs-target="#recent" type="button" role="tab" aria-selected="false">
+      Récents (<%= @recent_documents.count %>)
+    </button>
+    <button class="btn btn-outline-secondary rounded-pill" data-bs-toggle="pill" data-bs-target="#favorites" type="button" role="tab" aria-selected="false">
+      Favoris (<%= @favorite_documents.count %>)
+    </button>
+  </div>
 
   <!-- Tab Content -->
   <div class="tab-content">
+    <!-- Folders Tab -->
     <div class="tab-pane fade show active" id="folders">
-      <!-- Folders Grid -->
-      <div class="row g-3 g-md-4 mb-4">
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="card stat-card rounded-4 h-100 folder-card" type="button" data-bs-toggle="modal" data-bs-target="#folderContentModal">
-            <div class="card-body p-3 text-center">
-              <div class="folder-icon mb-3">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                  <path d="M12 11v6" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M9 14h6" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
+      <% if @folders.any? %>
+        <div class="row g-3 g-md-4 mb-4">
+          <% @folders.each do |folder| %>
+            <div class="col-6 col-md-4 col-lg-3 folder-col" data-folder-name="<%= folder.name.downcase %>">
+              <div class="card stat-card rounded-4 h-100 position-relative">
+                <!-- Dropdown menu -->
+                <div class="dropdown position-absolute top-0 end-0 mt-2 me-2" style="z-index: 10;">
+                  <button class="btn btn-sm btn-link p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="12" cy="5" r="1"></circle>
+                      <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#" onclick="openRenameModal(<%= folder.id %>, '<%= j(folder.name) %>'); return false;">
+                        Renommer
+                      </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <a class="dropdown-item text-danger" href="#" onclick="deleteFolder(<%= folder.id %>); return false;">
+                        Supprimer
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- Clickable area -->
+                <div class="card-body p-3 text-center"
+                     role="button"
+                     data-bs-toggle="modal"
+                     data-bs-target="#folderContentModal"
+                     data-folder-id="<%= folder.id %>"
+                     data-folder-name="<%= folder.name %>"
+                     data-folder-icon="<%= folder.icon_display %>">
+                  <div class="fs-1 mb-2"><%= folder.icon_display %></div>
+                  <h6 class="mb-1 text-truncate fw-semibold gradient-link"><%= folder.name %></h6>
+                  <small class="text-muted"><%= folder.documents_count %> document<%= 's' if folder.documents_count != 1 %></small>
+                </div>
               </div>
-              <h6 class="mb-1">Documents médicaux</h6>
-              <small class="text-muted">4 documents</small>
             </div>
-          </div>
+          <% end %>
         </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="card stat-card rounded-4 h-100 folder-card" type="button" data-bs-toggle="modal" data-bs-target="#folderContentModal">
-            <div class="card-body p-3 text-center">
-              <div class="folder-icon mb-3">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                  <line x1="8" y1="7" x2="16" y2="7"/>
-                  <line x1="8" y1="11" x2="14" y2="11"/>
-                </svg>
-              </div>
-              <h6 class="mb-1">Documents scolaires</h6>
-              <small class="text-muted">18 documents</small>
-            </div>
-          </div>
+      <% else %>
+        <div class="text-center py-5">
+          <div class="fs-1 mb-3">📁</div>
+          <p class="text-muted mb-3">Aucun dossier pour le moment</p>
+          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFolderModal">
+            Créer votre premier dossier
+          </button>
         </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="card stat-card rounded-4 h-100 folder-card" type="button" data-bs-toggle="modal" data-bs-target="#folderContentModal">
-            <div class="card-body p-3 text-center">
-              <div class="folder-icon mb-3">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                  <polyline points="10 9 9 9 8 9"/>
-                </svg>
-              </div>
-              <h6 class="mb-1">Documents administratifs</h6>
-              <small class="text-muted">32 documents</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="card stat-card rounded-4 h-100 folder-card" type="button" data-bs-toggle="modal" data-bs-target="#folderContentModal">
-            <div class="card-body p-3 text-center">
-              <div class="folder-icon mb-3">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-              </div>
-              <h6 class="mb-1">Assurances</h6>
-              <small class="text-muted">12 documents</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="card stat-card rounded-4 h-100 folder-card" type="button" data-bs-toggle="modal" data-bs-target="#folderContentModal">
-            <div class="card-body p-3 text-center">
-              <div class="folder-icon mb-3">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <line x1="12" y1="1" x2="12" y2="23"/>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-              </div>
-              <h6 class="mb-1">Factures</h6>
-              <small class="text-muted">45 documents</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="card stat-card rounded-4 h-100 folder-card" type="button" data-bs-toggle="modal" data-bs-target="#folderContentModal">
-            <div class="card-body p-3 text-center">
-              <div class="folder-icon mb-3">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <path d="M12 18v-6"/>
-                  <path d="m9 15 3 3 3-3"/>
-                </svg>
-              </div>
-              <h6 class="mb-1">Contrats</h6>
-              <small class="text-muted">8 documents</small>
-            </div>
-          </div>
-        </div>
-      </div>
+      <% end %>
     </div>
 
+    <!-- Recent Tab -->
     <div class="tab-pane fade" id="recent">
-      <div class="text-center py-5">
-        <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
+      <% if @recent_documents.any? %>
+        <div class="list-group">
+          <% @recent_documents.each do |doc| %>
+            <%= render 'document_item', document: doc %>
+          <% end %>
         </div>
-        <p class="text-muted mb-0">Aucun document récent</p>
-      </div>
+      <% else %>
+        <p class="text-center text-muted py-5">Aucun document récent</p>
+      <% end %>
     </div>
 
+    <!-- Favorites Tab -->
     <div class="tab-pane fade" id="favorites">
-      <div class="text-center py-5">
-        <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-          </svg>
+      <% if @favorite_documents.any? %>
+        <div class="list-group">
+          <% @favorite_documents.each do |doc| %>
+            <%= render 'document_item', document: doc %>
+          <% end %>
         </div>
-        <p class="text-muted mb-0">Aucun favori</p>
-      </div>
+      <% else %>
+        <p class="text-center text-muted py-5">Aucun favori</p>
+      <% end %>
     </div>
   </div>
 
   <!-- Bottom Cards -->
-  <div class="row g-4">
+  <div class="row g-4 mt-2">
     <!-- Storage Card -->
     <div class="col-lg-6">
-      <div class="card stat-card rounded-4">
+      <div class="card stat-card rounded-4 h-100">
         <div class="card-body p-3 p-md-4">
           <h5 class="mb-1 dashboard-section-title">Stockage</h5>
-          <p class="text-secondary small mb-4">3.2 Go utilisés sur 50 Go</p>
+          <% storage_percent = (@family.total_storage_used / 53_687_091_200.0 * 100).round(1) %>
+          <p class="text-secondary small mb-4"><%= @family.storage_display %> utilisés sur 50 Go</p>
 
-          <div class="progress mb-4" style="height: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 5px;">
-            <div class="progress-bar" style="width: 6.4%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 5px;"></div>
+          <div class="progress mb-4" style="height: 12px;">
+            <div class="progress-bar" role="progressbar" style="width: <%= storage_percent %>%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
           </div>
 
+          <% storage_by_type = @family.documents.group(:file_type).sum(:file_size) %>
+          <% pdf_size = storage_by_type.select { |k, _| k&.downcase == 'pdf' }.values.sum %>
+          <% image_size = storage_by_type.select { |k, _| %w[jpg jpeg png gif].include?(k&.downcase) }.values.sum %>
+          <% other_size = @family.total_storage_used - pdf_size - image_size %>
+
           <div class="d-flex justify-content-between mb-2">
-            <div class="d-flex align-items-center">
-              <div class="rounded" style="width: 10px; height: 10px; background: #667eea; margin-right: 8px;"></div>
-              <span class="small">Documents PDF</span>
-            </div>
-            <span class="small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 500;">1.8 Go</span>
+            <span class="small d-flex align-items-center">
+              <span class="rounded-circle me-2" style="width: 10px; height: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></span>
+              Documents PDF
+            </span>
+            <span class="small text-muted"><%= number_to_human_size(pdf_size) %></span>
           </div>
           <div class="d-flex justify-content-between mb-2">
-            <div class="d-flex align-items-center">
-              <div class="rounded" style="width: 10px; height: 10px; background: #764ba2; margin-right: 8px;"></div>
-              <span class="small">Images</span>
-            </div>
-            <span class="small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 500;">1.2 Go</span>
+            <span class="small d-flex align-items-center">
+              <span class="rounded-circle me-2" style="width: 10px; height: 10px; background: #10b981;"></span>
+              Images
+            </span>
+            <span class="small text-muted"><%= number_to_human_size(image_size) %></span>
           </div>
           <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-              <div class="rounded" style="width: 10px; height: 10px; background: rgba(102, 126, 234, 0.4); margin-right: 8px;"></div>
-              <span class="small">Autres</span>
-            </div>
-            <span class="small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 500;">200 Mo</span>
+            <span class="small d-flex align-items-center">
+              <span class="rounded-circle me-2" style="width: 10px; height: 10px; background: #f59e0b;"></span>
+              Autres
+            </span>
+            <span class="small text-muted"><%= number_to_human_size(other_size) %></span>
           </div>
         </div>
       </div>
@@ -242,46 +191,43 @@
 
     <!-- Recent Activity -->
     <div class="col-lg-6">
-      <div class="card stat-card rounded-4">
+      <div class="card stat-card rounded-4 h-100">
         <div class="card-body p-3 p-md-4">
           <h5 class="mb-1 dashboard-section-title">Activité récente</h5>
-          <p class="text-secondary small mb-4">Dernières actions sur vos documents</p>
+          <p class="text-secondary small mb-4">Derniers documents ajoutés</p>
 
-          <div class="d-flex align-items-center mb-3">
-            <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-              <span class="fw-medium text-white" style="font-size: 14px;">J</span>
+          <% @recent_documents.first(3).each do |doc| %>
+            <div class="d-flex mb-3 activity-doc-item"
+                 data-document-id="<%= doc.id %>"
+                 data-document-name="<%= doc.name %>"
+                 data-document-icon="<%= doc.icon_display %>"
+                 data-document-type="<%= doc.file_type %>"
+                 data-document-size="<%= doc.file_size_display %>"
+                 data-document-uploader="<%= doc.uploader_name %>"
+                 data-document-folder="<%= doc.folder&.name %>"
+                 data-document-time="<%= doc.time_ago_display %>"
+                 data-document-favorite="<%= doc.is_favorite %>"
+                 data-document-download="<%= doc.file.attached? ? download_document_path(doc) : '' %>"
+                 data-document-preview="<%= doc.file.attached? ? url_for(doc.file) : '' %>"
+                 role="button"
+                 onclick="openPreviewModal(this)"
+                 style="cursor: pointer;">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3 activity-avatar">
+                <span class="fw-medium small text-white"><%= doc.uploader_initial %></span>
+              </div>
+              <div class="flex-grow-1 min-width-0">
+                <p class="mb-1 small text-truncate">
+                  <strong><%= doc.uploader_name %></strong> a ajouté
+                  <span class="gradient-link"><%= doc.name %></span>
+                </p>
+                <small class="text-muted"><%= doc.time_ago_display %></small>
+              </div>
             </div>
-            <div class="flex-grow-1">
-              <p class="mb-0 small">
-                <strong>Julie</strong> a ajouté un document
-              </p>
-              <small class="text-muted">Il y a 2 heures</small>
-            </div>
-          </div>
+          <% end %>
 
-          <div class="d-flex align-items-center mb-3">
-            <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-              <span class="fw-medium text-white" style="font-size: 14px;">M</span>
-            </div>
-            <div class="flex-grow-1">
-              <p class="mb-0 small">
-                <strong>Marc</strong> a créé un dossier
-              </p>
-              <small class="text-muted">Hier</small>
-            </div>
-          </div>
-
-          <div class="d-flex align-items-center">
-            <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-              <span class="fw-medium text-white" style="font-size: 14px;">J</span>
-            </div>
-            <div class="flex-grow-1">
-              <p class="mb-0 small">
-                <strong>Julie</strong> a partagé un document
-              </p>
-              <small class="text-muted">Il y a 3 jours</small>
-            </div>
-          </div>
+          <% if @recent_documents.empty? %>
+            <p class="text-muted small text-center">Aucune activité récente</p>
+          <% end %>
         </div>
       </div>
     </div>
@@ -291,80 +237,83 @@
 <!-- Modal Nouveau Dossier -->
 <div class="modal fade" id="newFolderModal" tabindex="-1" aria-labelledby="newFolderModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
+    <div class="modal-content rounded-4">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="newFolderModalLabel">Créer un nouveau dossier</h5>
+          <h5 class="modal-title fw-semibold dashboard-section-title" id="newFolderModalLabel">Créer un nouveau dossier</h5>
           <p class="text-secondary small mb-0">Organisez vos documents dans un nouveau dossier</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
-        <form>
-          <!-- Nom du dossier -->
-          <div class="mb-4">
-            <label for="folderName" class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Nom du dossier</label>
-            <input type="text" class="form-control form-control-custom" id="folderName" placeholder="Ex: Documents médicaux">
+        <%= form_with url: folders_path, method: :post, local: true do |f| %>
+          <div class="mb-3">
+            <label for="folderName" class="form-label fw-medium">Nom du dossier</label>
+            <%= f.text_field :name, class: "form-control", id: "folderName", placeholder: "Ex: Documents médicaux", required: true %>
           </div>
 
-          <!-- Submit Button -->
+          <div class="mb-4">
+            <label class="form-label fw-medium">Icône</label>
+            <div class="d-flex flex-wrap gap-2">
+              <% Folder::ICONS.each do |key, icon| %>
+                <label class="btn btn-outline-secondary icon-selector <%= 'active' if key == 'default' %>">
+                  <input type="radio" name="folder[icon]" value="<%= icon %>" class="d-none" <%= 'checked' if key == 'default' %>>
+                  <span class="fs-5"><%= icon %></span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
           <button type="submit" class="btn btn-primary w-100">Créer le dossier</button>
-        </form>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Modal Téléverser un document -->
+<button id="uploadModalTrigger" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal" style="display:none;"></button>
 <div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-labelledby="uploadDocumentModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
+    <div class="modal-content rounded-4">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="uploadDocumentModalLabel">Téléverser un document</h5>
+          <h5 class="modal-title fw-semibold dashboard-section-title" id="uploadDocumentModalLabel">Téléverser un document</h5>
           <p class="text-secondary small mb-0">Ajoutez un nouveau document à votre bibliothèque</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
-        <form>
-          <!-- Zone de téléversement -->
-          <div class="upload-zone rounded-3 p-4 text-center mb-4">
-            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
+        <%= form_with url: documents_path, scope: :document, method: :post, local: true, multipart: true, data: { turbo: false }, html: { id: 'uploadDocumentForm' } do |f| %>
+          <div class="upload-zone border border-2 border-dashed rounded-3 p-4 text-center mb-4"
+               onclick="document.getElementById('documentUpload').click();">
+            <div class="mb-2">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
               </svg>
             </div>
-            <p class="fw-medium mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Cliquez pour sélectionner ou glissez-déposez</p>
+            <p class="fw-medium mb-1">Cliquez pour sélectionner ou glissez-déposez</p>
             <p class="text-muted small mb-0">PDF, Images, Documents (Max 10 MB)</p>
-            <input type="file" class="form-control-file d-none" id="documentUpload">
+            <%= f.file_field :file, class: "d-none", id: "documentUpload", accept: ".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif", required: true %>
+            <p class="small mt-2 selected-file gradient-link"></p>
           </div>
 
-          <!-- Nom du document -->
           <div class="mb-3">
-            <label for="documentName" class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Nom du document</label>
-            <input type="text" class="form-control form-control-custom" id="documentName" placeholder="Nommer le document">
+            <label for="documentName" class="form-label fw-medium">Nom du document</label>
+            <%= f.text_field :name, class: "form-control", id: "documentName", placeholder: "Nommer le document", required: true %>
           </div>
 
-          <!-- Dossier de destination -->
           <div class="mb-4">
-            <label for="destinationFolder" class="form-label fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Dossier de destination</label>
-            <select class="form-select form-control-custom" id="destinationFolder">
-              <option selected>Choisir un dossier</option>
-              <option value="medical">Documents médicaux</option>
-              <option value="school">Documents scolaires</option>
-              <option value="admin">Documents administratifs</option>
-              <option value="insurance">Assurances</option>
-              <option value="bills">Factures</option>
-              <option value="contracts">Contrats</option>
-            </select>
+            <label for="destinationFolder" class="form-label fw-medium">Dossier de destination</label>
+            <%= f.collection_select :folder_id, @folders, :id, :name,
+                { prompt: "Choisir un dossier" },
+                { class: "form-select", id: "destinationFolder", required: true } %>
           </div>
 
-          <!-- Submit Button -->
           <button type="submit" class="btn btn-primary w-100">Téléverser le document</button>
-        </form>
+        <% end %>
       </div>
     </div>
   </div>
@@ -373,167 +322,136 @@
 <!-- Modal Contenu Dossier -->
 <div class="modal fade" id="folderContentModal" tabindex="-1" aria-labelledby="folderContentModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
+    <div class="modal-content rounded-4">
       <div class="modal-header border-0 pb-0">
         <div class="d-flex align-items-center">
-          <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 44px; height: 44px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-            </svg>
-          </div>
+          <div class="fs-4 me-2" id="folderModalIcon">📁</div>
           <div>
-            <h5 class="modal-title fw-semibold mb-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="folderContentModalLabel">Documents médicaux</h5>
-            <p class="text-secondary small mb-0">4 documents dans ce dossier</p>
+            <h5 class="modal-title fw-semibold dashboard-section-title" id="folderContentModalLabel">Dossier</h5>
+            <p class="text-secondary small mb-0" id="folderDocCount">0 documents</p>
           </div>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
-        <!-- Document Items -->
-        <div class="document-item rounded-3 p-3 mb-2">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-              <div class="rounded d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                </svg>
-              </div>
-              <div>
-                <div class="fw-medium small">Certificat_vaccination_Sophie.pdf</div>
-                <small class="text-muted">2.4 MB - Il y a 2h - Julie</small>
-              </div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="url(#iconGradient)" stroke="none">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-              </button>
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
-                  <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-                </svg>
-              </button>
+        <div id="folderDocuments">
+          <div class="text-center py-4">
+            <div class="spinner-border" role="status" style="color: #667eea;">
+              <span class="visually-hidden">Chargement...</span>
             </div>
           </div>
         </div>
 
-        <div class="document-item rounded-3 p-3 mb-2">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-              <div class="rounded d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                  <circle cx="8.5" cy="8.5" r="1.5"/>
-                  <polyline points="21 15 16 10 5 21"/>
-                </svg>
-              </div>
-              <div>
-                <div class="fw-medium small">Ordonnance_Dr_Martin.jpg</div>
-                <small class="text-muted">3.1 MB - Il y a 1 sem - Julie</small>
-              </div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="url(#iconGradient)" stroke="none">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-              </button>
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
-                  <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="document-item rounded-3 p-3 mb-2">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-              <div class="rounded d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                </svg>
-              </div>
-              <div>
-                <div class="fw-medium small">Carnet_sante_Lucas.pdf</div>
-                <small class="text-muted">1.8 MB - Il y a 2 sem - Marc</small>
-              </div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-              </button>
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
-                  <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="document-item rounded-3 p-3 mb-4">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-              <div class="rounded d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                </svg>
-              </div>
-              <div>
-                <div class="fw-medium small">Resultats_analyses_Marc.pdf</div>
-                <small class="text-muted">945 KB - Il y a 3 sem - Marc</small>
-              </div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-              </button>
-              <button class="btn btn-sm btn-icon-gradient">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
-                  <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Footer Buttons -->
-        <div class="d-flex flex-wrap justify-content-between gap-2">
-          <button type="button" class="btn btn-outline-gradient btn-sm flex-grow-1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-            Ajouter
+        <div class="d-flex flex-wrap justify-content-center gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-outline-secondary btn-sm" onclick="openUploadFromFolder()">
+            <span class="me-1">+</span>Ajouter
           </button>
-          <button type="button" class="btn btn-outline-gradient btn-sm flex-grow-1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
-              <circle cx="18" cy="5" r="3"/>
-              <circle cx="6" cy="12" r="3"/>
-              <circle cx="18" cy="19" r="3"/>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-            </svg>
-            Partager
-          </button>
-          <button type="button" class="btn btn-outline-gradient btn-sm flex-grow-1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Renommer Dossier -->
+<div class="modal fade" id="renameFolderModal" tabindex="-1" aria-labelledby="renameFolderModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-semibold dashboard-section-title" id="renameFolderModalLabel">Renommer le dossier</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <form id="renameFolderForm" method="post">
+          <input type="hidden" name="_method" value="patch">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="mb-4">
+            <label for="renameFolderName" class="form-label fw-medium">Nouveau nom</label>
+            <input type="text" class="form-control" id="renameFolderName" name="folder[name]" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Renommer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Prévisualisation Document -->
+<button id="previewModalTrigger" data-bs-toggle="modal" data-bs-target="#previewDocumentModal" style="display:none;"></button>
+<div class="modal fade" id="previewDocumentModal" tabindex="-1" aria-labelledby="previewDocumentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <div class="d-flex align-items-center flex-grow-1 min-width-0">
+          <div class="fs-3 me-3" id="previewDocIcon">📄</div>
+          <div class="min-width-0">
+            <h5 class="modal-title fw-semibold text-truncate dashboard-section-title" id="previewDocumentModalLabel">Document</h5>
+            <p class="text-secondary small mb-0" id="previewDocInfo"></p>
+          </div>
+        </div>
+        <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <div id="previewContainer" class="rounded-3 mb-4 d-flex align-items-center justify-content-center" style="min-height: 300px; max-height: 500px; overflow: hidden; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);">
+          <div id="previewLoading" class="text-center py-5">
+            <div class="spinner-border" role="status" style="color: #667eea;">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+          <div id="previewContent" class="w-100 h-100 d-none">
+            <img id="previewImage" class="d-none w-100 h-100" style="object-fit: contain; max-height: 500px;" alt="Aperçu">
+            <iframe id="previewPdf" class="d-none w-100 border-0" style="height: 500px;"></iframe>
+            <div id="previewFallback" class="d-none text-center py-5">
+              <div class="fs-1 mb-3" id="previewFallbackIcon">📄</div>
+              <p class="text-muted mb-0">Aperçu non disponible pour ce type de fichier</p>
+              <p class="text-muted small" id="previewFallbackType"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Taille</small>
+                <span class="fw-semibold gradient-link" id="previewDocSize">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Type</small>
+                <span class="fw-semibold text-uppercase gradient-link" id="previewDocType">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Ajouté par</small>
+                <span class="fw-semibold gradient-link" id="previewDocUploader">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Dossier</small>
+                <span class="fw-semibold gradient-link" id="previewDocFolder">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 justify-content-center preview-actions">
+          <a href="#" id="previewDownloadBtn" class="btn btn-primary">
             Télécharger
+          </a>
+          <button type="button" id="previewFavoriteBtn" class="btn btn-outline-secondary" onclick="togglePreviewFavorite()">
+            <span id="previewFavoriteIcon">☆</span> Favori
+          </button>
+          <button type="button" id="previewDeleteBtn" class="btn btn-outline-secondary text-danger" onclick="deletePreviewDocument()">
+            Supprimer
           </button>
         </div>
       </div>
@@ -542,145 +460,440 @@
 </div>
 
 <style>
-  /* Outline gradient button */
-  .btn-outline-gradient {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border: 1px solid rgba(102, 126, 234, 0.2);
-    color: #667eea;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.3s ease;
-  }
-
-  .btn-outline-gradient:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-    border-color: rgba(102, 126, 234, 0.4);
-    color: #764ba2;
-  }
-
-  /* Search bar DA */
-  .search-bar-da {
-    background: white;
-    border: 1px solid rgba(102, 126, 234, 0.2);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .search-bar-da:focus-within {
-    border-color: rgba(102, 126, 234, 0.5);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  }
-
-  .search-bar-da .input-group-text {
-    background: transparent;
-    border: none;
-    padding-left: 16px;
-  }
-
-  .search-bar-da .form-control {
-    border: none;
-    background: transparent;
-    padding: 12px 16px 12px 8px;
-  }
-
-  .search-bar-da .form-control:focus {
-    box-shadow: none;
-  }
-
-  .search-bar-da .form-control::placeholder {
-    color: #9ca3af;
-  }
-
-  /* Document tabs */
-  .doc-tab {
-    background: transparent;
-    border: none;
-    color: #6B7280;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    padding: 8px 16px;
-  }
-
-  .doc-tab:hover {
-    color: #667eea;
-  }
-
-  .doc-tab.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
-    border-radius: 0.5rem;
-  }
-
-  /* Folder card */
-  .folder-card {
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(102, 126, 234, 0.1) !important;
-  }
-
-  .folder-card:hover {
-    border-color: rgba(102, 126, 234, 0.3) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-  }
-
-  .folder-icon {
+  .icon-selector {
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
-    margin: 0 auto;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border-radius: 12px;
+    padding: 0;
   }
 
-  /* Form controls */
-  .form-control-custom {
-    border: 1px solid rgba(102, 126, 234, 0.2);
-    transition: all 0.3s ease;
-  }
-
-  .form-control-custom:focus {
-    border-color: rgba(102, 126, 234, 0.5);
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-  }
-
-  /* Upload zone */
   .upload-zone {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
-    border: 2px dashed rgba(102, 126, 234, 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
+    border-color: #d1d5db !important;
   }
-
   .upload-zone:hover {
-    border-color: rgba(102, 126, 234, 0.5);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border-color: #667eea !important;
+    background: rgba(102, 126, 234, 0.05);
   }
 
-  /* Document item */
-  .document-item {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
-    border: 1px solid rgba(102, 126, 234, 0.1);
-    transition: all 0.2s ease;
+  /* Désactiver l'animation float sur les boutons du modal preview et tabs */
+  .preview-actions .btn,
+  .tab-buttons .btn {
+    animation: none !important;
   }
 
-  .document-item:hover {
-    border-color: rgba(102, 126, 234, 0.25);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  .min-width-0 {
+    min-width: 0;
   }
 
-  /* Icon button */
-  .btn-icon-gradient {
-    background: transparent;
-    border: none;
-    padding: 4px;
-    transition: all 0.2s ease;
+  /* Hover effect pour les items d'activité */
+  .activity-doc-item {
+    padding: 8px;
+    margin: -8px;
+    margin-bottom: 12px !important;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+  .activity-doc-item:hover {
+    background: rgba(102, 126, 234, 0.08);
   }
 
-  .btn-icon-gradient:hover {
-    transform: scale(1.1);
+  /* Fix hover effects for all buttons on this page */
+  .btn-outline-secondary {
+    transition: all 0.2s ease !important;
+    transform: none !important;
+  }
+  .btn-outline-secondary:hover {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-color: #667eea !important;
+    color: #667eea !important;
+    -webkit-text-fill-color: #667eea !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .btn-primary {
+    transition: all 0.2s ease !important;
+    transform: none !important;
+  }
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: none !important;
+  }
+  .icon-selector.btn-outline-secondary:hover {
+    background: rgba(102, 126, 234, 0.15) !important;
+  }
+  .icon-selector.btn-outline-secondary.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border-color: transparent !important;
+    -webkit-text-fill-color: inherit !important;
   }
 </style>
+
+<script>
+// Fonction d'initialisation principale
+function initDocumentsPage() {
+  if (window._documentsPageInitialized) return;
+  window._documentsPageInitialized = true;
+
+  // Tab buttons style toggle
+  document.querySelectorAll('[role="tablist"] button[data-bs-toggle="pill"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('[role="tablist"] button[data-bs-toggle="pill"]').forEach(b => {
+        b.classList.remove('btn-primary');
+        b.classList.add('btn-outline-secondary');
+      });
+      this.classList.remove('btn-outline-secondary');
+      this.classList.add('btn-primary');
+    });
+  });
+
+  // Icon selector
+  document.querySelectorAll('.icon-selector').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.icon-selector').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // File upload display
+  const fileInput = document.getElementById('documentUpload');
+  if (fileInput) {
+    fileInput.addEventListener('change', function() {
+      const fileName = this.files[0]?.name;
+      const selectedFileEl = document.querySelector('.selected-file');
+      if (selectedFileEl && fileName) {
+        selectedFileEl.textContent = 'Fichier sélectionné: ' + fileName;
+        const docNameInput = document.getElementById('documentName');
+        if (docNameInput && !docNameInput.value) {
+          docNameInput.value = fileName.replace(/\.[^/.]+$/, '');
+        }
+      }
+    });
+  }
+
+  // Form cleanup before submit
+  const uploadForm = document.getElementById('uploadDocumentForm');
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', function() {
+      document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+      document.querySelectorAll('.modal.show').forEach(m => m.classList.remove('show'));
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    });
+  }
+
+  // Drag and drop
+  const uploadZone = document.querySelector('.upload-zone');
+  if (uploadZone) {
+    ['dragenter', 'dragover'].forEach(evt => {
+      uploadZone.addEventListener(evt, function(e) {
+        e.preventDefault();
+        this.style.borderColor = '#667eea';
+        this.style.background = 'rgba(102, 126, 234, 0.05)';
+      });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      uploadZone.addEventListener(evt, function(e) {
+        e.preventDefault();
+        this.style.borderColor = '#d1d5db';
+        this.style.background = '';
+      });
+    });
+    uploadZone.addEventListener('drop', function(e) {
+      const files = e.dataTransfer.files;
+      if (files.length && fileInput) {
+        fileInput.files = files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
+  }
+
+  // Folder content modal
+  const folderContentModal = document.getElementById('folderContentModal');
+  if (folderContentModal) {
+    folderContentModal.addEventListener('show.bs.modal', function(event) {
+      const button = event.relatedTarget;
+      if (!button) return;
+
+      const folderId = button.dataset.folderId;
+      const folderName = button.dataset.folderName;
+      const folderIcon = button.dataset.folderIcon;
+
+      globalCurrentFolderId = folderId;
+
+      document.getElementById('folderModalIcon').textContent = folderIcon;
+      document.getElementById('folderContentModalLabel').textContent = folderName;
+
+      fetch('/folders/' + folderId + '.json')
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById('folderDocuments');
+          document.getElementById('folderDocCount').textContent = data.documents.length + ' document' + (data.documents.length !== 1 ? 's' : '');
+
+          if (data.documents.length === 0) {
+            container.innerHTML = '<p class="text-center text-muted py-4">Aucun document dans ce dossier</p>';
+            return;
+          }
+
+          let html = '';
+          data.documents.forEach(function(doc) {
+            const icon = doc.icon || getFileIcon(doc.file_type);
+            html += `
+              <div class="d-flex align-items-center justify-content-between rounded-3 p-3 mb-2 document-item"
+                   style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%); border: 1px solid rgba(102, 126, 234, 0.1);"
+                   data-document-id="${doc.id}"
+                   data-document-name="${doc.name}"
+                   data-document-icon="${icon}"
+                   data-document-type="${doc.file_type || ''}"
+                   data-document-size="${doc.file_size || ''}"
+                   data-document-uploader="${doc.uploader_name || '-'}"
+                   data-document-folder="${doc.folder_name || '-'}"
+                   data-document-favorite="${doc.is_favorite}"
+                   data-document-time="${doc.time_ago || ''}"
+                   data-document-download="${doc.download_url || ''}"
+                   data-document-preview="${doc.preview_url || ''}">
+                <div class="d-flex align-items-center min-width-0 flex-grow-1" role="button" onclick="openPreviewFromFolder(this.closest('.document-item'))">
+                  <div class="fs-5 me-3">${icon}</div>
+                  <div class="min-width-0">
+                    <div class="fw-medium text-truncate">${doc.name}</div>
+                    <small class="text-muted">${doc.file_size || 'N/A'} - ${doc.file_type || 'N/A'}</small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-2 ms-2">
+                  <button class="btn btn-sm btn-link p-0" onclick="event.stopPropagation(); toggleFavorite(${doc.id}, this)">
+                    <span class="${doc.is_favorite ? 'text-warning' : 'text-muted'}">${doc.is_favorite ? '★' : '☆'}</span>
+                  </button>
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-link p-0" data-bs-toggle="dropdown" onclick="event.stopPropagation()">...</button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="${doc.download_url || '#'}">Télécharger</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item text-danger" href="#" onclick="event.stopPropagation(); deleteDocument(${doc.id}); return false;">Supprimer</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          container.innerHTML = html;
+        })
+        .catch(error => {
+          document.getElementById('folderDocuments').innerHTML = '<p class="text-center text-danger py-4">Erreur lors du chargement</p>';
+        });
+    });
+  }
+
+  // Search
+  const searchInput = document.getElementById('searchDocuments');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase().trim();
+      performSearch(query);
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initDocumentsPage);
+document.addEventListener('turbo:load', function() {
+  window._documentsPageInitialized = false;
+  initDocumentsPage();
+});
+
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  initDocumentsPage();
+}
+
+function performSearch(query) {
+  if (!query) {
+    document.querySelectorAll('.folder-col, .document-item').forEach(el => el.style.display = '');
+    return;
+  }
+
+  // Recherche dans les dossiers
+  document.querySelectorAll('#folders .folder-col').forEach(function(col) {
+    const name = col.dataset.folderName || '';
+    col.style.display = name.includes(query) ? '' : 'none';
+  });
+
+  // Recherche dans les documents (nom, type, uploader, dossier)
+  document.querySelectorAll('.document-item').forEach(function(item) {
+    const name = (item.dataset.documentName || '').toLowerCase();
+    const type = (item.dataset.documentType || '').toLowerCase();
+    const uploader = (item.dataset.documentUploader || '').toLowerCase();
+    const folder = (item.dataset.documentFolder || '').toLowerCase();
+
+    const matches = name.includes(query) || type.includes(query) || uploader.includes(query) || folder.includes(query);
+    item.style.display = matches ? '' : 'none';
+  });
+}
+
+function getFileIcon(fileType) {
+  const icons = { 'pdf': '📄', 'doc': '📝', 'docx': '📝', 'xls': '📊', 'xlsx': '📊', 'jpg': '🖼️', 'jpeg': '🖼️', 'png': '🖼️', 'gif': '🖼️' };
+  return icons[fileType?.toLowerCase()] || '📎';
+}
+
+function toggleFavorite(docId, btn) {
+  fetch('/documents/' + docId + '/toggle_favorite', {
+    method: 'PATCH',
+    headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
+  })
+  .then(r => r.json())
+  .then(data => {
+    const span = btn.querySelector('span');
+    span.textContent = data.is_favorite ? '★' : '☆';
+    span.className = data.is_favorite ? 'text-warning' : 'text-muted';
+  });
+}
+
+function deleteDocument(docId) {
+  if (window.VillageAlert) {
+    window.VillageAlert.confirm('Supprimer ce document ?', { danger: true, confirmText: 'Supprimer', cancelText: 'Annuler' }).then(function(confirmed) {
+      if (confirmed) {
+        fetch('/documents/' + docId, { method: 'DELETE', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content } }).then(function() { window.location = '/families-documents'; });
+      }
+    });
+  }
+}
+
+function openRenameModal(folderId, folderName) {
+  document.getElementById('renameFolderName').value = folderName;
+  document.getElementById('renameFolderForm').action = '/folders/' + folderId;
+  new bootstrap.Modal(document.getElementById('renameFolderModal')).show();
+}
+
+function deleteFolder(folderId) {
+  if (window.VillageAlert) {
+    window.VillageAlert.confirm('Supprimer ce dossier et tous ses documents ?', { danger: true, confirmText: 'Supprimer', cancelText: 'Annuler' }).then(function(confirmed) {
+      if (confirmed) {
+        fetch('/folders/' + folderId, { method: 'DELETE', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content } }).then(() => location.reload());
+      }
+    });
+  }
+}
+
+let globalCurrentFolderId = null;
+
+function openUploadFromFolder() {
+  document.querySelector('#folderContentModal .btn-close')?.click();
+  setTimeout(function() {
+    if (globalCurrentFolderId) {
+      const folderSelect = document.getElementById('destinationFolder');
+      if (folderSelect) folderSelect.value = globalCurrentFolderId;
+    }
+    document.getElementById('uploadModalTrigger').click();
+  }, 300);
+}
+
+let currentPreviewDocId = null;
+let currentPreviewIsFavorite = false;
+
+function openPreviewFromFolder(docElement) {
+  document.querySelector('#folderContentModal .btn-close')?.click();
+  setTimeout(function() { openPreviewModal(docElement); }, 300);
+}
+
+function openPreviewModal(docElement) {
+  const docId = docElement.dataset.documentId;
+  const docName = docElement.dataset.documentName;
+  const docIcon = docElement.dataset.documentIcon;
+  const docType = docElement.dataset.documentType || 'N/A';
+  const docSize = docElement.dataset.documentSize;
+  const docUploader = docElement.dataset.documentUploader;
+  const docFolder = docElement.dataset.documentFolder;
+  const docFavorite = docElement.dataset.documentFavorite === 'true';
+  const docTime = docElement.dataset.documentTime;
+  const docDownload = docElement.dataset.documentDownload;
+  const docPreview = docElement.dataset.documentPreview;
+
+  currentPreviewDocId = docId;
+  currentPreviewIsFavorite = docFavorite;
+
+  document.getElementById('previewDocIcon').textContent = docIcon;
+  document.getElementById('previewDocumentModalLabel').textContent = docName;
+  document.getElementById('previewDocInfo').textContent = docTime;
+  document.getElementById('previewDocSize').textContent = docSize;
+  document.getElementById('previewDocType').textContent = docType;
+  document.getElementById('previewDocUploader').textContent = docUploader;
+  document.getElementById('previewDocFolder').textContent = docFolder;
+
+  const favIcon = document.getElementById('previewFavoriteIcon');
+  favIcon.textContent = docFavorite ? '★' : '☆';
+  const favBtn = document.getElementById('previewFavoriteBtn');
+  favBtn.className = docFavorite ? 'btn btn-primary' : 'btn btn-outline-secondary';
+
+  const downloadBtn = document.getElementById('previewDownloadBtn');
+  downloadBtn.href = docDownload || '#';
+  downloadBtn.classList.toggle('disabled', !docDownload);
+
+  document.getElementById('previewLoading').classList.remove('d-none');
+  document.getElementById('previewContent').classList.add('d-none');
+  document.getElementById('previewImage').classList.add('d-none');
+  document.getElementById('previewPdf').classList.add('d-none');
+  document.getElementById('previewFallback').classList.add('d-none');
+
+  document.getElementById('previewModalTrigger').click();
+
+  if (docPreview) loadPreview(docPreview, docType, docIcon);
+  else showFallbackPreview(docIcon, docType);
+}
+
+function loadPreview(previewUrl, fileType, icon) {
+  const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+  const pdfTypes = ['pdf'];
+  const type = (fileType || '').toLowerCase();
+
+  document.getElementById('previewLoading').classList.add('d-none');
+  document.getElementById('previewContent').classList.remove('d-none');
+
+  if (imageTypes.includes(type)) {
+    const img = document.getElementById('previewImage');
+    img.src = previewUrl;
+    img.classList.remove('d-none');
+  } else if (pdfTypes.includes(type)) {
+    const iframe = document.getElementById('previewPdf');
+    iframe.src = previewUrl;
+    iframe.classList.remove('d-none');
+  } else {
+    showFallbackPreview(icon, fileType);
+  }
+}
+
+function showFallbackPreview(icon, fileType) {
+  document.getElementById('previewLoading').classList.add('d-none');
+  document.getElementById('previewContent').classList.remove('d-none');
+  document.getElementById('previewFallback').classList.remove('d-none');
+  document.getElementById('previewFallbackIcon').textContent = icon;
+  document.getElementById('previewFallbackType').textContent = fileType ? 'Format: ' + fileType.toUpperCase() : '';
+}
+
+function togglePreviewFavorite() {
+  if (!currentPreviewDocId) return;
+
+  fetch('/documents/' + currentPreviewDocId + '/toggle_favorite', {
+    method: 'PATCH',
+    headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
+  })
+  .then(r => r.json())
+  .then(data => {
+    currentPreviewIsFavorite = data.is_favorite;
+    document.getElementById('previewFavoriteIcon').textContent = data.is_favorite ? '★' : '☆';
+    document.getElementById('previewFavoriteBtn').className = data.is_favorite ? 'btn btn-primary' : 'btn btn-outline-secondary';
+  });
+}
+
+function deletePreviewDocument() {
+  if (!currentPreviewDocId) return;
+
+  if (window.VillageAlert) {
+    window.VillageAlert.confirm('Supprimer ce document ?', { danger: true, confirmText: 'Supprimer', cancelText: 'Annuler' }).then(function(confirmed) {
+      if (confirmed) {
+        fetch('/documents/' + currentPreviewDocId, { method: 'DELETE', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content } }).then(function() { window.location = '/families-documents'; });
+      }
+    });
+  }
+}
+</script>

@@ -109,21 +109,29 @@
     <% flash.each do |type, message| %>
       <% next if message.blank? %>
       <% alert_type = (type.to_s == 'notice' || type.to_s == 'success') ? 'success' : 'error' %>
-      <script>
+      <% flash_id = "flash_#{Time.now.to_i}_#{rand(10000)}" %>
+      <script data-flash-id="<%= flash_id %>">
         (function() {
+          var flashId = '<%= flash_id %>';
+          // Vérifier si ce flash a déjà été affiché
+          if (!window._shownFlashes) window._shownFlashes = {};
+          if (window._shownFlashes[flashId]) return;
+          window._shownFlashes[flashId] = true;
+
           function showAlert() {
             if (window.VillageAlert) {
               window.VillageAlert.<%= alert_type %>("<%= j message.to_s %>");
             }
+            // Supprimer le script après exécution pour éviter le cache Turbo
+            var script = document.querySelector('script[data-flash-id="' + flashId + '"]');
+            if (script) script.remove();
           }
           // Essayer immédiatement
           if (document.readyState === 'complete' || document.readyState === 'interactive') {
             setTimeout(showAlert, 100);
+          } else {
+            document.addEventListener('DOMContentLoaded', showAlert, { once: true });
           }
-          // Et aussi sur DOMContentLoaded au cas où
-          document.addEventListener('DOMContentLoaded', showAlert, { once: true });
-          // Et sur turbo:load pour les navigations Turbo
-          document.addEventListener('turbo:load', showAlert, { once: true });
         })();
       </script>
     <% end %>

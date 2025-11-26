@@ -1,51 +1,49 @@
-<div class="d-flex align-items-center justify-content-between bg-light rounded-3 p-3 mb-2 document-item"
+<div class="d-flex align-items-center justify-content-between rounded-3 p-3 mb-2 document-item"
+     style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%); border: 1px solid rgba(102, 126, 234, 0.1);"
      data-document-id="<%= document.id %>"
      data-document-name="<%= document.name %>"
      data-document-icon="<%= document.icon_display %>"
      data-document-type="<%= document.file_type %>"
      data-document-size="<%= document.file_size_display %>"
      data-document-uploader="<%= document.uploader_name %>"
-     data-document-folder="<%= document.folder&.name || '-' %>"
-     data-document-favorite="<%= document.is_favorite? %>"
+     data-document-folder="<%= document.folder&.name %>"
      data-document-time="<%= document.time_ago_display %>"
+     data-document-favorite="<%= document.is_favorite %>"
      data-document-download="<%= document.file.attached? ? download_document_path(document) : '' %>"
-     data-document-preview="<%= document.file.attached? ? url_for(document.file) : '' %>">
-  <div class="d-flex align-items-center min-width-0 flex-grow-1 document-clickable" role="button" onclick="openPreviewModal(this.closest('.document-item'))">
-    <div class="fs-5 me-3"><%= document.icon_display %></div>
-    <div class="min-width-0">
-      <div class="fw-medium text-truncate"><%= document.name %></div>
+     data-document-preview="<%= document.file.attached? ? url_for(document.file) : '' %>"
+     onclick="openPreviewModal(this)"
+     role="button">
+  <div class="d-flex align-items-center">
+    <div class="me-3">
+      <span style="font-size: 1.5rem;"><%= document.icon_display %></span>
+    </div>
+    <div>
+      <div class="fw-semibold"><%= document.name %></div>
       <small class="text-muted">
-        <%= document.file_size_display %> -
-        <%= document.time_ago_display %> -
-        <span class="fw-medium"><%= document.uploader_initial %></span> <%= document.uploader_name %>
+        <%= document.file_size_display %> •
+        <%= document.time_ago_display %> •
+        <%= document.uploader_name %>
         <% if document.folder.present? %>
-          - <%= document.folder.name %>
+          • <span class="gradient-link"><%= document.folder.name %></span>
         <% end %>
       </small>
     </div>
   </div>
-  <div class="d-flex align-items-center gap-2 ms-2">
-    <button class="btn btn-sm btn-link p-0 favorite-btn" onclick="event.stopPropagation(); toggleFavoriteDoc(<%= document.id %>, this)">
-      <span class="<%= document.is_favorite? ? 'text-warning' : 'text-muted' %>">
-        <%= document.is_favorite? ? "★" : "☆" %>
-      </span>
+  <div class="d-flex align-items-center gap-2">
+    <button class="btn btn-sm <%= document.is_favorite ? 'btn-primary' : 'btn-outline-secondary' %>"
+            onclick="event.stopPropagation(); toggleFavorite(<%= document.id %>, this);"
+            style="animation: none !important;">
+      <span style="<%= document.is_favorite ? '-webkit-text-fill-color: white;' : 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;' %>"><%= document.is_favorite ? '★' : '☆' %></span>
     </button>
-    <div class="dropdown">
-      <button class="btn btn-sm btn-link text-dark p-0" data-bs-toggle="dropdown" onclick="event.stopPropagation()">...</button>
+    <div class="dropdown" onclick="event.stopPropagation();">
+      <button class="btn btn-sm btn-link p-1" data-bs-toggle="dropdown">
+        ⋮
+      </button>
       <ul class="dropdown-menu dropdown-menu-end">
-        <li>
-          <% if document.file.attached? %>
-            <%= link_to "Telecharger", download_document_path(document), class: "dropdown-item" %>
-          <% else %>
-            <span class="dropdown-item text-muted">Fichier non disponible</span>
-          <% end %>
-        </li>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-          <a href="#" class="dropdown-item text-danger" onclick="event.stopPropagation(); deleteDoc(<%= document.id %>); return false;">
-            Supprimer
-          </a>
-        </li>
+        <% if document.file.attached? %>
+          <li><%= link_to "📥 Télécharger", download_document_path(document), class: "dropdown-item" %></li>
+        <% end %>
+        <li><a class="dropdown-item text-danger" href="#" onclick="deleteDocument(<%= document.id %>)">🗑️ Supprimer</a></li>
       </ul>
     </div>
   </div>
