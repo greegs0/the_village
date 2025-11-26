@@ -26,11 +26,11 @@ class ApplicationController < ActionController::Base
     family = current_user.family
     today = Date.today
 
-    # Tasks data
-    @sidebar_pending_tasks_count = family.tasks.where(status: ['pending', 'in_progress', false]).count
+    # Tasks data - Only count incomplete tasks (in progress)
+    @sidebar_pending_tasks_count = family.tasks.where(status: false).count
     @sidebar_today_tasks = family.tasks
-                                  .where('target_date = ? OR target_date IS NULL', today)
-                                  .where(status: ['pending', 'in_progress', false])
+                                  .where('target_date = ?', today)
+                                  .where(status: false)
                                   .limit(5)
 
     # Events data

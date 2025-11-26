@@ -1,5 +1,5 @@
 // ============================================
-// SIDEBAR NAVIGATION - Modern Dark Theme
+// SIDEBAR NAVIGATION - Modern Light Theme
 // ============================================
 
 .app-sidebar {
@@ -8,18 +8,18 @@
   top: 0;
   bottom: 0;
   width: 260px;
-  background: linear-gradient(180deg, #1a1d2e 0%, #16192b 100%);
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   z-index: 1000;
-  border-right: 1px solid rgba(102, 126, 234, 0.1);
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 
   // Logo Section
   .sidebar-logo-section {
     padding: 20px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #f3f4f6;
     flex-shrink: 0;
   }
 
@@ -61,25 +61,25 @@
     position: relative;
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 8px 12px;
     transition: all 0.2s ease;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(102, 126, 234, 0.3);
+      background: #f3f4f6;
+      border-color: #d1d5db;
     }
 
     &:focus-within {
-      background: rgba(255, 255, 255, 0.1);
+      background: #ffffff;
       border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
     i.fa-search {
-      color: rgba(255, 255, 255, 0.4);
+      color: #9ca3af;
       font-size: 14px;
       margin-right: 8px;
     }
@@ -89,21 +89,21 @@
       background: transparent;
       border: none;
       outline: none;
-      color: rgba(255, 255, 255, 0.9);
+      color: #1f2937;
       font-size: 13px;
 
       &::placeholder {
-        color: rgba(255, 255, 255, 0.35);
+        color: #9ca3af;
       }
     }
 
     kbd {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
       border-radius: 4px;
       padding: 2px 6px;
       font-size: 11px;
-      color: rgba(255, 255, 255, 0.5);
+      color: #6b7280;
       font-family: monospace;
     }
   }
@@ -146,7 +146,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: rgba(255, 255, 255, 0.4);
+    color: #9ca3af;
     padding: 8px 12px 8px 12px;
     margin-bottom: 4px;
   }
@@ -156,7 +156,7 @@
     align-items: center;
     gap: 12px;
     padding: 10px 12px;
-    color: rgba(255, 255, 255, 0.7);
+    color: #6b7280;
     text-decoration: none;
     border-radius: 8px;
     font-size: 14px;
@@ -169,7 +169,7 @@
       width: 20px;
       font-size: 16px;
       text-align: center;
-      color: rgba(255, 255, 255, 0.6);
+      color: #9ca3af;
       transition: all 0.2s ease;
     }
 
@@ -189,8 +189,8 @@
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.9);
+      background: #f9fafb;
+      color: #1f2937;
       transform: translateX(2px);
 
       i {
@@ -199,10 +199,11 @@
     }
 
     &.active {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-      color: white;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      color: #667eea;
       border-left: 3px solid #667eea;
       padding-left: 9px;
+      font-weight: 600;
 
       i {
         color: #667eea;
@@ -225,13 +226,13 @@
   .sidebar-today-section {
     flex-shrink: 0;
     padding: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid #f3f4f6;
+    background: #f9fafb;
   }
 
   .today-widget {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
     border-radius: 10px;
     padding: 12px;
   }
@@ -242,7 +243,7 @@
     justify-content: space-between;
     margin-bottom: 12px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #f3f4f6;
 
     .today-icon-title {
       display: flex;
@@ -257,13 +258,13 @@
       span {
         font-size: 13px;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.9);
+        color: #1f2937;
       }
     }
 
     .today-date {
       font-size: 11px;
-      color: rgba(255, 255, 255, 0.5);
+      color: #6b7280;
       font-weight: 500;
     }
   }
@@ -283,13 +284,13 @@
 
       i {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.5);
+        color: #9ca3af;
       }
 
       span {
         font-size: 11px;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.6);
+        color: #6b7280;
         text-transform: uppercase;
         letter-spacing: 0.3px;
       }
@@ -306,12 +307,12 @@
       align-items: center;
       gap: 8px;
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
+      color: #4b5563;
 
       .task-checkbox {
         width: 16px;
         height: 16px;
-        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        border: 1.5px solid #d1d5db;
         border-radius: 4px;
         flex-shrink: 0;
         display: flex;
@@ -349,7 +350,7 @@
 
     .summary-more {
       font-size: 11px;
-      color: rgba(255, 255, 255, 0.4);
+      color: #9ca3af;
       font-style: italic;
       margin-top: 4px;
       padding-left: 24px;
@@ -361,7 +362,7 @@
       justify-content: center;
       gap: 6px;
       padding: 12px 8px;
-      color: rgba(255, 255, 255, 0.35);
+      color: #9ca3af;
       font-size: 11px;
       font-style: italic;
 
@@ -376,8 +377,8 @@
   .sidebar-user-section {
     flex-shrink: 0;
     padding: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid #f3f4f6;
+    background: #fafafa;
   }
 
   .sidebar-user-menu {
@@ -390,7 +391,7 @@
       align-items: center;
       gap: 10px;
       padding: 8px 12px;
-      color: rgba(255, 255, 255, 0.6);
+      color: #6b7280;
       text-decoration: none;
       border-radius: 6px;
       font-size: 13px;
@@ -403,8 +404,8 @@
       }
 
       &:hover {
-        background: rgba(255, 255, 255, 0.05);
-        color: rgba(255, 255, 255, 0.9);
+        background: #f3f4f6;
+        color: #1f2937;
         transform: translateX(2px);
       }
 
