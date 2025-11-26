@@ -1,14 +1,36 @@
 
 
+<!-- SVG Gradient Definitions -->
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="trashGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#b91c1c"/>
+    </linearGradient>
+    <linearGradient id="successGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+  </defs>
+</svg>
+
 <!-- Main Content -->
 <div class="container-fluid px-4 px-lg-5 py-4">
   <!-- Header with Back Button -->
   <div class="d-flex align-items-center mb-4">
-    <%= link_to family_tasks_path(@family), class: "btn btn-outline-secondary me-3" do %>
-      ← Retour
+    <%= link_to family_tasks_path(@family), class: "btn btn-back me-3" do %>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5"/>
+        <path d="M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="ms-2">Retour</span>
     <% end %>
     <div class="flex-grow-1">
-      <h1 class="h2 mb-1"><%= @task.name %></h1>
+      <h1 class="h2 mb-1 dashboard-title"><%= @task.name %></h1>
       <p class="text-secondary mb-0">Détails de la tâche</p>
     </div>
   </div>
@@ -16,27 +38,39 @@
   <div class="row g-4">
     <!-- Task Details Card -->
     <div class="col-lg-8">
-      <div class="card border rounded-4">
+      <div class="card stat-card rounded-4">
         <div class="card-body p-4">
           <!-- Status Section with Checkbox -->
           <div class="mb-4 pb-4 border-bottom">
-            <h5 class="mb-3">Statut</h5>
+            <h5 class="mb-3 dashboard-section-title">Statut</h5>
             <%= form_with(url: toggle_status_family_task_path(@family, @task), method: :patch, local: true, class: "d-flex align-items-center gap-3", id: "task-status-form") do %>
-              <%= check_box_tag 'status', '1', @task.status, class: "form-check-input m-0", style: "width: 24px; height: 24px; cursor: pointer;", id: "task-status-checkbox" %>
-              <label class="form-check-label <%= @task.status ? 'text-success' : 'text-secondary' %> fw-medium" for="task-status-checkbox">
-                <%= @task.status ? '✓ Tâche terminée' : 'Coche quand c\'est fait !' %>
+              <div class="task-checkbox-wrapper">
+                <%= check_box_tag 'status', '1', @task.status, class: "task-checkbox", id: "task-status-checkbox" %>
+                <label for="task-status-checkbox" class="task-checkbox-label">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </label>
+              </div>
+              <label class="form-check-label fw-medium" for="task-status-checkbox" style="<%= @task.status ? 'background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;' : 'color: #6B7280;' %>">
+                <%= @task.status ? 'Tâche terminée' : 'Coche quand c\'est fait !' %>
               </label>
             <% end %>
           </div>
 
           <!-- Task Information -->
           <div class="mb-4 pb-4 border-bottom">
-            <h5 class="mb-3">Informations</h5>
+            <h5 class="mb-3 dashboard-section-title">Informations</h5>
 
             <div class="row g-3">
               <div class="col-md-6">
                 <div class="d-flex align-items-start">
-                  <div class="text-primary me-2" style="font-size: 20px;">🕐</div>
+                  <div class="icon-wrapper me-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" stroke="url(#iconGradient)"/>
+                      <polyline points="12 6 12 12 16 14" stroke="url(#iconGradient)"/>
+                    </svg>
+                  </div>
                   <div>
                     <small class="text-muted d-block">Date d'échéance</small>
                     <span class="fw-medium"><%= @task.target_date.strftime("%d/%m/%Y") %></span>
@@ -47,7 +81,12 @@
               <% if @task.assignee.present? %>
                 <div class="col-md-6">
                   <div class="d-flex align-items-start">
-                    <div class="text-primary me-2" style="font-size: 20px;">👤</div>
+                    <div class="icon-wrapper me-3">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="url(#iconGradient)"/>
+                        <circle cx="12" cy="7" r="4" stroke="url(#iconGradient)"/>
+                      </svg>
+                    </div>
                     <div>
                       <small class="text-muted d-block">Assigné à</small>
                       <span class="fw-medium"><%= @task.assignee.name %></span>
@@ -58,7 +97,19 @@
 
               <div class="col-md-6">
                 <div class="d-flex align-items-start">
-                  <div class="text-primary me-2" style="font-size: 20px;">📅</div>
+                  <div class="icon-wrapper me-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="url(#iconGradient)"/>
+                      <line x1="16" y1="2" x2="16" y2="6" stroke="url(#iconGradient)"/>
+                      <line x1="8" y1="2" x2="8" y2="6" stroke="url(#iconGradient)"/>
+                      <line x1="3" y1="10" x2="21" y2="10" stroke="url(#iconGradient)"/>
+                      <circle cx="8" cy="14" r="1" fill="url(#iconGradient)"/>
+                      <circle cx="12" cy="14" r="1" fill="url(#iconGradient)"/>
+                      <circle cx="16" cy="14" r="1" fill="url(#iconGradient)"/>
+                      <circle cx="8" cy="18" r="1" fill="url(#iconGradient)"/>
+                      <circle cx="12" cy="18" r="1" fill="url(#iconGradient)"/>
+                    </svg>
+                  </div>
                   <div>
                     <small class="text-muted d-block">Créée le</small>
                     <span class="fw-medium"><%= @task.created_at.strftime("%d/%m/%Y") %></span>
@@ -68,7 +119,12 @@
 
               <div class="col-md-6">
                 <div class="d-flex align-items-start">
-                  <div class="text-primary me-2" style="font-size: 20px;">✏️</div>
+                  <div class="icon-wrapper me-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="url(#iconGradient)"/>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="url(#iconGradient)"/>
+                    </svg>
+                  </div>
                   <div>
                     <small class="text-muted d-block">Dernière modification</small>
                     <span class="fw-medium"><%= time_ago_in_words(@task.updated_at) %></span>
@@ -80,9 +136,11 @@
 
           <% if @task.description.present? %>
             <!-- Description -->
-            <div class="mb-4">
-              <h5 class="mb-3">Description</h5>
-              <p class="text-secondary"><%= @task.description %></p>
+            <div class="mb-0">
+              <h5 class="mb-3 dashboard-section-title">Description</h5>
+              <div class="description-box p-3 rounded-3">
+                <p class="text-secondary mb-0"><%= @task.description %></p>
+              </div>
             </div>
           <% end %>
         </div>
@@ -91,29 +149,37 @@
 
     <!-- Actions Card -->
     <div class="col-lg-4">
-      <div class="card border rounded-4">
+      <div class="card stat-card rounded-4">
         <div class="card-body p-4">
-          <h5 class="mb-3">Actions</h5>
+          <h5 class="mb-3 dashboard-section-title">Actions</h5>
 
           <!-- Edit Button -->
-          <button type="button" class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#editTaskModal">
-            ✏️ Modifier la tâche
+          <button type="button" class="btn btn-edit-task w-100 mb-2" data-bs-toggle="modal" data-bs-target="#editTaskModal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Modifier la tâche
           </button>
 
           <!-- Delete Button -->
           <%= button_to family_task_path(@family, @task),
                         method: :delete,
                         data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette tâche ?" },
-                        class: "btn btn-outline-danger w-100" do %>
-            🗑️ Supprimer la tâche
+                        class: "btn btn-delete-task w-100" do %>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="m19 6-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6m5 0V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2"/>
+            </svg>
+            Supprimer la tâche
           <% end %>
         </div>
       </div>
 
       <!-- Quick Stats Card -->
-      <div class="card border rounded-4 mt-4">
+      <div class="card stat-card rounded-4 mt-4">
         <div class="card-body p-4">
-          <h6 class="mb-3">Statistiques</h6>
+          <h6 class="mb-3 dashboard-section-title">Statistiques</h6>
 
           <div class="d-flex justify-content-between align-items-center mb-2">
             <span class="text-secondary small">Tâches de <%= @task.assignee&.name || 'Non assigné' %></span>
@@ -127,11 +193,15 @@
             <div class="mb-2">
               <div class="d-flex justify-content-between mb-1">
                 <small>Complétées</small>
-                <small class="fw-medium"><%= completed %>/<%= total %></small>
+                <small class="fw-medium" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"><%= completed %>/<%= total %></small>
               </div>
-              <div class="progress" style="height: 8px;">
-                <div class="progress-bar bg-success" style="width: <%= total > 0 ? (completed.to_f / total * 100).round : 0 %>%"></div>
+              <div class="progress-gradient" style="height: 8px; border-radius: 4px; background: rgba(102, 126, 234, 0.1);">
+                <div class="progress-gradient-bar" style="width: <%= total > 0 ? (completed.to_f / total * 100).round : 0 %>%; height: 100%; border-radius: 4px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
               </div>
+            </div>
+          <% else %>
+            <div class="text-center py-3">
+              <small class="text-muted">Aucune statistique disponible</small>
             </div>
           <% end %>
         </div>
@@ -143,10 +213,10 @@
 <!-- Edit Task Modal -->
 <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4">
+    <div class="modal-content rounded-4" style="border: 1px solid rgba(102, 126, 234, 0.2);">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-medium" id="editTaskModalLabel">Modifier la tâche</h5>
+          <h5 class="modal-title fw-medium dashboard-section-title" id="editTaskModalLabel">Modifier la tâche</h5>
           <p class="text-secondary small mb-0">Mettre à jour les informations de la tâche</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -162,51 +232,185 @@
   </div>
 </div>
 
-<!-- Confirmation Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 border-0 shadow">
-      <div class="modal-body text-center p-4">
-        <div class="mb-3">
-          <span style="font-size: 64px;">🎉</span>
-        </div>
-        <h5 class="fw-bold mb-3">Bien joué !</h5>
-        <p class="text-secondary mb-4">
-          Bravo pour ta contribution au Village. Retrouve toutes les tâches réalisées dans la liste des tâches terminées.
-        </p>
-        <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
+<%# La confirmation de tâche utilise maintenant Village Alert %>
+
+<style>
+  .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  }
+
+  .btn-back {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-back:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #764ba2;
+    transform: translateX(-2px);
+  }
+
+  .btn-edit-task {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit-task:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-delete-task {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-delete-task:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #b91c1c;
+    transform: translateY(-2px);
+  }
+
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary-gradient:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  .description-box {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.12);
+  }
+
+  /* Task Checkbox Styles */
+  .task-checkbox-wrapper {
+    position: relative;
+    width: 24px;
+    height: 24px;
+  }
+
+  .task-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    z-index: 2;
+  }
+
+  .task-checkbox-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .task-checkbox-label svg {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .task-checkbox:checked + .task-checkbox-label {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+  }
+
+  .task-checkbox:checked + .task-checkbox-label svg {
+    opacity: 1;
+  }
+
+  .task-checkbox:hover + .task-checkbox-label {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  }
+</style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  function initTaskStatusCheckbox() {
     const checkbox = document.getElementById('task-status-checkbox');
     const form = document.getElementById('task-status-form');
-    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
 
-    if (checkbox && form) {
-      const wasChecked = checkbox.checked;
+    if (!checkbox || !form) return;
 
-      checkbox.addEventListener('change', function(e) {
-        // Si la tâche passe de non cochée à cochée
-        if (!wasChecked && this.checked) {
-          e.preventDefault();
-          // Afficher la modale de confirmation
-          confirmationModal.show();
+    // Clone to remove existing listeners
+    const newCheckbox = checkbox.cloneNode(true);
+    checkbox.parentNode.replaceChild(newCheckbox, checkbox);
 
-          // Soumettre le formulaire après que la modale soit fermée
-          document.getElementById('confirmationModal').addEventListener('hidden.bs.modal', function() {
-            form.submit();
-          }, { once: true });
-        } else {
-          // Si on décoche, soumettre directement sans modale
-          form.submit();
-        }
-      });
-    }
-  });
+    const wasChecked = newCheckbox.checked;
+
+    newCheckbox.addEventListener('change', function(e) {
+      // Si la tâche passe de non cochée à cochée
+      if (!wasChecked && this.checked) {
+        e.preventDefault();
+
+        // Soumettre le formulaire via fetch pour éviter le rechargement
+        fetch(form.action, {
+          method: 'PATCH',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'text/html'
+          }
+        }).then(() => {
+          // Afficher la notification Village Alert après la soumission
+          if (window.VillageAlert) {
+            window.VillageAlert.success("Bien joué ! Bravo pour ta contribution au Village. 🎉");
+          }
+          // Reload page after alert closes (5s duration + 0.5s margin)
+          setTimeout(() => {
+            window.location.reload();
+          }, 5500);
+        });
+      } else {
+        // Si on décoche, soumettre directement sans modale
+        form.submit();
+      }
+    });
+  }
+
+  // Support both regular page load and Turbo navigation
+  document.addEventListener('DOMContentLoaded', initTaskStatusCheckbox);
+  document.addEventListener('turbo:load', initTaskStatusCheckbox);
 </script>
 
 

@@ -20,6 +20,15 @@ Rails.application.routes.draw do
 
   get 'families-documents', to: 'pages#families_documents', as: :families_documents
 
+  # Documents and Folders
+  resources :folders, only: [:index, :show, :create, :update, :destroy]
+  resources :documents, only: [:index, :show, :create, :update, :destroy] do
+    member do
+      patch :toggle_favorite
+      get :download
+    end
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -27,7 +36,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  resources :events, only: [ :index, :create, :edit, :update, :destroy ]
+  resources :events, only: [ :index, :create, :update, :destroy ]
 
   # Chat routes
   resources :chats, only: [:index, :show, :create, :destroy] do

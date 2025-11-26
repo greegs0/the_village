@@ -6,15 +6,15 @@ class FamilyEvent < ApplicationRecord
   validates :event_type, presence: true
   validates :start_date, presence: true
 
-  # Event types
+  # Event types - Couleurs pastel harmonisées avec la DA
   EVENT_TYPES = {
-    'anniversaire' => { name: 'Anniversaire', icon: '🎂', badge_class: 'bg-pink', color: '#f6339a' },
-    'garde' => { name: 'Garde d\'enfant', icon: '👶', badge_class: 'bg-primary', color: '#2b7fff' },
-    'medical' => { name: 'Rendez-vous médical', icon: '🦷', badge_class: 'bg-secondary', color: '#c6005b' },
-    'scolaire' => { name: 'Événement scolaire', icon: '🏫', badge_class: 'bg-success', color: '#00c950' },
-    'vacances' => { name: 'Vacances', icon: '✈️', badge_class: 'bg-info', color: '#1347e5' },
+    'anniversaire' => { name: 'Anniversaire', icon: '🎂', badge_class: 'bg-pink', color: '#F0ABFC' },
+    'garde' => { name: 'Garde d\'enfant', icon: '👶', badge_class: 'bg-primary', color: '#7684ff' },
+    'medical' => { name: 'Rendez-vous médical', icon: '🦷', badge_class: 'bg-secondary', color: '#FDA4AF' },
+    'scolaire' => { name: 'Événement scolaire', icon: '🏫', badge_class: 'bg-success', color: '#75e79f' },
+    'vacances' => { name: 'Vacances', icon: '✈️', badge_class: 'bg-info', color: '#7DD3FC' },
     'indisponibilite' => { name: 'Indisponibilité', icon: '🚫', badge_class: 'bg-danger', color: '#ef4444' },
-    'autre' => { name: 'Autre', icon: '📌', badge_class: 'bg-secondary', color: '#6a7282' }
+    'autre' => { name: 'Autre', icon: '📌', badge_class: 'bg-secondary', color: '#ffe181' }
   }.freeze
 
   # Callbacks
@@ -29,6 +29,14 @@ class FamilyEvent < ApplicationRecord
     where('(start_date <= ? AND (end_date IS NULL OR end_date >= ?)) OR (start_date >= ? AND start_date <= ?)',
           month_end, month_start, month_start, month_end)
   }
+
+  # Scope pour récupérer les événements avec des coordonnées
+  scope :with_coordinates, -> { where.not(latitude: nil, longitude: nil) }
+
+  # Vérifie si l'événement a des coordonnées valides
+  def has_coordinates?
+    latitude.present? && longitude.present?
+  end
 
   # Méthode pour obtenir le nom du type d'événement
   def type_name

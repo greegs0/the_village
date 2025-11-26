@@ -1,5 +1,15 @@
 
 
+<!-- SVG Definitions for gradient icons -->
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+</svg>
+
 <!-- Main Content -->
 <div class="container-fluid px-4 px-lg-5 py-4">
   <!-- Header -->
@@ -19,7 +29,12 @@
               <p class="text-secondary small mb-1">Tâches en cours</p>
               <h3 class="mb-0 stat-number"><%= @tasks.where(status: [false, nil]).count %></h3>
             </div>
-            <div class="text-primary fs-2">⏳</div>
+            <div class="stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
           </div>
         </div>
       <% end %>
@@ -33,7 +48,19 @@
               <p class="text-secondary small mb-1">Événements cette semaine</p>
               <h3 class="mb-0 stat-number"><%= @events.count %></h3>
             </div>
-            <div class="text-primary fs-2">📅</div>
+            <div class="stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="18" height="18" rx="2" stroke="url(#iconGradient)" stroke-width="1.5"></rect>
+                <path d="M3 9h18" stroke="url(#iconGradient)" stroke-width="1.5"></path>
+                <path d="M8 2v4" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round"></path>
+                <path d="M16 2v4" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round"></path>
+                <circle cx="8" cy="14" r="1.5" fill="url(#iconGradient)"></circle>
+                <circle cx="12" cy="14" r="1.5" fill="url(#iconGradient)"></circle>
+                <circle cx="16" cy="14" r="1.5" fill="url(#iconGradient)"></circle>
+                <circle cx="8" cy="18" r="1.5" fill="url(#iconGradient)"></circle>
+                <circle cx="12" cy="18" r="1.5" fill="url(#iconGradient)"></circle>
+              </svg>
+            </div>
           </div>
         </div>
       <% end %>
@@ -47,7 +74,14 @@
               <p class="text-secondary small mb-1">Membres actifs</p>
               <h3 class="mb-0 stat-number"><%= @people.count %></h3>
             </div>
-            <div class="text-primary fs-2" style="margin-top: -8px;">👥</div>
+            <div class="stat-icon" style="margin-top: -8px;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
           </div>
           <div class="d-flex" style="position: absolute; bottom: 8px; right: 12px;">
             <% @people.first(5).each_with_index do |person, index| %>
@@ -68,15 +102,25 @@
     </div>
     <!-- Documents partagés -->
     <div class="col-6 col-lg-3">
-      <div class="card stat-card rounded-4 h-100">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <p class="text-secondary small mb-1">Documents partagés</p>
-            <h3 class="mb-0 stat-number">42</h3>
+      <%= link_to families_documents_path, class: "text-decoration-none" do %>
+        <div class="card stat-card rounded-4 h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-secondary small mb-1">Documents partagés</p>
+              <h3 class="mb-0 stat-number"><%= @documents_count %></h3>
+            </div>
+            <div class="stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
           </div>
-          <div class="text-primary fs-2">📄</div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 
@@ -96,8 +140,12 @@
                 <small class="text-white opacity-75" style="font-size: 11px;">Toujours là pour vous aider</small>
               </div>
             </div>
-            <%= button_to chats_path, method: :post, params: { chat: { title: "Nouvelle conversation" } }, class: "btn btn-sm btn-light rounded-pill", form: { style: "display: inline;" } do %>
-              ➕ Nouveau chat
+            <%= button_to chats_path, method: :post, params: { chat: { title: "Nouvelle conversation" } }, class: "btn btn-sm rounded-pill btn-new-chat", form: { style: "display: inline;" } do %>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Nouveau chat
             <% end %>
           </div>
         </div>
@@ -113,11 +161,11 @@
                   </div>
                 <% end %>
                 <div class="flex-grow-1" style="max-width: 70%;">
-                  <div class="rounded-3 p-2" style="<%= message.from_assistant? ? 'background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%); border: 1px solid rgba(102, 126, 234, 0.15);' : 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;' %>">
+                  <div class="rounded-3 p-2" style="<%= message.from_assistant? ? 'background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%); border: 1px solid rgba(102, 126, 234, 0.15);' : 'background: rgba(102, 126, 234, 0.15); border: 1px solid rgba(102, 126, 234, 0.25); color: #374151;' %>">
                     <p class="mb-1" style="font-size: 13px; line-height: 1.4;">
-                      <%= message.content %>
+                      <%= simple_markdown(message.content) %>
                     </p>
-                    <small class="<%= message.from_assistant? ? 'text-muted' : 'text-white opacity-75' %>" style="font-size: 11px;">
+                    <small class="text-muted" style="font-size: 11px;">
                       <%= l(message.created_at, format: :short) %>
                     </small>
                   </div>
@@ -149,7 +197,7 @@
           <div class="input-gradient-border">
             <div class="input-inner">
               <%= form_with model: @message, url: chat_messages_path(@current_chat), method: :post, local: true, class: "d-flex align-items-center gap-2", id: "chatForm" do |f| %>
-                <%= f.text_field :content, class: "form-control form-control-sm bg-transparent border-0 flex-grow-1", placeholder: "Posez une question à votre Village Assistant...", style: "font-size: 13px; padding: 6px 8px; color: #374151;", id: "messageInput", autofocus: true %>
+                <%= f.text_field :content, class: "form-control form-control-sm bg-transparent border-0 flex-grow-1 chat-input-no-focus", placeholder: "Posez une question à votre Village Assistant...", style: "font-size: 13px; padding: 6px 8px; color: #374151;", id: "messageInput", autofocus: true %>
                 <%= f.button type: "submit", class: "btn btn-sm rounded-circle d-flex align-items-center justify-content-center", style: "width: 28px; height: 28px; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" do %>
                   <span style="font-size: 14px; color: white;">➤</span>
                 <% end %>
@@ -162,25 +210,30 @@
 
     <!-- Chat Sidebar (1/4) -->
     <div class="col-lg-3">
-      <div class="card stat-card rounded-4 h-100">
-        <div class="card-header bg-white border-0 p-3">
-          <h6 class="mb-0 dashboard-section-title">Conversations</h6>
+      <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100">
+        <div class="card-header village-assistant-header border-0 p-3">
+          <div class="d-flex align-items-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" class="me-2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <h6 class="mb-0 text-white fw-medium">Conversations</h6>
+          </div>
         </div>
-        <div class="card-body p-2" style="max-height: 500px; overflow-y: auto;">
+        <div class="card-body p-2 bg-white" style="max-height: 500px; overflow-y: auto;">
           <% if @chats.any? %>
             <% @chats.each do |chat| %>
               <%= link_to families_path(chat_id: chat.id), class: "text-decoration-none" do %>
                 <div class="chat-item p-2 mb-1 rounded <%= chat.id == @current_chat.id ? 'chat-item-active' : '' %>">
                   <div class="d-flex justify-content-between align-items-start">
                     <div class="flex-grow-1">
-                      <p class="mb-0 small fw-medium text-dark"><%= chat.title %></p>
+                      <p class="mb-0 small fw-medium chat-item-title"><%= chat.title %></p>
                       <% if chat.last_message %>
-                        <small class="text-muted" style="font-size: 11px;">
-                          <%= truncate(chat.last_message.content, length: 30) %>
+                        <small class="chat-item-preview" style="font-size: 11px;">
+                          <%= truncate(chat.last_message.content.gsub(/\*\*(.+?)\*\*/, '\1'), length: 30) %>
                         </small>
                       <% end %>
                     </div>
-                    <small class="text-muted ms-2" style="font-size: 10px;">
+                    <small class="chat-item-time ms-2" style="font-size: 10px;">
                       <%= time_ago_in_words(chat.updated_at) %>
                     </small>
                   </div>
@@ -207,12 +260,16 @@
           <% if @events.any? %>
             <% @events.each do |event| %>
               <div class="d-flex align-items-center mb-3">
-                <div class="rounded-circle activity-avatar d-flex align-items-center justify-content-center me-3">
-                  <span style="font-size: 16px;"><%= event.event_icon.present? ? event.event_icon : '📅' %></span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <span class="fw-medium text-white" style="font-size: 14px;"><%= event.assigned_to.present? ? event.assigned_to.first.upcase : event.title.first.upcase %></span>
                 </div>
                 <div class="flex-grow-1">
                   <p class="mb-0 small">
-                    <strong><%= event.title %></strong>
+                    <% if event.assigned_to.present? %>
+                      <strong><%= event.assigned_to %></strong> · <%= event.title %>
+                    <% else %>
+                      <strong><%= event.title %></strong>
+                    <% end %>
                   </p>
                   <small class="text-muted">
                     <%= l(event.start_date, format: :long) %><% if event.time.present? %> à <%= event.time.strftime("%H:%M") %><% end %>
@@ -245,8 +302,8 @@
           <% if @recent_completed_tasks.any? %>
             <% @recent_completed_tasks.each do |task| %>
               <div class="d-flex align-items-center mb-3">
-                <div class="rounded-circle activity-avatar d-flex align-items-center justify-content-center me-3">
-                  <span class="fw-medium"><%= task.assignee.name.first.upcase %></span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <span class="fw-medium text-white" style="font-size: 14px;"><%= task.assignee.name.first.upcase %></span>
                 </div>
                 <div class="flex-grow-1">
                   <p class="mb-0 small">
@@ -268,7 +325,13 @@
   <!-- Community Event Banner -->
   <div class="card stat-card rounded-4 mb-4">
     <div class="card-body p-3 p-md-4 d-flex flex-column flex-md-row align-items-center gap-3">
-      <div class="fs-1">🌍</div>
+      <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </div>
       <div class="flex-grow-1">
         <h5 class="mb-1 dashboard-section-title">Créer un événement de région</h5>
         <p class="text-secondary mb-0 small">
@@ -396,3 +459,62 @@
     });
   }
 </script>
+
+<style>
+  /* Remove double border on chat input focus */
+  .chat-input-no-focus:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* New chat button DA style */
+  .btn-new-chat {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-new-chat:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+  }
+
+  /* Chat item hover style */
+  .chat-item {
+    transition: all 0.2s ease;
+  }
+
+  .chat-item:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  }
+
+  .chat-item-active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-left: 3px solid #667eea;
+  }
+
+  /* Chat item text with DA gradient */
+  .chat-item-title {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .chat-item-preview {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .chat-item-time {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.6) 0%, rgba(118, 75, 162, 0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>

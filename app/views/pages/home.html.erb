@@ -13,6 +13,37 @@
     <link rel="stylesheet" href="style-responsive.css" />
   </head>
   <body>
+    <style>
+      /* Navbar links underline effect */
+      .navbar-nav > .nav-item > .nav-link {
+        position: relative;
+      }
+      .navbar-nav > .nav-item > .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: calc(100% - 1.5rem);
+        height: 2px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: translateX(-50%) scaleX(0);
+        transform-origin: center;
+        transition: transform 0.3s ease;
+      }
+      .navbar-nav > .nav-item > .nav-link:hover::after {
+        transform: translateX(-50%) scaleX(1);
+      }
+
+      /* Button gradient hover effect */
+      .btn-gradient-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .btn-gradient-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+    </style>
+
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-2">
       <div class="container-fluid px-4 px-lg-5">
@@ -56,11 +87,15 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <div class="d-flex gap-2 mt-3 mt-lg-0">
-            <%= link_to "Connexion", new_user_session_path, class: "btn btn-outline-dark btn-sm" %>
-            <%= link_to "Commencer", new_user_registration_path, class: "btn btn-dark btn-sm" %>
-          </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <%= link_to "Connexion", new_user_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item d-flex align-items-center">
+              <%= link_to "Commencer", new_user_registration_path, class: "btn btn-sm ms-2 btn-gradient-hover", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;" %>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -80,7 +115,7 @@
             <p class="fs-6 mb-4" style="color: #9CA3AF;">
               Contactez facilement vos proches pour obtenir l'aide dont vous avez besoin.
             </p>
-            <%= link_to new_user_registration_path, class: "btn d-inline-flex align-items-center gap-2" , style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;" do %>
+            <%= link_to new_user_registration_path, class: "btn d-inline-flex align-items-center gap-2 btn-gradient-hover" , style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;" do %>
               <span>Commencer</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>

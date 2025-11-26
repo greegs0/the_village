@@ -2,6 +2,14 @@
   <div data-controller="chat-widget">
     <!-- Chat Widget Button -->
     <div class="chat-widget-launcher">
+      <!-- Popup notification -->
+      <div class="chat-widget-popup" data-chat-widget-target="popup">
+        <div class="d-flex align-items-center">
+          <%= image_tag "village-assistant-avatar.svg", alt: "Assistant", style: "width: 24px; height: 24px; margin-right: 8px;" %>
+          <span class="chat-widget-popup-text">Besoin d'aide ? Je suis là !</span>
+        </div>
+        <div class="chat-widget-popup-arrow"></div>
+      </div>
       <button class="chat-widget-button"
               aria-label="Ouvrir le chat avec Village Assistant"
               data-action="click->chat-widget#toggle">

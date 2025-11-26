@@ -92,6 +92,9 @@ class FamilyEventsController < ApplicationController
       :end_date,
       :time,
       :location,
+      :address,
+      :latitude,
+      :longitude,
       :assigned_to,
       :reminders_enabled
     )
