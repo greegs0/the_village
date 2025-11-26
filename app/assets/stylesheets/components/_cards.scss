@@ -10,15 +10,14 @@
   border-radius: $radius-lg;
   border: 1px solid $color-gray-border;
   @include card-shadow;
-  transition: $transition-transform;
+  transition: box-shadow 0.2s ease;
 
   &.rounded-4 {
     border-radius: $radius-lg; // 14px
   }
 
-  // Hover sur toutes les cards
+  // Hover sur toutes les cards - sans flottement
   &:hover {
-    transform: $transform-hover-sm;
     box-shadow: $shadow-hover-sm;
   }
 }

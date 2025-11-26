@@ -1,10 +1,19 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:update, :destroy]
+  before_action :set_event, only: [:update, :destroy, :register, :unregister]
   before_action :authorize_user, only: [:update, :destroy]
+  before_action :authenticate_user!, only: [:create, :register, :unregister]
 
   def index
-    @events=Event.all
-    @event=Event.new
+    @events = Event.includes(:user, :participants).order(date: :desc).page(params[:page]).per(20)
+    @event = Event.new
+
+    # Stats (sur tous les événements, pas juste la page courante)
+    @stats = {
+      total: Event.count,
+      upcoming: Event.where('date >= ?', Date.today).count,
+      participants: EventRegistration.count,
+      locations: Event.distinct.count(:place)
+    }
   end
 
   def create
@@ -28,6 +37,65 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     redirect_to events_path, notice: "Evénement supprimé avec succès"
+  end
+
+  def register
+    # Transaction avec verrouillage pour éviter la race condition
+    Event.transaction do
+      @event.lock!
+      if @event.full?
+        respond_to do |format|
+          format.html { redirect_to events_path, alert: "Cet événement est complet" }
+          format.json { render json: { success: false, message: "Cet événement est complet" }, status: :unprocessable_entity }
+        end
+        return
+      end
+
+      registration = @event.event_registrations.build(user: current_user)
+      if registration.save
+        @event.reload
+        respond_to do |format|
+          format.html { redirect_to events_path, notice: "Inscription confirmée !" }
+          format.json { render json: {
+            success: true,
+            message: "Inscription confirmée !",
+            participants_count: @event.participants.size,
+            participants_names: @event.participants.map { |p| p.name.presence || p.email }.join(', ')
+          } }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to events_path, alert: registration.errors.full_messages.join(', ') }
+          format.json { render json: { success: false, message: registration.errors.full_messages.join(', ') }, status: :unprocessable_entity }
+        end
+      end
+    end
+  rescue ActiveRecord::RecordNotFound
+    respond_to do |format|
+      format.html { redirect_to events_path, alert: "Événement introuvable" }
+      format.json { render json: { success: false, message: "Événement introuvable" }, status: :not_found }
+    end
+  end
+
+  def unregister
+    registration = @event.event_registrations.find_by(user: current_user)
+    if registration&.destroy
+      @event.reload
+      respond_to do |format|
+        format.html { redirect_to events_path, notice: "Désinscription confirmée" }
+        format.json { render json: {
+          success: true,
+          message: "Désinscription confirmée",
+          participants_count: @event.participants.size,
+          participants_names: @event.participants.map { |p| p.name.presence || p.email }.join(', ')
+        } }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to events_path, alert: "Vous n'êtes pas inscrit à cet événement" }
+        format.json { render json: { success: false, message: "Vous n'êtes pas inscrit à cet événement" }, status: :unprocessable_entity }
+      end
+    end
   end
 
   private

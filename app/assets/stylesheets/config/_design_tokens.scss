@@ -225,12 +225,11 @@ $opacity-blur: 0.6;
   box-shadow: $shadow-card;
 }
 
-// Mixin pour le hover state standard
+// Mixin pour le hover state standard - sans flottement
 @mixin hover-lift {
-  transition: $transition-transform;
+  transition: box-shadow 0.2s ease;
 
   &:hover {
-    transform: $transform-hover-up;
     box-shadow: $shadow-hover;
   }
 }

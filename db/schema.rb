@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_25_180653) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_26_153843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_180653) do
     t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
+  create_table "event_registrations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_registrations_on_event_id"
+    t.index ["user_id", "event_id"], name: "index_event_registrations_on_user_id_and_event_id", unique: true
+    t.index ["user_id"], name: "index_event_registrations_on_user_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -79,6 +89,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_180653) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.string "address"
+    t.index ["category"], name: "index_events_on_category"
+    t.index ["date"], name: "index_events_on_date"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -102,11 +114,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_180653) do
     t.string "assigned_to"
     t.string "event_icon"
     t.string "badge_class"
-    t.boolean "reminders_enabled", default: false
+    t.boolean "reminders_enabled"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.string "address"
     t.index ["family_id"], name: "index_family_events_on_family_id"
+    t.index ["start_date"], name: "index_family_events_on_start_date"
   end
 
   create_table "folders", force: :cascade do |t|
@@ -151,6 +164,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_180653) do
     t.bigint "assignee_id"
     t.bigint "family_id", null: false
     t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
+    t.index ["family_id", "status"], name: "index_tasks_on_family_id_and_status"
+    t.index ["family_id", "target_date"], name: "index_tasks_on_family_id_and_target_date"
     t.index ["family_id"], name: "index_tasks_on_family_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
@@ -179,6 +194,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_180653) do
   add_foreign_key "documents", "families"
   add_foreign_key "documents", "folders"
   add_foreign_key "documents", "users"
+  add_foreign_key "event_registrations", "events"
+  add_foreign_key "event_registrations", "users"
   add_foreign_key "events", "users"
   add_foreign_key "family_events", "families"
   add_foreign_key "folders", "families"

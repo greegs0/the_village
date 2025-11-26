@@ -12,7 +12,7 @@ fr:
       last_attempt: "Il vous reste une tentative avant que votre compte ne soit verrouille."
       not_found_in_database: "E-mail ou mot de passe incorrect."
       timeout: "Votre session a expire. Veuillez vous reconnecter."
-      unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+      unauthenticated: "Veuillez vous connecter pour continuer"
       unconfirmed: "Vous devez confirmer votre adresse e-mail avant de continuer."
     mailer:
       confirmation_instructions:

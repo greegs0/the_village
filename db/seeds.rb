@@ -10,14 +10,21 @@ Folder.destroy_all
 FamilyEvent.destroy_all
 Task.destroy_all
 Person.destroy_all
+EventRegistration.destroy_all
 Event.destroy_all
 User.destroy_all
 Family.destroy_all
 
 puts "👨‍👩‍👧‍👦 Création des familles..."
 family = Family.create!(name: "Famille Maheu")
-other_family = Family.create!(name: "Famille Martin")
-third_family = Family.create!(name: "Famille Durand")
+family_martin = Family.create!(name: "Famille Martin")
+family_durand = Family.create!(name: "Famille Durand")
+family_bernard = Family.create!(name: "Famille Bernard")
+family_petit = Family.create!(name: "Famille Petit")
+family_garcia = Family.create!(name: "Famille Garcia")
+family_moreau = Family.create!(name: "Famille Moreau")
+family_roux = Family.create!(name: "Famille Roux")
+family_leroy = Family.create!(name: "Famille Leroy")
 
 puts "👤 Création des utilisateurs..."
 # Lois - 40 ans, enceinte de Jamie, vient de déménager à Bordeaux
@@ -27,7 +34,7 @@ lois = User.create!(
   name: "Lois",
   status: "member",
   family: family,
-  zipcode: "33000", # Bordeaux
+  zipcode: "33000",
   birthday: Date.new(1985, 5, 15)
 )
 
@@ -36,18 +43,142 @@ paul_martin = User.create!(
   password: "password",
   name: "Paul Martin",
   status: "member",
-  family: other_family,
+  family: family_martin,
   zipcode: "33000",
   birthday: Date.new(1982, 3, 12)
 )
+
+sophie_durand = User.create!(
+  email: "sophie@example.com",
+  password: "password",
+  name: "Sophie Durand",
+  status: "member",
+  family: family_durand,
+  zipcode: "33000",
+  birthday: Date.new(1988, 7, 22)
+)
+
+marc_durand = User.create!(
+  email: "marc@example.com",
+  password: "password",
+  name: "Marc Durand",
+  status: "member",
+  family: family_durand,
+  zipcode: "33000",
+  birthday: Date.new(1986, 11, 5)
+)
+
+julie_bernard = User.create!(
+  email: "julie@example.com",
+  password: "password",
+  name: "Julie Bernard",
+  status: "member",
+  family: family_bernard,
+  zipcode: "33000",
+  birthday: Date.new(1990, 4, 18)
+)
+
+thomas_petit = User.create!(
+  email: "thomas@example.com",
+  password: "password",
+  name: "Thomas Petit",
+  status: "member",
+  family: family_petit,
+  zipcode: "33000",
+  birthday: Date.new(1985, 9, 30)
+)
+
+emma_garcia = User.create!(
+  email: "emma@example.com",
+  password: "password",
+  name: "Emma Garcia",
+  status: "member",
+  family: family_garcia,
+  zipcode: "33000",
+  birthday: Date.new(1992, 1, 12)
+)
+
+lucas_moreau = User.create!(
+  email: "lucas@example.com",
+  password: "password",
+  name: "Lucas Moreau",
+  status: "member",
+  family: family_moreau,
+  zipcode: "33000",
+  birthday: Date.new(1983, 6, 25)
+)
+
+camille_roux = User.create!(
+  email: "camille@example.com",
+  password: "password",
+  name: "Camille Roux",
+  status: "member",
+  family: family_roux,
+  zipcode: "33000",
+  birthday: Date.new(1995, 12, 8)
+)
+
+antoine_leroy = User.create!(
+  email: "antoine@example.com",
+  password: "password",
+  name: "Antoine Leroy",
+  status: "member",
+  family: family_leroy,
+  zipcode: "33000",
+  birthday: Date.new(1987, 2, 14)
+)
+
+# Liste de tous les utilisateurs du quartier pour les inscriptions
+all_neighbors = [lois, paul_martin, sophie_durand, marc_durand, julie_bernard, thomas_petit, emma_garcia, lucas_moreau, camille_roux, antoine_leroy]
 
 puts "👥 Création des membres de la famille Maheu..."
 # Famille du pitch : Lois (40 ans, enceinte), Hal, Reese (17 ans), Malcolm (15 ans), Dewey (13 ans)
 lois_person = Person.create!(name: "Lois", birthday: Date.new(1985, 5, 15), family: family, zipcode: "33000")
 hal = Person.create!(name: "Hal", birthday: Date.new(1983, 3, 20), family: family, zipcode: "33000")
-reese = Person.create!(name: "Reese", birthday: Date.new(2008, 2, 14), family: family, zipcode: "33000") # 18 ans le 14/02/2026
+reese = Person.create!(name: "Reese", birthday: Date.new(2008, 2, 14), family: family, zipcode: "33000")
 malcolm = Person.create!(name: "Malcolm", birthday: Date.new(2010, 6, 10), family: family, zipcode: "33000")
 dewey = Person.create!(name: "Dewey", birthday: Date.new(2012, 9, 25), family: family, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Martin..."
+Person.create!(name: "Paul Martin", birthday: Date.new(1982, 3, 12), family: family_martin, zipcode: "33000")
+Person.create!(name: "Marie Martin", birthday: Date.new(1984, 8, 5), family: family_martin, zipcode: "33000")
+Person.create!(name: "Léo Martin", birthday: Date.new(2015, 4, 20), family: family_martin, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Durand..."
+Person.create!(name: "Sophie Durand", birthday: Date.new(1988, 7, 22), family: family_durand, zipcode: "33000")
+Person.create!(name: "Marc Durand", birthday: Date.new(1986, 11, 5), family: family_durand, zipcode: "33000")
+Person.create!(name: "Emma Durand", birthday: Date.new(2012, 3, 15), family: family_durand, zipcode: "33000")
+Person.create!(name: "Lucas Durand", birthday: Date.new(2014, 9, 8), family: family_durand, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Bernard..."
+Person.create!(name: "Julie Bernard", birthday: Date.new(1990, 4, 18), family: family_bernard, zipcode: "33000")
+Person.create!(name: "Pierre Bernard", birthday: Date.new(1988, 7, 10), family: family_bernard, zipcode: "33000")
+Person.create!(name: "Chloé Bernard", birthday: Date.new(2018, 2, 28), family: family_bernard, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Petit..."
+Person.create!(name: "Thomas Petit", birthday: Date.new(1985, 9, 30), family: family_petit, zipcode: "33000")
+Person.create!(name: "Laura Petit", birthday: Date.new(1987, 12, 3), family: family_petit, zipcode: "33000")
+Person.create!(name: "Hugo Petit", birthday: Date.new(2013, 6, 17), family: family_petit, zipcode: "33000")
+Person.create!(name: "Léa Petit", birthday: Date.new(2016, 11, 9), family: family_petit, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Garcia..."
+Person.create!(name: "Emma Garcia", birthday: Date.new(1992, 1, 12), family: family_garcia, zipcode: "33000")
+Person.create!(name: "Carlos Garcia", birthday: Date.new(1990, 5, 25), family: family_garcia, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Moreau..."
+Person.create!(name: "Lucas Moreau", birthday: Date.new(1983, 6, 25), family: family_moreau, zipcode: "33000")
+Person.create!(name: "Claire Moreau", birthday: Date.new(1985, 3, 14), family: family_moreau, zipcode: "33000")
+Person.create!(name: "Nathan Moreau", birthday: Date.new(2010, 8, 22), family: family_moreau, zipcode: "33000")
+Person.create!(name: "Zoé Moreau", birthday: Date.new(2013, 1, 5), family: family_moreau, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Roux..."
+Person.create!(name: "Camille Roux", birthday: Date.new(1995, 12, 8), family: family_roux, zipcode: "33000")
+Person.create!(name: "Julien Roux", birthday: Date.new(1993, 4, 19), family: family_roux, zipcode: "33000")
+
+puts "👥 Création des membres de la famille Leroy..."
+Person.create!(name: "Antoine Leroy", birthday: Date.new(1987, 2, 14), family: family_leroy, zipcode: "33000")
+Person.create!(name: "Sarah Leroy", birthday: Date.new(1989, 10, 30), family: family_leroy, zipcode: "33000")
+Person.create!(name: "Maxime Leroy", birthday: Date.new(2017, 7, 12), family: family_leroy, zipcode: "33000")
 
 all_people = [lois_person, hal, reese, malcolm, dewey]
 adults = [lois_person, hal]
@@ -262,7 +393,7 @@ events_data = [
     user: lois,
     category: "famille",
     max_participations: 20,
-    participations_count: 8
+    registrations: [paul_martin, sophie_durand, marc_durand, julie_bernard, thomas_petit, emma_garcia, lucas_moreau]
   },
   {
     name: "Pique-nique au Parc Bordelais",
@@ -275,7 +406,7 @@ events_data = [
     user: paul_martin,
     category: "social",
     max_participations: 30,
-    participations_count: 12
+    registrations: [lois, sophie_durand, marc_durand, julie_bernard, thomas_petit, emma_garcia, lucas_moreau, camille_roux, antoine_leroy]
   },
   {
     name: "Cours de yoga prénatal",
@@ -285,10 +416,10 @@ events_data = [
     address: "3 Rue du Cancera, 33000 Bordeaux",
     latitude: 44.8378,
     longitude: -0.5792,
-    user: paul_martin,
+    user: sophie_durand,
     category: "sport",
     max_participations: 12,
-    participations_count: 6
+    registrations: [lois, julie_bernard, emma_garcia, camille_roux]
   },
   {
     name: "Troc de vêtements enfants",
@@ -298,10 +429,10 @@ events_data = [
     address: "15 Rue Achard, 33000 Bordeaux",
     latitude: 44.8631,
     longitude: -0.5634,
-    user: lois,
+    user: camille_roux,
     category: "social",
     max_participations: 40,
-    participations_count: 18
+    registrations: [lois, paul_martin, sophie_durand, marc_durand, julie_bernard, emma_garcia]
   },
   {
     name: "Visite guidée Bordeaux en famille",
@@ -314,7 +445,7 @@ events_data = [
     user: paul_martin,
     category: "culture",
     max_participations: 25,
-    participations_count: 11
+    registrations: [lois, sophie_durand, marc_durand, thomas_petit, emma_garcia, lucas_moreau, antoine_leroy]
   },
   {
     name: "Atelier cuisine parents-enfants",
@@ -324,10 +455,10 @@ events_data = [
     address: "20 Rue Vital Carles, 33000 Bordeaux",
     latitude: 44.8365,
     longitude: -0.5738,
-    user: lois,
+    user: julie_bernard,
     category: "famille",
     max_participations: 16,
-    participations_count: 10
+    registrations: [lois, paul_martin, sophie_durand, marc_durand, emma_garcia, camille_roux]
   },
   {
     name: "Match de foot inter-quartiers",
@@ -337,10 +468,10 @@ events_data = [
     address: "Place Johnston, 33000 Bordeaux",
     latitude: 44.8273,
     longitude: -0.5995,
-    user: paul_martin,
+    user: thomas_petit,
     category: "sport",
     max_participations: 50,
-    participations_count: 28
+    registrations: [paul_martin, marc_durand, thomas_petit, lucas_moreau, antoine_leroy]
   },
   {
     name: "Brocante de quartier",
@@ -350,15 +481,231 @@ events_data = [
     address: "Place des Capucins, 33000 Bordeaux",
     latitude: 44.8291,
     longitude: -0.5684,
-    user: lois,
+    user: emma_garcia,
     category: "social",
     max_participations: 100,
-    participations_count: 45
+    registrations: [lois, paul_martin, sophie_durand, marc_durand, julie_bernard, thomas_petit, lucas_moreau, camille_roux, antoine_leroy]
+  },
+  # Nouveaux événements pour diversifier les organisateurs
+  {
+    name: "Soirée jeux de société",
+    date: Date.today + 6,
+    description: "Venez découvrir ou redécouvrir les jeux de société en famille ! Jeux fournis, ambiance conviviale.",
+    place: "Café Ludique L'Interlud",
+    address: "12 Rue des Frères Bonie, 33000 Bordeaux",
+    latitude: 44.8402,
+    longitude: -0.5731,
+    user: lucas_moreau,
+    category: "famille",
+    max_participations: 24,
+    registrations: [lois, paul_martin, julie_bernard, thomas_petit, emma_garcia, camille_roux]
+  },
+  {
+    name: "Atelier potager urbain",
+    date: Date.today + 8,
+    description: "Apprenez à créer votre potager sur balcon ou en jardin partagé. Plants et conseils offerts !",
+    place: "Jardin Partagé des Chartrons",
+    address: "Rue Borie, 33000 Bordeaux",
+    latitude: 44.8543,
+    longitude: -0.5712,
+    user: antoine_leroy,
+    category: "culture",
+    max_participations: 15,
+    registrations: [lois, sophie_durand, julie_bernard, emma_garcia, lucas_moreau]
+  },
+  {
+    name: "Course solidaire 5km",
+    date: Date.today + 9,
+    description: "Course/marche caritative au profit des restos du cœur. Tous niveaux bienvenus !",
+    place: "Lac de Bordeaux",
+    address: "Avenue de Pernon, 33000 Bordeaux",
+    latitude: 44.8785,
+    longitude: -0.5523,
+    user: marc_durand,
+    category: "sport",
+    max_participations: 100,
+    registrations: [paul_martin, thomas_petit, lucas_moreau, antoine_leroy, camille_roux]
+  },
+  {
+    name: "Café parents bébés",
+    date: Date.today + 11,
+    description: "Rencontre pour jeunes parents et futurs parents. Échanges, conseils et bienveillance !",
+    place: "Espace Parents Bordeaux",
+    address: "45 Cours Portal, 33000 Bordeaux",
+    latitude: 44.8489,
+    longitude: -0.5698,
+    user: sophie_durand,
+    category: "social",
+    max_participations: 20,
+    registrations: [lois, julie_bernard, camille_roux, emma_garcia]
+  },
+  {
+    name: "Ciné plein air - Film famille",
+    date: Date.today + 12,
+    description: "Projection gratuite d'un film d'animation sur écran géant. Apportez vos plaids et coussins !",
+    place: "Darwin Écosystème",
+    address: "87 Quai des Queyries, 33100 Bordeaux",
+    latitude: 44.8505,
+    longitude: -0.5482,
+    user: camille_roux,
+    category: "culture",
+    max_participations: 150,
+    registrations: [lois, paul_martin, sophie_durand, marc_durand, julie_bernard, thomas_petit, emma_garcia, lucas_moreau, antoine_leroy]
+  },
+  {
+    name: "Initiation au skate",
+    date: Date.today + 13,
+    description: "Cours pour débutants (enfants et adultes). Matériel prêté sur place. Protections obligatoires !",
+    place: "Skatepark des Chartrons",
+    address: "Quai des Chartrons, 33000 Bordeaux",
+    latitude: 44.8567,
+    longitude: -0.5678,
+    user: thomas_petit,
+    category: "sport",
+    max_participations: 12,
+    registrations: [marc_durand, lucas_moreau, antoine_leroy]
+  },
+  {
+    name: "Atelier zéro déchet",
+    date: Date.today + 15,
+    description: "Fabrication de produits ménagers naturels. Repartez avec vos créations !",
+    place: "Maison Écocitoyenne",
+    address: "Quai Richelieu, 33000 Bordeaux",
+    latitude: 44.8394,
+    longitude: -0.5656,
+    user: julie_bernard,
+    category: "culture",
+    max_participations: 18,
+    registrations: [lois, sophie_durand, emma_garcia, camille_roux, antoine_leroy]
+  },
+  {
+    name: "Randonnée découverte vignobles",
+    date: Date.today + 16,
+    description: "Balade de 8km dans les vignobles de Pessac-Léognan. Dégustation (jus de raisin pour les enfants) !",
+    place: "Château Haut-Brion",
+    address: "135 Avenue Jean Jaurès, 33600 Pessac",
+    latitude: 44.8134,
+    longitude: -0.5987,
+    user: lucas_moreau,
+    category: "famille",
+    max_participations: 25,
+    registrations: [paul_martin, sophie_durand, marc_durand, julie_bernard, thomas_petit, emma_garcia, antoine_leroy]
+  },
+  {
+    name: "Tournoi de pétanque",
+    date: Date.today + 17,
+    description: "Ambiance guinguette ! Doublettes formées par tirage au sort. Barbecue à midi.",
+    place: "Place Gambetta",
+    address: "Place Gambetta, 33000 Bordeaux",
+    latitude: 44.8436,
+    longitude: -0.5815,
+    user: antoine_leroy,
+    category: "sport",
+    max_participations: 32,
+    registrations: [paul_martin, marc_durand, thomas_petit, lucas_moreau, camille_roux]
+  },
+  {
+    name: "Repair Café",
+    date: Date.today + 18,
+    description: "Apportez vos objets cassés, nos bénévoles vous aident à les réparer ! Électro, couture, vélos...",
+    place: "Centre d'Animation Saint-Pierre",
+    address: "Place Saint-Pierre, 33000 Bordeaux",
+    latitude: 44.8387,
+    longitude: -0.5713,
+    user: marc_durand,
+    category: "social",
+    max_participations: 40,
+    registrations: [lois, paul_martin, julie_bernard, lucas_moreau, antoine_leroy]
+  },
+  {
+    name: "Chasse aux œufs géante",
+    date: Date.today + 19,
+    description: "Plus de 2000 œufs cachés dans le parc ! Catégories par âge. Chocolat bio et équitable.",
+    place: "Jardin Public",
+    address: "Place Bardineau, 33000 Bordeaux",
+    latitude: 44.8502,
+    longitude: -0.5792,
+    user: emma_garcia,
+    category: "famille",
+    max_participations: 200,
+    registrations: [lois, paul_martin, sophie_durand, marc_durand, julie_bernard, thomas_petit, lucas_moreau, camille_roux, antoine_leroy]
+  },
+  {
+    name: "Cours de salsa débutant",
+    date: Date.today + 20,
+    description: "Initiation à la salsa en couple ou solo. Pas besoin de partenaire !",
+    place: "Salle des fêtes Bordeaux Sud",
+    address: "Avenue de la Libération, 33000 Bordeaux",
+    latitude: 44.8198,
+    longitude: -0.5734,
+    user: camille_roux,
+    category: "sport",
+    max_participations: 30,
+    registrations: [sophie_durand, marc_durand, emma_garcia, lucas_moreau, antoine_leroy]
+  },
+  {
+    name: "Marché de créateurs",
+    date: Date.today + 22,
+    description: "Artisans locaux, créations uniques. Parfait pour les cadeaux de Noël en avance !",
+    place: "Hangar 14",
+    address: "Quai des Chartrons, 33000 Bordeaux",
+    latitude: 44.8512,
+    longitude: -0.5654,
+    user: paul_martin,
+    category: "culture",
+    max_participations: 500,
+    registrations: [lois, sophie_durand, julie_bernard, emma_garcia, camille_roux]
+  },
+  {
+    name: "Nettoyage des berges",
+    date: Date.today + 23,
+    description: "Action citoyenne : ramassage des déchets sur les quais. Gants et sacs fournis.",
+    place: "Pont de Pierre",
+    address: "Pont de Pierre, 33000 Bordeaux",
+    latitude: 44.8375,
+    longitude: -0.5638,
+    user: antoine_leroy,
+    category: "social",
+    max_participations: 50,
+    registrations: [paul_martin, marc_durand, thomas_petit, lucas_moreau, camille_roux]
+  },
+  {
+    name: "Festival de cerfs-volants",
+    date: Date.today + 24,
+    description: "Amenez votre cerf-volant ou fabriquez-le sur place ! Atelier enfants inclus.",
+    place: "Esplanade des Quinconces",
+    address: "Place des Quinconces, 33000 Bordeaux",
+    latitude: 44.8456,
+    longitude: -0.5723,
+    user: lucas_moreau,
+    category: "famille",
+    max_participations: 100,
+    registrations: [lois, paul_martin, sophie_durand, marc_durand, julie_bernard, thomas_petit, emma_garcia]
+  },
+  {
+    name: "Atelier premiers secours",
+    date: Date.today + 25,
+    description: "Formation PSC1 gratuite pour les parents. Apprenez les gestes qui sauvent !",
+    place: "Croix-Rouge Bordeaux",
+    address: "91 Rue de la Croix Blanche, 33000 Bordeaux",
+    latitude: 44.8321,
+    longitude: -0.5789,
+    user: sophie_durand,
+    category: "culture",
+    max_participations: 15,
+    registrations: [lois, paul_martin, julie_bernard, camille_roux]
   },
 ]
 
+puts "🎫 Création des événements et inscriptions..."
 events_data.each do |event_data|
-  Event.create!(event_data)
+  registrations = event_data.delete(:registrations) || []
+  event = Event.create!(event_data)
+
+  # Créer les inscriptions pour cet événement
+  registrations.each do |user|
+    EventRegistration.create!(event: event, user: user)
+  end
 end
 
 puts "🗓️ Création des événements familiaux..."
@@ -584,6 +931,12 @@ puts "🗓️ Événements familiaux par type :"
 FamilyEvent::EVENT_TYPES.each do |type, info|
   count = FamilyEvent.where(event_type: type).count
   puts "   - #{info[:icon]} #{info[:name]} : #{count}" if count > 0
+end
+puts ""
+puts "🎫 Inscriptions aux événements communautaires :"
+puts "   - #{EventRegistration.count} inscriptions au total"
+Event.all.each do |event|
+  puts "   - #{event.name} : #{event.participants.count}/#{event.max_participations} participants"
 end
 puts ""
 puts "👨‍👩‍👧‍👦 Famille Maheu :"

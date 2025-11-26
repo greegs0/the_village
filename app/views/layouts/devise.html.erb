@@ -11,7 +11,26 @@
   </head>
 
   <body>
-    <%= render "shared/flashes" %>
+    <%= render "shared/village_alert" %>
     <%= yield %>
+
+    <% if flash[:alert] %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.VillageAlert) {
+            window.VillageAlert.warning("<%= j(flash[:alert]) %>");
+          }
+        });
+      </script>
+    <% end %>
+    <% if flash[:notice] %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.VillageAlert) {
+            window.VillageAlert.success("<%= j(flash[:notice]) %>");
+          }
+        });
+      </script>
+    <% end %>
   </body>
 </html>
