@@ -1,4 +1,6 @@
 class SearchesController < ApplicationController
+  include ActionView::Helpers::NumberHelper
+
   def global
     query = params[:query].to_s.strip
 
