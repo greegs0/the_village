@@ -27,10 +27,7 @@
   <body class="<%= 'with-sidebar' unless action_name == 'home' %>">
     <%= render "shared/village_alert" %>
 
-    <% if action_name == "home" %>
-      <!-- Homepage: Show traditional navbar -->
-      <%= render 'shared/navbar' %>
-    <% else %>
+    <% unless action_name == "home" %>
       <!-- App pages: Show sidebar + mobile controls -->
       <%= render 'shared/sidebar' %>
 
