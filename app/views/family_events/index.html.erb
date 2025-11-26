@@ -86,18 +86,29 @@
                         is_weekend = day.saturday? || day.sunday?
                         is_current_month = day.month == @current_date.month
                         day_events = @family_events.select do |e|
+                          next false unless e.start_date
                           event_end = e.end_date || e.start_date
                           day >= e.start_date && day <= event_end
                         end
+                        day_tasks_count = @tasks_by_date[day] || 0
                       %>
-                      <td class="calendar-cell <%= 'calendar-weekend' if is_weekend %> <%= 'calendar-today' if is_today %>" style="width: 14.28%; height: 120px; min-height: 120px; max-height: 120px; min-width: 120px; vertical-align: top; overflow: hidden; padding: 8px;">
+                      <td class="calendar-cell <%= 'calendar-weekend' if is_weekend %> <%= 'calendar-today' if is_today %>" style="width: 14.28%; height: 140px; min-height: 140px; max-height: 140px; min-width: 120px; vertical-align: top; overflow: hidden; padding: 8px;">
                         <div class="calendar-day-number <%= 'text-muted' unless is_current_month %>">
                           <span class="<%= 'today-number' if is_today %>"><%= day.day %></span>
                         </div>
-                        <div style="max-height: 90px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center;">
+                        <%= link_to family_tasks_path(@family, date: day), class: "task-count-badge mb-1", style: "text-decoration: none;" do %>
+                          <span class="badge task-day-badge <%= 'task-day-badge-empty' if day_tasks_count == 0 %>">
+                            <% if day_tasks_count > 0 %>
+                              <%= day_tasks_count %> tâche<%= 's' if day_tasks_count > 1 %>
+                            <% else %>
+                              Aucune tâche
+                            <% end %>
+                          </span>
+                        <% end %>
+                        <div style="max-height: 70px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center;">
                           <% day_events.each do |event| %>
-                            <div class="badge event-badge text-white small mb-1"
-                                 style="cursor: pointer; background-color: <%= event.event_color %>; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%;"
+                            <div class="badge event-badge small mb-1"
+                                 style="cursor: pointer; background-color: <%= event.event_color %>; color: #1f2937; font-weight: 500; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%; padding: 4px 8px; border-radius: 6px; text-shadow: 0 0 2px rgba(255,255,255,0.5);"
                                  data-bs-toggle="modal"
                                  data-bs-target="#eventDetailsModal"
                                  data-event-id="<%= event.id %>"
@@ -570,7 +581,6 @@
   .btn-primary-gradient:hover {
     background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
     color: white;
-    transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
   }
 
@@ -674,15 +684,53 @@
 
   /* Event badges */
   .event-badge {
-    border-radius: 4px;
-    padding: 2px 8px;
+    border-radius: 6px;
+    padding: 4px 8px;
     font-size: 11px;
+    font-weight: 600;
     transition: all 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .event-badge:hover {
     transform: scale(1.02);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Task count badge */
+  .task-day-badge {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(102, 126, 234, 0.25);
+    display: inline-block;
+    transition: all 0.2s ease;
+  }
+
+  .task-day-badge:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    transform: scale(1.05);
+  }
+
+  .task-day-badge-empty {
+    background: rgba(156, 163, 175, 0.1);
+    color: #9ca3af;
+    border-color: rgba(156, 163, 175, 0.2);
+  }
+
+  .task-day-badge-empty:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
+    border-color: rgba(102, 126, 234, 0.25);
+  }
+
+  .task-count-badge {
+    display: block;
+    text-align: center;
   }
 
   /* Icon wrappers */

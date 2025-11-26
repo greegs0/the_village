@@ -6,6 +6,36 @@ class Document < ApplicationRecord
   has_one_attached :file
 
   validates :name, presence: true
+  validate :acceptable_file
+
+  ALLOWED_CONTENT_TYPES = %w[
+    application/pdf
+    image/jpeg
+    image/png
+    image/gif
+    application/msword
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    application/vnd.ms-excel
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  ].freeze
+
+  MAX_FILE_SIZE = 10.megabytes
+
+  private
+
+  def acceptable_file
+    return unless file.attached?
+
+    unless file.blob.byte_size <= MAX_FILE_SIZE
+      errors.add(:file, "est trop volumineux (max #{MAX_FILE_SIZE / 1.megabyte} Mo)")
+    end
+
+    unless ALLOWED_CONTENT_TYPES.include?(file.blob.content_type)
+      errors.add(:file, "doit être un PDF, une image (JPG, PNG, GIF) ou un document Office")
+    end
+  end
+
+  public
 
   scope :recent, -> { order(created_at: :desc) }
   scope :favorites, -> { where(is_favorite: true) }

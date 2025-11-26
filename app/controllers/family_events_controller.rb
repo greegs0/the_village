@@ -29,6 +29,13 @@ class FamilyEventsController < ApplicationController
       end
       @calendar_weeks << week
     end
+
+    # Charger les tâches par jour pour le mois affiché
+    @tasks_by_date = @family.tasks
+                           .where(status: [false, nil])
+                           .where(target_date: @calendar_start..@calendar_end)
+                           .group(:target_date)
+                           .count
   end
 
   def create

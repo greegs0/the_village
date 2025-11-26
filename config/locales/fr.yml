@@ -167,3 +167,10 @@ fr:
         restrict_dependent_destroy:
           has_one: "Impossible de supprimer car un %{record} dépendant existe"
           has_many: "Impossible de supprimer car des %{record} dépendants existent"
+  views:
+    pagination:
+      first: "Début"
+      last: "Fin"
+      previous: "Préc."
+      next: "Suiv."
+      truncate: "..."

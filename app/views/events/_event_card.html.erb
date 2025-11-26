@@ -1,24 +1,53 @@
 <!-- Event Card -->
-<div class="col-lg-6">
+<% is_registered = event.registered?(current_user) %>
+<% participants_names = event.participants.map { |p| p.name.presence || p.email }.join(', ') %>
+<% participants_count = event.participants.count %>
+<div class="col-lg-6" id="event-card-<%= event.id %>">
   <div class="card event-card rounded-4 h-100">
     <div class="card-body p-4">
       <div class="d-flex justify-content-between align-items-start mb-3">
         <div>
           <div class="d-flex gap-2 mb-2">
             <span class="badge category-badge"><%= event.category %></span>
-            <span class="badge participants-badge">
+            <span class="badge participants-badge" id="participants-count-<%= event.id %>">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
-              <%= event.participations_count %>/<%= event.max_participations %>
+              <span class="count-value"><%= participants_count %></span>/<%= event.max_participations %>
             </span>
           </div>
-          <h5 class="mb-0 fw-semibold"><%= event.name %></h5>
+          <h5 class="mb-0 fw-semibold event-title"><%= event.name %></h5>
         </div>
-        <button type="button" class="btn btn-sm btn-status" onclick="VillageModal.open('participantsModal<%= event.id %>')">Inscrit</button>
+        <% if is_registered %>
+          <button type="button"
+                  class="btn btn-sm btn-status btn-registered"
+                  id="register-btn-<%= event.id %>"
+                  data-event-id="<%= event.id %>"
+                  data-registered="true"
+                  data-participants="<%= participants_names %>"
+                  data-participants-count="<%= participants_count %>"
+                  onclick="handleEventRegistration(this)">
+            Inscrit
+          </button>
+        <% elsif event.full? %>
+          <button type="button" class="btn btn-sm btn-status btn-full" disabled>
+            Complet
+          </button>
+        <% else %>
+          <button type="button"
+                  class="btn btn-sm btn-status btn-register"
+                  id="register-btn-<%= event.id %>"
+                  data-event-id="<%= event.id %>"
+                  data-registered="false"
+                  data-participants="<%= participants_names %>"
+                  data-participants-count="<%= participants_count %>"
+                  onclick="handleEventRegistration(this)">
+            S'inscrire
+          </button>
+        <% end %>
       </div>
 
       <div class="d-flex flex-column gap-2 mb-3">
@@ -29,7 +58,7 @@
             <line x1="8" y1="2" x2="8" y2="6"/>
             <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
-          <%= event.date %>
+          <%= I18n.l(event.date, format: :long) if event.date %>
         </div>
         <div class="d-flex align-items-center text-secondary small">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" class="me-2">
@@ -51,12 +80,13 @@
 
       <div class="d-flex justify-content-between align-items-center pt-3 border-top" style="border-color: rgba(102, 126, 234, 0.1) !important;">
         <div class="d-flex align-items-center gap-2">
-          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <span class="small fw-medium text-white"><%= event.user.name.split.map(&:first).join %></span>
+          <% organizer_name = event.user&.name.presence || event.user&.email || 'Inconnu' %>
+          <div class="avatar-gradient avatar-36">
+            <span class="small fw-medium"><%= organizer_name.split.map(&:first).join.upcase %></span>
           </div>
           <div>
             <div class="small text-secondary">Organisé par</div>
-            <div class="small fw-medium"><%= event.user.name %></div>
+            <div class="small fw-medium text-gradient-primary"><%= organizer_name %></div>
           </div>
         </div>
         <% if event.user == current_user %>

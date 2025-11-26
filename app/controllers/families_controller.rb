@@ -5,19 +5,20 @@ class FamiliesController < ApplicationController
 
   def show
     @people = @family.people.order(birthday: :desc)                    # du plus jeune au plus vieux
-    @tasks  = Task.all # Toutes les tâches pour l'instant
+    @tasks  = @family.tasks.includes(:assignee)
     @events = @family.family_events.where("start_date >= ?", Date.today).order(start_date: :asc, time: :asc).limit(5)
     @documents_count = @family.documents.count
 
     # Activité récente - Tâches complétées récemment (max 5)
-    @recent_completed_tasks = Task.where(status: true)
+    @recent_completed_tasks = @family.tasks.includes(:assignee)
+                                  .where(status: true)
                                   .order(updated_at: :desc)
                                   .limit(5)
 
     # Progression des tâches hebdomadaires
     week_start = Date.today.beginning_of_week
     week_end = Date.today.end_of_week
-    weekly_tasks = Task.where(target_date: week_start..week_end)
+    weekly_tasks = @family.tasks.where(target_date: week_start..week_end)
 
     @weekly_completed = weekly_tasks.where(status: true).count
     @weekly_overdue = weekly_tasks.where(status: [false, nil])

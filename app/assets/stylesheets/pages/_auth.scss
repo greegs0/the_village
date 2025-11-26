@@ -41,7 +41,6 @@
   &:hover {
     box-shadow: 0 15px 50px rgba($color-primary, 0.12),
                 0 0 80px rgba($color-primary, 0.06);
-    transform: translateY(-2px);
   }
 
   .card-body {
@@ -209,7 +208,6 @@
     animation: none !important;
 
     &:hover {
-      transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba($color-primary, 0.3);
     }
   }

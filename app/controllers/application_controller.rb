@@ -26,41 +26,46 @@ class ApplicationController < ActionController::Base
   end
 
   # Méthode partagée pour récupérer le contexte de la famille (DRY)
+  # Optimisée pour éviter les N+1 queries
   def family_context
     family = current_user.family
     return nil unless family
 
+    # Charger les personnes une seule fois
+    people = family.people.to_a
+
     # Récupérer les informations des membres avec dates d'anniversaire
-    members_info = family.people.map do |person|
+    members_info = people.map do |person|
       info = person.name
-      info += " (#{person.age} ans)" if person.age
+      info += " (#{person.age} ans)" if person.respond_to?(:age) && person.age
       info += " - anniversaire: #{I18n.l(person.birthday, format: :long)}" if person.birthday
       info
     end.join(", ")
 
-    # Récupérer les zipcodes uniques
-    zipcodes = family.people.pluck(:zipcode).compact.uniq.join(", ")
+    # Récupérer les zipcodes uniques (utilise les données déjà chargées)
+    zipcodes = people.map(&:zipcode).compact.uniq.join(", ")
 
-    # Récupérer les événements locaux à venir (suggestions d'activités)
+    # Récupérer les événements locaux à venir (une seule requête)
     local_events = Event.where('date >= ?', Date.today)
                         .order(:date)
                         .limit(10)
-                        .map do |event|
-      "#{event.name} (#{I18n.l(event.date, format: :short)}) - #{event.place} [#{event.category}]"
-    end.join(", ")
+                        .pluck(:name, :date, :place, :category)
+                        .map { |name, date, place, category| "#{name} (#{I18n.l(date, format: :short)}) - #{place} [#{category}]" }
+                        .join(", ")
 
-    # Récupérer la répartition des tâches par membre
-    tasks_distribution = family.people.map do |person|
-      tasks_count = family.tasks.where(assignee_id: person.id, status: false).count
-      "#{person.name}: #{tasks_count} tâche(s)"
+    # Récupérer les stats de tâches en une seule requête groupée
+    tasks_by_assignee = family.tasks.where(status: false).group(:assignee_id).count
+    tasks_distribution = people.map do |person|
+      count = tasks_by_assignee[person.id] || 0
+      "#{person.name}: #{count} tâche(s)"
     end.join(", ")
 
     {
       name: family.name,
-      members_count: family.people.count,
+      members_count: people.size,
       members_info: members_info,
       zipcodes: zipcodes.presence || "Non renseigné",
-      tasks_count: family.tasks.where(status: false).count,
+      tasks_count: tasks_by_assignee.values.sum,
       tasks_distribution: tasks_distribution,
       events_count: family.family_events.where('start_date >= ?', Date.today).count,
       local_events: local_events.presence || "Aucun événement local disponible"

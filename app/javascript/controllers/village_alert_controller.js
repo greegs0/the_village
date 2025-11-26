@@ -38,11 +38,18 @@ export default class extends Controller {
 
   disconnect() {
     if (this.hideTimeout) clearTimeout(this.hideTimeout)
+    if (this.closeTimeout) clearTimeout(this.closeTimeout)
+    if (this.confirmCloseTimeout) clearTimeout(this.confirmCloseTimeout)
     if (this.progressInterval) clearInterval(this.progressInterval)
   }
 
   show(type, message, options = {}) {
     const { autoHide = this.autoHideValue, duration = this.durationValue, toast = false } = options
+
+    // Annuler tous les timeouts précédents (important pour éviter qu'un close() précédent ne ferme cette alerte)
+    if (this.hideTimeout) clearTimeout(this.hideTimeout)
+    if (this.closeTimeout) clearTimeout(this.closeTimeout)
+    if (this.confirmCloseTimeout) clearTimeout(this.confirmCloseTimeout)
 
     // Reset
     this.alertTarget.classList.remove("toast", "closing")
@@ -138,8 +145,10 @@ export default class extends Controller {
     }
     if (this.confirmResolve) {
       this.confirmResolve(true)
+      this.confirmResolve = null // Éviter les appels multiples
     }
-    this.close()
+    // Fermer après un micro-délai pour laisser le code appelant afficher une nouvelle alerte
+    this.confirmCloseTimeout = setTimeout(() => this.close(), 50)
   }
 
   cancel() {
@@ -148,8 +157,10 @@ export default class extends Controller {
     }
     if (this.confirmResolve) {
       this.confirmResolve(false)
+      this.confirmResolve = null // Éviter les appels multiples
     }
-    this.close()
+    // Fermer après un micro-délai pour laisser le code appelant afficher une nouvelle alerte
+    this.confirmCloseTimeout = setTimeout(() => this.close(), 50)
   }
 
   close() {
@@ -158,7 +169,7 @@ export default class extends Controller {
 
     this.alertTarget.classList.add("closing")
 
-    setTimeout(() => {
+    this.closeTimeout = setTimeout(() => {
       this.alertTarget.style.display = "none"
       this.alertTarget.classList.remove("closing")
       this.progressBarTarget.style.transform = "scaleX(1)"
