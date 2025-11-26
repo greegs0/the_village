@@ -24,4 +24,46 @@ class ApplicationController < ActionController::Base
     # Autorise aussi pour la mise à jour du profil
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :zipcode, :birthday])
   end
+
+  # Méthode partagée pour récupérer le contexte de la famille (DRY)
+  def family_context
+    family = current_user.family
+    return nil unless family
+
+    # Récupérer les informations des membres avec dates d'anniversaire
+    members_info = family.people.map do |person|
+      info = person.name
+      info += " (#{person.age} ans)" if person.age
+      info += " - anniversaire: #{I18n.l(person.birthday, format: :long)}" if person.birthday
+      info
+    end.join(", ")
+
+    # Récupérer les zipcodes uniques
+    zipcodes = family.people.pluck(:zipcode).compact.uniq.join(", ")
+
+    # Récupérer les événements locaux à venir (suggestions d'activités)
+    local_events = Event.where('date >= ?', Date.today)
+                        .order(:date)
+                        .limit(10)
+                        .map do |event|
+      "#{event.name} (#{I18n.l(event.date, format: :short)}) - #{event.place} [#{event.category}]"
+    end.join(", ")
+
+    # Récupérer la répartition des tâches par membre
+    tasks_distribution = family.people.map do |person|
+      tasks_count = family.tasks.where(assignee_id: person.id, status: false).count
+      "#{person.name}: #{tasks_count} tâche(s)"
+    end.join(", ")
+
+    {
+      name: family.name,
+      members_count: family.people.count,
+      members_info: members_info,
+      zipcodes: zipcodes.presence || "Non renseigné",
+      tasks_count: family.tasks.where(status: false).count,
+      tasks_distribution: tasks_distribution,
+      events_count: family.family_events.where('start_date >= ?', Date.today).count,
+      local_events: local_events.presence || "Aucun événement local disponible"
+    }
+  end
 end
