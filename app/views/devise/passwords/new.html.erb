@@ -1,18 +1,84 @@
-<h2>Forgot your password?</h2>
+<div class="auth-page">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card border rounded-4 shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <!-- Logo -->
+            <div class="text-center mb-4">
+              <%= image_tag "the-village-icon.svg", alt: "The Village Logo", class: "mb-3", style: "width: 80px; height: 80px;" %>
+              <h1 class="h4 mb-2 auth-title">Mot de passe oublié ?</h1>
+              <p class="auth-subtitle">Entrez votre email pour recevoir les instructions de réinitialisation</p>
+            </div>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
+            <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+              <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
+              <div class="mb-3">
+                <%= f.input :email,
+                            required: true,
+                            autofocus: true,
+                            label: "Email",
+                            label_html: { class: "auth-label" },
+                            input_html: {
+                              autocomplete: "email",
+                              placeholder: "votreemail@exemple.com",
+                              class: "form-control auth-input"
+                            } %>
+              </div>
+
+              <%= f.button :submit, "Envoyer les instructions", class: "btn btn-primary w-100 mb-3" %>
+
+              <div class="text-center">
+                <%= link_to "Retour à la connexion", new_user_session_path, class: "auth-link" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Send me reset password instructions" %>
-  </div>
-<% end %>
+<style>
+  .auth-title {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
 
-<%= render "devise/shared/links" %>
+  .auth-subtitle {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .auth-label {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 500;
+  }
+
+  .auth-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  }
+
+  .auth-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .auth-link:hover {
+    text-decoration: underline;
+  }
+</style>

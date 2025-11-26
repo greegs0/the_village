@@ -1,40 +1,29 @@
 <% content_for :title, "Documents Familiaux - The Village" %>
 
-
-  <!-- Main Content -->
-  <div class="container-fluid px-4 px-lg-5 py-4">
-    <!-- Header -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
-      <div>
-        <h1 class="h2 mb-2">Documents Familiaux</h1>
-        <p class="text-secondary mb-0">Organisez et sécurisez vos documents importants</p>
-      </div>
-      <div class="d-flex gap-2">
-        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFolderModal">
-          <span class="me-2">📁</span>Nouveau dossier
-        </button>
-        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
-          <span class="me-2">⬆️</span>Téléverser
-        </button>
-      </div>
-    </div>
-
-<%= render 'shared/navbar' %>
+<!-- SVG Definitions for gradient icons -->
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 <!-- Main Content -->
-<div class="container-fluid px-3 px-lg-5 py-4">
+<div class="container-fluid px-4 px-lg-5 py-4">
   <!-- Header -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
     <div>
-      <h1 class="h2 mb-2">Documents Familiaux</h1>
-      <p class="text-secondary mb-0">Organisez et securisez vos documents importants</p>
+      <h1 class="h2 mb-2 dashboard-title">Documents Familiaux</h1>
+      <p class="text-secondary mb-0">Organisez et sécurisez vos documents importants</p>
     </div>
     <div class="d-flex gap-2 flex-wrap">
       <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFolderModal">
         <span class="me-2">+</span>Nouveau dossier
       </button>
-      <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
-        <span class="me-2">+</span>Televerser
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
+        <span class="me-2">+</span>Téléverser
       </button>
     </div>
   </div>
@@ -58,14 +47,14 @@
   </div>
 
   <!-- Tabs -->
-  <div class="d-flex gap-2 flex-wrap mb-4" role="tablist">
-    <button class="btn btn-dark" data-bs-toggle="pill" data-bs-target="#folders" type="button" role="tab" aria-selected="true">
+  <div class="d-flex gap-2 flex-wrap mb-4 tab-buttons" role="tablist">
+    <button class="btn btn-primary rounded-pill" data-bs-toggle="pill" data-bs-target="#folders" type="button" role="tab" aria-selected="true">
       Dossiers (<%= @folders.count %>)
     </button>
-    <button class="btn btn-outline-secondary" data-bs-toggle="pill" data-bs-target="#recent" type="button" role="tab" aria-selected="false">
-      Recents (<%= @recent_documents.count %>)
+    <button class="btn btn-outline-secondary rounded-pill" data-bs-toggle="pill" data-bs-target="#recent" type="button" role="tab" aria-selected="false">
+      Récents (<%= @recent_documents.count %>)
     </button>
-    <button class="btn btn-outline-secondary" data-bs-toggle="pill" data-bs-target="#favorites" type="button" role="tab" aria-selected="false">
+    <button class="btn btn-outline-secondary rounded-pill" data-bs-toggle="pill" data-bs-target="#favorites" type="button" role="tab" aria-selected="false">
       Favoris (<%= @favorite_documents.count %>)
     </button>
   </div>
@@ -78,30 +67,32 @@
         <div class="row g-3 g-md-4 mb-4">
           <% @folders.each do |folder| %>
             <div class="col-6 col-md-4 col-lg-3 folder-col" data-folder-name="<%= folder.name.downcase %>">
-              <div class="card border rounded-4 h-100 folder-card position-relative">
-                <!-- Dropdown menu - outside the clickable area -->
+              <div class="card stat-card rounded-4 h-100 position-relative">
+                <!-- Dropdown menu -->
                 <div class="dropdown position-absolute top-0 end-0 mt-2 me-2" style="z-index: 10;">
-                  <button class="btn btn-sm btn-link text-dark p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    ...
+                  <button class="btn btn-sm btn-link p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="2">
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="12" cy="5" r="1"></circle>
+                      <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a class="dropdown-item" href="#"
-                         onclick="openRenameModal(<%= folder.id %>, '<%= j(folder.name) %>'); return false;">
+                      <a class="dropdown-item" href="#" onclick="openRenameModal(<%= folder.id %>, '<%= j(folder.name) %>'); return false;">
                         Renommer
                       </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                      <a class="dropdown-item text-danger" href="#"
-                         onclick="deleteFolder(<%= folder.id %>); return false;">
+                      <a class="dropdown-item text-danger" href="#" onclick="deleteFolder(<%= folder.id %>); return false;">
                         Supprimer
                       </a>
                     </li>
                   </ul>
                 </div>
-                <!-- Clickable area for opening folder -->
-                <div class="card-body p-3 text-center folder-content"
+                <!-- Clickable area -->
+                <div class="card-body p-3 text-center"
                      role="button"
                      data-bs-toggle="modal"
                      data-bs-target="#folderContentModal"
@@ -109,7 +100,7 @@
                      data-folder-name="<%= folder.name %>"
                      data-folder-icon="<%= folder.icon_display %>">
                   <div class="fs-1 mb-2"><%= folder.icon_display %></div>
-                  <h6 class="mb-1 text-truncate"><%= folder.name %></h6>
+                  <h6 class="mb-1 text-truncate fw-semibold gradient-link"><%= folder.name %></h6>
                   <small class="text-muted"><%= folder.documents_count %> document<%= 's' if folder.documents_count != 1 %></small>
                 </div>
               </div>
@@ -120,8 +111,8 @@
         <div class="text-center py-5">
           <div class="fs-1 mb-3">📁</div>
           <p class="text-muted mb-3">Aucun dossier pour le moment</p>
-          <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#newFolderModal">
-            Creer votre premier dossier
+          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFolderModal">
+            Créer votre premier dossier
           </button>
         </div>
       <% end %>
@@ -136,7 +127,7 @@
           <% end %>
         </div>
       <% else %>
-        <p class="text-center text-muted py-5">Aucun document recent</p>
+        <p class="text-center text-muted py-5">Aucun document récent</p>
       <% end %>
     </div>
 
@@ -158,14 +149,14 @@
   <div class="row g-4 mt-2">
     <!-- Storage Card -->
     <div class="col-lg-6">
-      <div class="card border rounded-4">
+      <div class="card stat-card rounded-4 h-100">
         <div class="card-body p-3 p-md-4">
-          <h5 class="mb-1">Stockage</h5>
+          <h5 class="mb-1 dashboard-section-title">Stockage</h5>
           <% storage_percent = (@family.total_storage_used / 53_687_091_200.0 * 100).round(1) %>
-          <p class="text-secondary small mb-4"><%= @family.storage_display %> utilises sur 50 Go</p>
+          <p class="text-secondary small mb-4"><%= @family.storage_display %> utilisés sur 50 Go</p>
 
           <div class="progress mb-4" style="height: 12px;">
-            <div class="progress-bar bg-primary" style="width: <%= storage_percent %>%"></div>
+            <div class="progress-bar" role="progressbar" style="width: <%= storage_percent %>%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
           </div>
 
           <% storage_by_type = @family.documents.group(:file_type).sum(:file_size) %>
@@ -174,15 +165,24 @@
           <% other_size = @family.total_storage_used - pdf_size - image_size %>
 
           <div class="d-flex justify-content-between mb-2">
-            <span class="small">Documents PDF</span>
+            <span class="small d-flex align-items-center">
+              <span class="rounded-circle me-2" style="width: 10px; height: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></span>
+              Documents PDF
+            </span>
             <span class="small text-muted"><%= number_to_human_size(pdf_size) %></span>
           </div>
           <div class="d-flex justify-content-between mb-2">
-            <span class="small">Images</span>
+            <span class="small d-flex align-items-center">
+              <span class="rounded-circle me-2" style="width: 10px; height: 10px; background: #10b981;"></span>
+              Images
+            </span>
             <span class="small text-muted"><%= number_to_human_size(image_size) %></span>
           </div>
           <div class="d-flex justify-content-between">
-            <span class="small">Autres</span>
+            <span class="small d-flex align-items-center">
+              <span class="rounded-circle me-2" style="width: 10px; height: 10px; background: #f59e0b;"></span>
+              Autres
+            </span>
             <span class="small text-muted"><%= number_to_human_size(other_size) %></span>
           </div>
         </div>
@@ -191,19 +191,34 @@
 
     <!-- Recent Activity -->
     <div class="col-lg-6">
-      <div class="card border rounded-4">
+      <div class="card stat-card rounded-4 h-100">
         <div class="card-body p-3 p-md-4">
-          <h5 class="mb-4">Activite recente</h5>
+          <h5 class="mb-1 dashboard-section-title">Activité récente</h5>
+          <p class="text-secondary small mb-4">Derniers documents ajoutés</p>
 
           <% @recent_documents.first(3).each do |doc| %>
-            <div class="d-flex mb-3">
-              <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
-                   style="width: 32px; height: 32px; min-width: 32px;">
-                <span class="fw-medium small"><%= doc.uploader_initial %></span>
+            <div class="d-flex mb-3 activity-doc-item"
+                 data-document-id="<%= doc.id %>"
+                 data-document-name="<%= doc.name %>"
+                 data-document-icon="<%= doc.icon_display %>"
+                 data-document-type="<%= doc.file_type %>"
+                 data-document-size="<%= doc.file_size_display %>"
+                 data-document-uploader="<%= doc.uploader_name %>"
+                 data-document-folder="<%= doc.folder&.name %>"
+                 data-document-time="<%= doc.time_ago_display %>"
+                 data-document-favorite="<%= doc.is_favorite %>"
+                 data-document-download="<%= doc.file.attached? ? download_document_path(doc) : '' %>"
+                 data-document-preview="<%= doc.file.attached? ? url_for(doc.file) : '' %>"
+                 role="button"
+                 onclick="openPreviewModal(this)"
+                 style="cursor: pointer;">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3 activity-avatar">
+                <span class="fw-medium small text-white"><%= doc.uploader_initial %></span>
               </div>
               <div class="flex-grow-1 min-width-0">
                 <p class="mb-1 small text-truncate">
-                  <strong><%= doc.uploader_name %></strong> a ajoute <em><%= doc.name %></em>
+                  <strong><%= doc.uploader_name %></strong> a ajouté
+                  <span class="gradient-link"><%= doc.name %></span>
                 </p>
                 <small class="text-muted"><%= doc.time_ago_display %></small>
               </div>
@@ -211,7 +226,7 @@
           <% end %>
 
           <% if @recent_documents.empty? %>
-            <p class="text-muted small text-center">Aucune activite recente</p>
+            <p class="text-muted small text-center">Aucune activité récente</p>
           <% end %>
         </div>
       </div>
@@ -225,22 +240,20 @@
     <div class="modal-content rounded-4">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-medium" id="newFolderModalLabel">Creer un nouveau dossier</h5>
+          <h5 class="modal-title fw-semibold dashboard-section-title" id="newFolderModalLabel">Créer un nouveau dossier</h5>
           <p class="text-secondary small mb-0">Organisez vos documents dans un nouveau dossier</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
         <%= form_with url: folders_path, method: :post, local: true do |f| %>
-          <!-- Nom du dossier -->
           <div class="mb-3">
             <label for="folderName" class="form-label fw-medium">Nom du dossier</label>
-            <%= f.text_field :name, class: "form-control", id: "folderName", placeholder: "Ex: Documents medicaux", required: true %>
+            <%= f.text_field :name, class: "form-control", id: "folderName", placeholder: "Ex: Documents médicaux", required: true %>
           </div>
 
-          <!-- Icon selector -->
           <div class="mb-4">
-            <label class="form-label fw-medium">Icone</label>
+            <label class="form-label fw-medium">Icône</label>
             <div class="d-flex flex-wrap gap-2">
               <% Folder::ICONS.each do |key, icon| %>
                 <label class="btn btn-outline-secondary icon-selector <%= 'active' if key == 'default' %>">
@@ -251,45 +264,47 @@
             </div>
           </div>
 
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-dark w-100">Creer le dossier</button>
+          <button type="submit" class="btn btn-primary w-100">Créer le dossier</button>
         <% end %>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal Televerser un document -->
+<!-- Modal Téléverser un document -->
+<button id="uploadModalTrigger" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal" style="display:none;"></button>
 <div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-labelledby="uploadDocumentModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content rounded-4">
       <div class="modal-header border-0 pb-0">
         <div>
-          <h5 class="modal-title fw-medium" id="uploadDocumentModalLabel">Televerser un document</h5>
-          <p class="text-secondary small mb-0">Ajoutez un nouveau document a votre bibliotheque</p>
+          <h5 class="modal-title fw-semibold dashboard-section-title" id="uploadDocumentModalLabel">Téléverser un document</h5>
+          <p class="text-secondary small mb-0">Ajoutez un nouveau document à votre bibliothèque</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
-        <%= form_with url: documents_path, scope: :document, method: :post, local: true, multipart: true do |f| %>
-          <!-- Zone de televersement -->
+        <%= form_with url: documents_path, scope: :document, method: :post, local: true, multipart: true, data: { turbo: false }, html: { id: 'uploadDocumentForm' } do |f| %>
           <div class="upload-zone border border-2 border-dashed rounded-3 p-4 text-center mb-4"
-               style="border-color: #d1d5db; cursor: pointer;"
                onclick="document.getElementById('documentUpload').click();">
-            <div class="fs-1 text-muted mb-2">+</div>
-            <p class="fw-medium mb-1">Cliquez pour selectionner ou glissez-deposez</p>
+            <div class="mb-2">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <p class="fw-medium mb-1">Cliquez pour sélectionner ou glissez-déposez</p>
             <p class="text-muted small mb-0">PDF, Images, Documents (Max 10 MB)</p>
             <%= f.file_field :file, class: "d-none", id: "documentUpload", accept: ".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif", required: true %>
-            <p class="text-primary small mt-2 selected-file"></p>
+            <p class="small mt-2 selected-file gradient-link"></p>
           </div>
 
-          <!-- Nom du document -->
           <div class="mb-3">
             <label for="documentName" class="form-label fw-medium">Nom du document</label>
             <%= f.text_field :name, class: "form-control", id: "documentName", placeholder: "Nommer le document", required: true %>
           </div>
 
-          <!-- Dossier de destination -->
           <div class="mb-4">
             <label for="destinationFolder" class="form-label fw-medium">Dossier de destination</label>
             <%= f.collection_select :folder_id, @folders, :id, :name,
@@ -297,8 +312,7 @@
                 { class: "form-select", id: "destinationFolder", required: true } %>
           </div>
 
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-dark w-100">Televerser le document</button>
+          <button type="submit" class="btn btn-primary w-100">Téléverser le document</button>
         <% end %>
       </div>
     </div>
@@ -313,7 +327,7 @@
         <div class="d-flex align-items-center">
           <div class="fs-4 me-2" id="folderModalIcon">📁</div>
           <div>
-            <h5 class="modal-title fw-medium" id="folderContentModalLabel">Dossier</h5>
+            <h5 class="modal-title fw-semibold dashboard-section-title" id="folderContentModalLabel">Dossier</h5>
             <p class="text-secondary small mb-0" id="folderDocCount">0 documents</p>
           </div>
         </div>
@@ -322,16 +336,14 @@
       <div class="modal-body pt-3">
         <div id="folderDocuments">
           <div class="text-center py-4">
-            <div class="spinner-border text-secondary" role="status">
+            <div class="spinner-border" role="status" style="color: #667eea;">
               <span class="visually-hidden">Chargement...</span>
             </div>
           </div>
         </div>
 
-        <!-- Footer Buttons -->
         <div class="d-flex flex-wrap justify-content-center gap-2 mt-4 pt-3 border-top">
-          <button type="button" class="btn btn-outline-secondary btn-sm"
-                  onclick="document.getElementById('documentUpload').click(); bootstrap.Modal.getInstance(document.getElementById('folderContentModal')).hide(); new bootstrap.Modal(document.getElementById('uploadDocumentModal')).show();">
+          <button type="button" class="btn btn-outline-secondary btn-sm" onclick="openUploadFromFolder()">
             <span class="me-1">+</span>Ajouter
           </button>
         </div>
@@ -345,7 +357,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content rounded-4">
       <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fw-medium" id="renameFolderModalLabel">Renommer le dossier</h5>
+        <h5 class="modal-title fw-semibold dashboard-section-title" id="renameFolderModalLabel">Renommer le dossier</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
@@ -356,45 +368,15 @@
             <label for="renameFolderName" class="form-label fw-medium">Nouveau nom</label>
             <input type="text" class="form-control" id="renameFolderName" name="folder[name]" required>
           </div>
-          <button type="submit" class="btn btn-dark w-100">Renommer</button>
+          <button type="submit" class="btn btn-primary w-100">Renommer</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal Document Details -->
-<div class="modal fade" id="documentDetailsModal" tabindex="-1" aria-labelledby="documentDetailsModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4">
-      <div class="modal-header border-0 pb-0">
-        <div class="d-flex align-items-center">
-          <div class="fs-4 me-2" id="docModalIcon">📄</div>
-          <div>
-            <h5 class="modal-title fw-medium" id="documentDetailsModalLabel">Document</h5>
-            <p class="text-secondary small mb-0" id="docModalInfo"></p>
-          </div>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body pt-3">
-        <div class="d-flex flex-wrap gap-2 justify-content-center">
-          <a href="#" id="docDownloadBtn" class="btn btn-outline-secondary">
-            Telecharger
-          </a>
-          <button type="button" id="docFavoriteBtn" class="btn btn-outline-secondary">
-            Favori
-          </button>
-          <button type="button" id="docDeleteBtn" class="btn btn-outline-danger">
-            Supprimer
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Previsualisation Document -->
+<!-- Modal Prévisualisation Document -->
+<button id="previewModalTrigger" data-bs-toggle="modal" data-bs-target="#previewDocumentModal" style="display:none;"></button>
 <div class="modal fade" id="previewDocumentModal" tabindex="-1" aria-labelledby="previewDocumentModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content rounded-4">
@@ -402,71 +384,73 @@
         <div class="d-flex align-items-center flex-grow-1 min-width-0">
           <div class="fs-3 me-3" id="previewDocIcon">📄</div>
           <div class="min-width-0">
-            <h5 class="modal-title fw-medium text-truncate" id="previewDocumentModalLabel">Document</h5>
+            <h5 class="modal-title fw-semibold text-truncate dashboard-section-title" id="previewDocumentModalLabel">Document</h5>
             <p class="text-secondary small mb-0" id="previewDocInfo"></p>
           </div>
         </div>
         <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-3">
-        <!-- Zone de previsualisation -->
-        <div id="previewContainer" class="bg-light rounded-3 mb-4 d-flex align-items-center justify-content-center" style="min-height: 300px; max-height: 500px; overflow: hidden;">
+        <div id="previewContainer" class="rounded-3 mb-4 d-flex align-items-center justify-content-center" style="min-height: 300px; max-height: 500px; overflow: hidden; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);">
           <div id="previewLoading" class="text-center py-5">
-            <div class="spinner-border text-secondary" role="status">
+            <div class="spinner-border" role="status" style="color: #667eea;">
               <span class="visually-hidden">Chargement...</span>
             </div>
           </div>
           <div id="previewContent" class="w-100 h-100 d-none">
-            <!-- Image preview -->
-            <img id="previewImage" class="d-none w-100 h-100" style="object-fit: contain; max-height: 500px;" alt="Apercu">
-            <!-- PDF preview -->
+            <img id="previewImage" class="d-none w-100 h-100" style="object-fit: contain; max-height: 500px;" alt="Aperçu">
             <iframe id="previewPdf" class="d-none w-100 border-0" style="height: 500px;"></iframe>
-            <!-- Icon fallback for other files -->
             <div id="previewFallback" class="d-none text-center py-5">
               <div class="fs-1 mb-3" id="previewFallbackIcon">📄</div>
-              <p class="text-muted mb-0">Apercu non disponible pour ce type de fichier</p>
+              <p class="text-muted mb-0">Aperçu non disponible pour ce type de fichier</p>
               <p class="text-muted small" id="previewFallbackType"></p>
             </div>
           </div>
         </div>
 
-        <!-- Informations du document -->
         <div class="row g-3 mb-4">
           <div class="col-6 col-md-3">
-            <div class="bg-light rounded-3 p-3 text-center">
-              <small class="text-muted d-block">Taille</small>
-              <span class="fw-medium" id="previewDocSize">-</span>
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Taille</small>
+                <span class="fw-semibold gradient-link" id="previewDocSize">-</span>
+              </div>
             </div>
           </div>
           <div class="col-6 col-md-3">
-            <div class="bg-light rounded-3 p-3 text-center">
-              <small class="text-muted d-block">Type</small>
-              <span class="fw-medium text-uppercase" id="previewDocType">-</span>
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Type</small>
+                <span class="fw-semibold text-uppercase gradient-link" id="previewDocType">-</span>
+              </div>
             </div>
           </div>
           <div class="col-6 col-md-3">
-            <div class="bg-light rounded-3 p-3 text-center">
-              <small class="text-muted d-block">Ajoute par</small>
-              <span class="fw-medium" id="previewDocUploader">-</span>
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Ajouté par</small>
+                <span class="fw-semibold gradient-link" id="previewDocUploader">-</span>
+              </div>
             </div>
           </div>
           <div class="col-6 col-md-3">
-            <div class="bg-light rounded-3 p-3 text-center">
-              <small class="text-muted d-block">Dossier</small>
-              <span class="fw-medium" id="previewDocFolder">-</span>
+            <div class="card stat-card rounded-3 h-100">
+              <div class="card-body p-3 text-center">
+                <small class="text-muted d-block mb-1">Dossier</small>
+                <span class="fw-semibold gradient-link" id="previewDocFolder">-</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Actions -->
-        <div class="d-flex flex-wrap gap-2 justify-content-center">
-          <a href="#" id="previewDownloadBtn" class="btn btn-dark">
-            Telecharger
+        <div class="d-flex flex-wrap gap-2 justify-content-center preview-actions">
+          <a href="#" id="previewDownloadBtn" class="btn btn-primary">
+            Télécharger
           </a>
           <button type="button" id="previewFavoriteBtn" class="btn btn-outline-secondary" onclick="togglePreviewFavorite()">
             <span id="previewFavoriteIcon">☆</span> Favori
           </button>
-          <button type="button" id="previewDeleteBtn" class="btn btn-outline-danger" onclick="deletePreviewDocument()">
+          <button type="button" id="previewDeleteBtn" class="btn btn-outline-secondary text-danger" onclick="deletePreviewDocument()">
             Supprimer
           </button>
         </div>
@@ -476,14 +460,6 @@
 </div>
 
 <style>
-  .folder-card {
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-  }
-  .folder-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
   .icon-selector {
     width: 44px;
     height: 44px;
@@ -492,43 +468,85 @@
     justify-content: center;
     padding: 0;
   }
-  .icon-selector.active {
-    background-color: #212529;
-    color: white;
-    border-color: #212529;
-  }
+
   .upload-zone {
-    transition: background-color 0.2s, border-color 0.2s;
-  }
-  .upload-zone:hover, .upload-zone.dragover {
-    background-color: #f8f9fa;
-    border-color: #6c757d !important;
-  }
-  .document-item {
-    transition: background-color 0.2s;
-  }
-  .document-item:hover {
-    background-color: #e9ecef;
-  }
-  .document-clickable {
     cursor: pointer;
+    transition: all 0.3s ease;
+    border-color: #d1d5db !important;
   }
+  .upload-zone:hover {
+    border-color: #667eea !important;
+    background: rgba(102, 126, 234, 0.05);
+  }
+
+  /* Désactiver l'animation float sur les boutons du modal preview et tabs */
+  .preview-actions .btn,
+  .tab-buttons .btn {
+    animation: none !important;
+  }
+
   .min-width-0 {
     min-width: 0;
+  }
+
+  /* Hover effect pour les items d'activité */
+  .activity-doc-item {
+    padding: 8px;
+    margin: -8px;
+    margin-bottom: 12px !important;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+  .activity-doc-item:hover {
+    background: rgba(102, 126, 234, 0.08);
+  }
+
+  /* Fix hover effects for all buttons on this page */
+  .btn-outline-secondary {
+    transition: all 0.2s ease !important;
+    transform: none !important;
+  }
+  .btn-outline-secondary:hover {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-color: #667eea !important;
+    color: #667eea !important;
+    -webkit-text-fill-color: #667eea !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .btn-primary {
+    transition: all 0.2s ease !important;
+    transform: none !important;
+  }
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: none !important;
+  }
+  .icon-selector.btn-outline-secondary:hover {
+    background: rgba(102, 126, 234, 0.15) !important;
+  }
+  .icon-selector.btn-outline-secondary.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border-color: transparent !important;
+    -webkit-text-fill-color: inherit !important;
   }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+// Fonction d'initialisation principale
+function initDocumentsPage() {
+  if (window._documentsPageInitialized) return;
+  window._documentsPageInitialized = true;
+
   // Tab buttons style toggle
   document.querySelectorAll('[role="tablist"] button[data-bs-toggle="pill"]').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('[role="tablist"] button[data-bs-toggle="pill"]').forEach(b => {
-        b.classList.remove('btn-dark');
+        b.classList.remove('btn-primary');
         b.classList.add('btn-outline-secondary');
       });
       this.classList.remove('btn-outline-secondary');
-      this.classList.add('btn-dark');
+      this.classList.add('btn-primary');
     });
   });
 
@@ -547,13 +565,24 @@ document.addEventListener('DOMContentLoaded', function() {
       const fileName = this.files[0]?.name;
       const selectedFileEl = document.querySelector('.selected-file');
       if (selectedFileEl && fileName) {
-        selectedFileEl.textContent = 'Fichier selectionne: ' + fileName;
-        // Auto-fill document name
+        selectedFileEl.textContent = 'Fichier sélectionné: ' + fileName;
         const docNameInput = document.getElementById('documentName');
         if (docNameInput && !docNameInput.value) {
           docNameInput.value = fileName.replace(/\.[^/.]+$/, '');
         }
       }
+    });
+  }
+
+  // Form cleanup before submit
+  const uploadForm = document.getElementById('uploadDocumentForm');
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', function() {
+      document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+      document.querySelectorAll('.modal.show').forEach(m => m.classList.remove('show'));
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
     });
   }
 
@@ -563,13 +592,15 @@ document.addEventListener('DOMContentLoaded', function() {
     ['dragenter', 'dragover'].forEach(evt => {
       uploadZone.addEventListener(evt, function(e) {
         e.preventDefault();
-        this.classList.add('dragover');
+        this.style.borderColor = '#667eea';
+        this.style.background = 'rgba(102, 126, 234, 0.05)';
       });
     });
     ['dragleave', 'drop'].forEach(evt => {
       uploadZone.addEventListener(evt, function(e) {
         e.preventDefault();
-        this.classList.remove('dragover');
+        this.style.borderColor = '#d1d5db';
+        this.style.background = '';
       });
     });
     uploadZone.addEventListener('drop', function(e) {
@@ -592,10 +623,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const folderName = button.dataset.folderName;
       const folderIcon = button.dataset.folderIcon;
 
+      globalCurrentFolderId = folderId;
+
       document.getElementById('folderModalIcon').textContent = folderIcon;
       document.getElementById('folderContentModalLabel').textContent = folderName;
 
-      // Load folder documents
       fetch('/folders/' + folderId + '.json')
         .then(response => response.json())
         .then(data => {
@@ -611,33 +643,34 @@ document.addEventListener('DOMContentLoaded', function() {
           data.documents.forEach(function(doc) {
             const icon = doc.icon || getFileIcon(doc.file_type);
             html += `
-              <div class="d-flex align-items-center justify-content-between bg-light rounded-3 p-3 mb-2 document-item"
+              <div class="d-flex align-items-center justify-content-between rounded-3 p-3 mb-2 document-item"
+                   style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%); border: 1px solid rgba(102, 126, 234, 0.1);"
                    data-document-id="${doc.id}"
                    data-document-name="${doc.name}"
                    data-document-icon="${icon}"
                    data-document-type="${doc.file_type || ''}"
-                   data-document-size="${formatFileSize(doc.file_size)}"
+                   data-document-size="${doc.file_size || ''}"
                    data-document-uploader="${doc.uploader_name || '-'}"
                    data-document-folder="${doc.folder_name || '-'}"
                    data-document-favorite="${doc.is_favorite}"
                    data-document-time="${doc.time_ago || ''}"
                    data-document-download="${doc.download_url || ''}"
                    data-document-preview="${doc.preview_url || ''}">
-                <div class="d-flex align-items-center min-width-0 flex-grow-1 document-clickable" role="button" onclick="openPreviewFromFolder(this.closest('.document-item'))">
+                <div class="d-flex align-items-center min-width-0 flex-grow-1" role="button" onclick="openPreviewFromFolder(this.closest('.document-item'))">
                   <div class="fs-5 me-3">${icon}</div>
                   <div class="min-width-0">
                     <div class="fw-medium text-truncate">${doc.name}</div>
-                    <small class="text-muted">${formatFileSize(doc.file_size)} - ${doc.file_type || 'N/A'}</small>
+                    <small class="text-muted">${doc.file_size || 'N/A'} - ${doc.file_type || 'N/A'}</small>
                   </div>
                 </div>
                 <div class="d-flex align-items-center gap-2 ms-2">
-                  <button class="btn btn-sm btn-link p-0 favorite-btn" onclick="event.stopPropagation(); toggleFavorite(${doc.id}, this)">
+                  <button class="btn btn-sm btn-link p-0" onclick="event.stopPropagation(); toggleFavorite(${doc.id}, this)">
                     <span class="${doc.is_favorite ? 'text-warning' : 'text-muted'}">${doc.is_favorite ? '★' : '☆'}</span>
                   </button>
                   <div class="dropdown">
-                    <button class="btn btn-sm btn-link text-dark p-0" data-bs-toggle="dropdown" onclick="event.stopPropagation()">...</button>
+                    <button class="btn btn-sm btn-link p-0" data-bs-toggle="dropdown" onclick="event.stopPropagation()">...</button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                      <li><a class="dropdown-item" href="${doc.download_url || '#'}" ${!doc.download_url ? 'class="disabled"' : ''}>Telecharger</a></li>
+                      <li><a class="dropdown-item" href="${doc.download_url || '#'}">Télécharger</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item text-danger" href="#" onclick="event.stopPropagation(); deleteDocument(${doc.id}); return false;">Supprimer</a></li>
                     </ul>
@@ -654,22 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Rename folder modal
-  const renameFolderModal = document.getElementById('renameFolderModal');
-  if (renameFolderModal) {
-    renameFolderModal.addEventListener('show.bs.modal', function(event) {
-      const button = event.relatedTarget;
-      if (!button) return;
-
-      const folderId = button.dataset.folderId;
-      const folderName = button.dataset.folderName;
-
-      document.getElementById('renameFolderName').value = folderName;
-      document.getElementById('renameFolderForm').action = '/folders/' + folderId;
-    });
-  }
-
-  // Search functionality
+  // Search
   const searchInput = document.getElementById('searchDocuments');
   if (searchInput) {
     searchInput.addEventListener('input', function() {
@@ -677,255 +695,67 @@ document.addEventListener('DOMContentLoaded', function() {
       performSearch(query);
     });
   }
+}
+
+document.addEventListener('DOMContentLoaded', initDocumentsPage);
+document.addEventListener('turbo:load', function() {
+  window._documentsPageInitialized = false;
+  initDocumentsPage();
 });
 
-function performSearch(query) {
-  // Supprimer les anciens messages "aucun resultat"
-  document.querySelectorAll('.search-no-results').forEach(el => el.remove());
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  initDocumentsPage();
+}
 
-  // Si recherche vide, tout afficher
+function performSearch(query) {
   if (!query) {
-    document.querySelectorAll('.folder-col').forEach(function(col) {
-      col.style.display = '';
-    });
-    document.querySelectorAll('.document-item').forEach(function(item) {
-      item.style.display = '';
-    });
+    document.querySelectorAll('.folder-col, .document-item').forEach(el => el.style.display = '');
     return;
   }
 
   // Recherche dans les dossiers
-  let foldersVisible = 0;
   document.querySelectorAll('#folders .folder-col').forEach(function(col) {
     const name = col.dataset.folderName || '';
-    const matches = name.includes(query);
-    col.style.display = matches ? '' : 'none';
-    if (matches) foldersVisible++;
+    col.style.display = name.includes(query) ? '' : 'none';
   });
 
-  // Recherche dans les documents (onglets Recents et Favoris)
-  let recentVisible = 0;
-  let favoritesVisible = 0;
+  // Recherche dans les documents (nom, type, uploader, dossier)
+  document.querySelectorAll('.document-item').forEach(function(item) {
+    const name = (item.dataset.documentName || '').toLowerCase();
+    const type = (item.dataset.documentType || '').toLowerCase();
+    const uploader = (item.dataset.documentUploader || '').toLowerCase();
+    const folder = (item.dataset.documentFolder || '').toLowerCase();
 
-  document.querySelectorAll('#recent .document-item').forEach(function(item) {
-    const matches = searchInDocument(item, query);
+    const matches = name.includes(query) || type.includes(query) || uploader.includes(query) || folder.includes(query);
     item.style.display = matches ? '' : 'none';
-    if (matches) recentVisible++;
   });
-
-  document.querySelectorAll('#favorites .document-item').forEach(function(item) {
-    const matches = searchInDocument(item, query);
-    item.style.display = matches ? '' : 'none';
-    if (matches) favoritesVisible++;
-  });
-
-  // Afficher messages "aucun resultat" si necessaire
-  showNoResultsMessage('folders', foldersVisible, query);
-  showNoResultsMessage('recent', recentVisible, query);
-  showNoResultsMessage('favorites', favoritesVisible, query);
-}
-
-function searchInDocument(item, query) {
-  const name = (item.dataset.documentName || '').toLowerCase();
-  const folder = (item.dataset.documentFolder || '').toLowerCase();
-  const uploader = (item.dataset.documentUploader || '').toLowerCase();
-  const type = (item.dataset.documentType || '').toLowerCase();
-
-  return name.includes(query) ||
-         folder.includes(query) ||
-         uploader.includes(query) ||
-         type.includes(query);
-}
-
-function showNoResultsMessage(tabId, visibleCount, query) {
-  const tab = document.getElementById(tabId);
-  if (!tab) return;
-
-  // Verifier s'il y a des elements dans cet onglet
-  const hasItems = tabId === 'folders'
-    ? tab.querySelectorAll('.folder-col').length > 0
-    : tab.querySelectorAll('.document-item').length > 0;
-
-  if (hasItems && visibleCount === 0) {
-    const message = document.createElement('p');
-    message.className = 'text-center text-muted py-4 search-no-results';
-    message.textContent = 'Aucun resultat pour "' + query + '"';
-
-    if (tabId === 'folders') {
-      const row = tab.querySelector('.row');
-      if (row) row.insertAdjacentElement('afterend', message);
-    } else {
-      const listGroup = tab.querySelector('.list-group');
-      if (listGroup) listGroup.insertAdjacentElement('afterend', message);
-    }
-  }
 }
 
 function getFileIcon(fileType) {
-  const icons = {
-    'pdf': '📄',
-    'doc': '📝',
-    'docx': '📝',
-    'xls': '📊',
-    'xlsx': '📊',
-    'jpg': '🖼️',
-    'jpeg': '🖼️',
-    'png': '🖼️',
-    'gif': '🖼️'
-  };
+  const icons = { 'pdf': '📄', 'doc': '📝', 'docx': '📝', 'xls': '📊', 'xlsx': '📊', 'jpg': '🖼️', 'jpeg': '🖼️', 'png': '🖼️', 'gif': '🖼️' };
   return icons[fileType?.toLowerCase()] || '📎';
 }
 
-function formatFileSize(bytes) {
-  if (!bytes) return 'N/A';
-  if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
-  if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
-  return bytes + ' B';
-}
-
-// Toggle favorite dans le modal dossier
 function toggleFavorite(docId, btn) {
   fetch('/documents/' + docId + '/toggle_favorite', {
     method: 'PATCH',
-    headers: {
-      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
-      'Accept': 'application/json'
-    }
+    headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
   })
-  .then(response => response.json())
+  .then(r => r.json())
   .then(data => {
     const span = btn.querySelector('span');
     span.textContent = data.is_favorite ? '★' : '☆';
     span.className = data.is_favorite ? 'text-warning' : 'text-muted';
-    // Synchroniser les autres vues
-    syncFavoriteState(docId, data.is_favorite);
   });
-}
-
-// Toggle favorite dans les listes (recents/favoris)
-function toggleFavoriteDoc(docId, btn) {
-  fetch('/documents/' + docId + '/toggle_favorite', {
-    method: 'PATCH',
-    headers: {
-      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
-      'Accept': 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    const span = btn.querySelector('span');
-    span.textContent = data.is_favorite ? '★' : '☆';
-    span.className = data.is_favorite ? 'text-warning' : 'text-muted';
-    // Synchroniser les autres vues
-    syncFavoriteState(docId, data.is_favorite);
-  });
-}
-
-// Synchroniser l'etat favori dans toutes les vues
-function syncFavoriteState(docId, isFavorite) {
-  // Mettre a jour tous les boutons favoris pour ce document
-  document.querySelectorAll('[data-document-id="' + docId + '"] .favorite-btn span').forEach(span => {
-    span.textContent = isFavorite ? '★' : '☆';
-    span.className = isFavorite ? 'text-warning' : 'text-muted';
-  });
-
-  // Gerer l'affichage dans l'onglet Favoris
-  const favoritesTab = document.getElementById('favorites');
-  const docItem = favoritesTab.querySelector('[data-document-id="' + docId + '"]');
-
-  if (isFavorite && !docItem) {
-    // Recharger pour ajouter le document aux favoris (simplification)
-    // On pourrait aussi cloner l'element mais le rechargement est plus simple
-  } else if (!isFavorite && docItem) {
-    // Retirer de la liste des favoris
-    docItem.remove();
-    // Verifier s'il reste des favoris
-    const remainingDocs = favoritesTab.querySelectorAll('.document-item');
-    if (remainingDocs.length === 0) {
-      const listGroup = favoritesTab.querySelector('.list-group');
-      if (listGroup) {
-        listGroup.remove();
-      }
-      favoritesTab.innerHTML = '<p class="text-center text-muted py-5">Aucun favori</p>';
-    }
-    // Mettre a jour le compteur
-    updateFavoritesCount(-1);
-  }
-}
-
-// Mettre a jour le compteur de favoris
-function updateFavoritesCount(delta) {
-  const favBtn = document.querySelector('[data-bs-target="#favorites"]');
-  if (favBtn) {
-    const match = favBtn.textContent.match(/Favoris \((\d+)\)/);
-    if (match) {
-      const newCount = Math.max(0, parseInt(match[1]) + delta);
-      favBtn.textContent = 'Favoris (' + newCount + ')';
-    }
-  }
 }
 
 function deleteDocument(docId) {
-  if (confirm('Supprimer ce document ?')) {
-    fetch('/documents/' + docId, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      }
-    }).then(() => location.reload());
-  }
-}
-
-// Supprimer document depuis les listes
-function deleteDoc(docId) {
-  if (confirm('Supprimer ce document ?')) {
-    fetch('/documents/' + docId, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        // Retirer le document de toutes les vues
-        document.querySelectorAll('[data-document-id="' + docId + '"]').forEach(el => el.remove());
-        // Mettre a jour les compteurs
-        updateDocumentCounts();
+  if (window.VillageAlert) {
+    window.VillageAlert.confirm('Supprimer ce document ?', { danger: true, confirmText: 'Supprimer', cancelText: 'Annuler' }).then(function(confirmed) {
+      if (confirmed) {
+        fetch('/documents/' + docId, { method: 'DELETE', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content } }).then(function() { window.location = '/families-documents'; });
       }
     });
-  }
-}
-
-// Mettre a jour les compteurs apres suppression
-function updateDocumentCounts() {
-  const recentCount = document.querySelectorAll('#recent .document-item').length;
-  const recentBtn = document.querySelector('[data-bs-target="#recent"]');
-  if (recentBtn) {
-    recentBtn.textContent = 'Recents (' + recentCount + ')';
-  }
-
-  const favCount = document.querySelectorAll('#favorites .document-item').length;
-  const favBtn = document.querySelector('[data-bs-target="#favorites"]');
-  if (favBtn) {
-    favBtn.textContent = 'Favoris (' + favCount + ')';
-  }
-
-  // Afficher message si vide
-  if (recentCount === 0) {
-    const recentTab = document.getElementById('recent');
-    const listGroup = recentTab.querySelector('.list-group');
-    if (listGroup) listGroup.remove();
-    if (!recentTab.querySelector('.text-muted')) {
-      recentTab.innerHTML = '<p class="text-center text-muted py-5">Aucun document recent</p>';
-    }
-  }
-  if (favCount === 0) {
-    const favTab = document.getElementById('favorites');
-    const listGroup = favTab.querySelector('.list-group');
-    if (listGroup) listGroup.remove();
-    if (!favTab.querySelector('.text-muted')) {
-      favTab.innerHTML = '<p class="text-center text-muted py-5">Aucun favori</p>';
-    }
   }
 }
 
@@ -936,31 +766,34 @@ function openRenameModal(folderId, folderName) {
 }
 
 function deleteFolder(folderId) {
-  if (confirm('Supprimer ce dossier et tous ses documents ?')) {
-    fetch('/folders/' + folderId, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+  if (window.VillageAlert) {
+    window.VillageAlert.confirm('Supprimer ce dossier et tous ses documents ?', { danger: true, confirmText: 'Supprimer', cancelText: 'Annuler' }).then(function(confirmed) {
+      if (confirmed) {
+        fetch('/folders/' + folderId, { method: 'DELETE', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content } }).then(() => location.reload());
       }
-    }).then(() => location.reload());
+    });
   }
 }
 
-// === Modal de previsualisation ===
+let globalCurrentFolderId = null;
+
+function openUploadFromFolder() {
+  document.querySelector('#folderContentModal .btn-close')?.click();
+  setTimeout(function() {
+    if (globalCurrentFolderId) {
+      const folderSelect = document.getElementById('destinationFolder');
+      if (folderSelect) folderSelect.value = globalCurrentFolderId;
+    }
+    document.getElementById('uploadModalTrigger').click();
+  }, 300);
+}
+
 let currentPreviewDocId = null;
 let currentPreviewIsFavorite = false;
 
-// Ouvrir la previsualisation depuis le modal dossier
 function openPreviewFromFolder(docElement) {
-  // Fermer le modal dossier d'abord
-  const folderModal = bootstrap.Modal.getInstance(document.getElementById('folderContentModal'));
-  if (folderModal) {
-    folderModal.hide();
-  }
-  // Attendre que le modal se ferme avant d'ouvrir la previsualisation
-  setTimeout(function() {
-    openPreviewModal(docElement);
-  }, 300);
+  document.querySelector('#folderContentModal .btn-close')?.click();
+  setTimeout(function() { openPreviewModal(docElement); }, 300);
 }
 
 function openPreviewModal(docElement) {
@@ -979,7 +812,6 @@ function openPreviewModal(docElement) {
   currentPreviewDocId = docId;
   currentPreviewIsFavorite = docFavorite;
 
-  // Mettre a jour les infos du modal
   document.getElementById('previewDocIcon').textContent = docIcon;
   document.getElementById('previewDocumentModalLabel').textContent = docName;
   document.getElementById('previewDocInfo').textContent = docTime;
@@ -988,38 +820,25 @@ function openPreviewModal(docElement) {
   document.getElementById('previewDocUploader').textContent = docUploader;
   document.getElementById('previewDocFolder').textContent = docFolder;
 
-  // Mettre a jour le bouton favori
   const favIcon = document.getElementById('previewFavoriteIcon');
   favIcon.textContent = docFavorite ? '★' : '☆';
-  document.getElementById('previewFavoriteBtn').classList.toggle('btn-warning', docFavorite);
-  document.getElementById('previewFavoriteBtn').classList.toggle('btn-outline-secondary', !docFavorite);
+  const favBtn = document.getElementById('previewFavoriteBtn');
+  favBtn.className = docFavorite ? 'btn btn-primary' : 'btn btn-outline-secondary';
 
-  // Mettre a jour le lien de telechargement
   const downloadBtn = document.getElementById('previewDownloadBtn');
-  if (docDownload) {
-    downloadBtn.href = docDownload;
-    downloadBtn.classList.remove('disabled');
-  } else {
-    downloadBtn.href = '#';
-    downloadBtn.classList.add('disabled');
-  }
+  downloadBtn.href = docDownload || '#';
+  downloadBtn.classList.toggle('disabled', !docDownload);
 
-  // Reset preview area
   document.getElementById('previewLoading').classList.remove('d-none');
   document.getElementById('previewContent').classList.add('d-none');
   document.getElementById('previewImage').classList.add('d-none');
   document.getElementById('previewPdf').classList.add('d-none');
   document.getElementById('previewFallback').classList.add('d-none');
 
-  // Ouvrir le modal
-  new bootstrap.Modal(document.getElementById('previewDocumentModal')).show();
+  document.getElementById('previewModalTrigger').click();
 
-  // Charger la previsualisation
-  if (docPreview) {
-    loadPreview(docPreview, docType, docIcon);
-  } else {
-    showFallbackPreview(docIcon, docType);
-  }
+  if (docPreview) loadPreview(docPreview, docType, docIcon);
+  else showFallbackPreview(docIcon, docType);
 }
 
 function loadPreview(previewUrl, fileType, icon) {
@@ -1056,54 +875,25 @@ function togglePreviewFavorite() {
 
   fetch('/documents/' + currentPreviewDocId + '/toggle_favorite', {
     method: 'PATCH',
-    headers: {
-      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
-      'Accept': 'application/json'
-    }
+    headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
   })
-  .then(response => response.json())
+  .then(r => r.json())
   .then(data => {
     currentPreviewIsFavorite = data.is_favorite;
-
-    // Mettre a jour le bouton dans le modal
-    const favIcon = document.getElementById('previewFavoriteIcon');
-    favIcon.textContent = data.is_favorite ? '★' : '☆';
-    document.getElementById('previewFavoriteBtn').classList.toggle('btn-warning', data.is_favorite);
-    document.getElementById('previewFavoriteBtn').classList.toggle('btn-outline-secondary', !data.is_favorite);
-
-    // Synchroniser avec les autres vues
-    syncFavoriteState(currentPreviewDocId, data.is_favorite);
-
-    // Mettre a jour le data attribute
-    const docItem = document.querySelector('[data-document-id="' + currentPreviewDocId + '"]');
-    if (docItem) {
-      docItem.dataset.documentFavorite = data.is_favorite;
-    }
+    document.getElementById('previewFavoriteIcon').textContent = data.is_favorite ? '★' : '☆';
+    document.getElementById('previewFavoriteBtn').className = data.is_favorite ? 'btn btn-primary' : 'btn btn-outline-secondary';
   });
 }
 
 function deletePreviewDocument() {
   if (!currentPreviewDocId) return;
 
-  if (confirm('Supprimer ce document ?')) {
-    fetch('/documents/' + currentPreviewDocId, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        // Fermer le modal
-        bootstrap.Modal.getInstance(document.getElementById('previewDocumentModal')).hide();
-        // Retirer le document de toutes les vues
-        document.querySelectorAll('[data-document-id="' + currentPreviewDocId + '"]').forEach(el => el.remove());
-        // Mettre a jour les compteurs
-        updateDocumentCounts();
-        currentPreviewDocId = null;
+  if (window.VillageAlert) {
+    window.VillageAlert.confirm('Supprimer ce document ?', { danger: true, confirmText: 'Supprimer', cancelText: 'Annuler' }).then(function(confirmed) {
+      if (confirmed) {
+        fetch('/documents/' + currentPreviewDocId, { method: 'DELETE', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content } }).then(function() { window.location = '/families-documents'; });
       }
     });
   }
 }
 </script>
-

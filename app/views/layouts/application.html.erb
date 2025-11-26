@@ -25,10 +25,116 @@
   </head>
 
   <body>
-    <%= render "shared/flashes" %>
+    <%= render "shared/village_alert" %>
     <!-- Navigation -->
     <%= render 'shared/navbar' unless action_name == "home" %>
     <%= yield %>
     <%= render "shared/chat_widget" %>
+
+    <!-- Nettoyage modals pour Turbo -->
+    <script>
+      (function() {
+        if (window._turboModalCleanup) return;
+        window._turboModalCleanup = true;
+        document.addEventListener('turbo:before-cache', function() {
+          document.querySelectorAll('.modal.show').forEach(function(m) {
+            var inst = bootstrap.Modal.getInstance(m);
+            if (inst) inst.hide();
+          });
+          document.querySelectorAll('.modal-backdrop').forEach(function(b) { b.remove(); });
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = '';
+          document.body.style.paddingRight = '';
+        });
+      })();
+    </script>
+
+    <!-- Village Confirm - Remplace les confirmations Turbo natives -->
+    <script>
+      document.addEventListener('turbo:load', function() {
+        if (window.Turbo && !window._villageConfirmSetup) {
+          window._villageConfirmSetup = true;
+
+          Turbo.setConfirmMethod(function(message) {
+            return new Promise(function(resolve) {
+              if (window.VillageAlert) {
+                window.VillageAlert.confirm(message, {
+                  danger: true,
+                  confirmText: "Supprimer",
+                  cancelText: "Annuler",
+                  onConfirm: function() {
+                    resolve(true);
+                  },
+                  onCancel: function() {
+                    resolve(false);
+                  }
+                });
+              } else {
+                resolve(confirm(message));
+              }
+            });
+          });
+        }
+      }, { once: true });
+
+      // Aussi sur DOMContentLoaded au cas où
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.Turbo && !window._villageConfirmSetup) {
+          window._villageConfirmSetup = true;
+
+          Turbo.setConfirmMethod(function(message) {
+            return new Promise(function(resolve) {
+              if (window.VillageAlert) {
+                window.VillageAlert.confirm(message, {
+                  danger: true,
+                  confirmText: "Supprimer",
+                  cancelText: "Annuler",
+                  onConfirm: function() {
+                    resolve(true);
+                  },
+                  onCancel: function() {
+                    resolve(false);
+                  }
+                });
+              } else {
+                resolve(confirm(message));
+              }
+            });
+          });
+        }
+      }, { once: true });
+    </script>
+
+    <%# Afficher les flash messages via Village Alert %>
+    <% flash.each do |type, message| %>
+      <% next if message.blank? %>
+      <% alert_type = (type.to_s == 'notice' || type.to_s == 'success') ? 'success' : 'error' %>
+      <% flash_id = "flash_#{Time.now.to_i}_#{rand(10000)}" %>
+      <script data-flash-id="<%= flash_id %>">
+        (function() {
+          var flashId = '<%= flash_id %>';
+          // Vérifier si ce flash a déjà été affiché
+          if (!window._shownFlashes) window._shownFlashes = {};
+          if (window._shownFlashes[flashId]) return;
+          window._shownFlashes[flashId] = true;
+
+          function showAlert() {
+            if (window.VillageAlert) {
+              window.VillageAlert.<%= alert_type %>("<%= j message.to_s %>");
+            }
+            // Supprimer le script après exécution pour éviter le cache Turbo
+            var script = document.querySelector('script[data-flash-id="' + flashId + '"]');
+            if (script) script.remove();
+          }
+          // Essayer immédiatement
+          if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(showAlert, 100);
+          } else {
+            document.addEventListener('DOMContentLoaded', showAlert, { once: true });
+          }
+        })();
+      </script>
+    <% end %>
+
   </body>
 </html>
