@@ -31,11 +31,14 @@ class ApplicationController < ActionController::Base
     @sidebar_today_tasks = family.tasks
                                   .where('target_date = ?', today)
                                   .where(status: false)
+                                  .order(created_at: :desc)
                                   .limit(5)
 
-    # Events data
+    # Events data - Include events that start today OR are ongoing today
+    # Handle NULL end_date (single-day events)
     @sidebar_today_events = family.family_events
-                                  .where('start_date <= ? AND end_date >= ?', today, today)
+                                  .where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', today, today)
+                                  .order(time: :asc, start_date: :asc)
                                   .limit(3)
     @sidebar_today_events_count = @sidebar_today_events.count
   end

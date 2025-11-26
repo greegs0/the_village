@@ -52,7 +52,7 @@
     <% if defined?(sidebar_today_events) && sidebar_today_events&.any? %>
       <div class="summary-items">
         <% sidebar_today_events.first(2).each do |event| %>
-          <%= link_to family_family_event_path(current_user.family, event), class: "summary-item event-item" do %>
+          <%= link_to family_family_events_path(current_user.family), class: "summary-item event-item" do %>
             <span class="event-dot" style="background-color: <%= event.event_type_color || '#667eea' %>;"></span>
             <span class="item-text"><%= event.title.truncate(25) %></span>
           <% end %>
