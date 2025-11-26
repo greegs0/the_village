@@ -110,11 +110,10 @@ class TasksController < ApplicationController
                                   .order(created_at: :desc)
                                   .limit(5)
 
-    # Events data - Include events that start today OR are ongoing today
-    # Handle NULL end_date (single-day events)
+    # Events data - Only show events that START today
     @sidebar_today_events = family.family_events
-                                  .where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', today, today)
-                                  .order(time: :asc, start_date: :asc)
+                                  .where('start_date = ?', today)
+                                  .order(time: :asc)
                                   .limit(3)
     @sidebar_today_events_count = @sidebar_today_events.count
   end
