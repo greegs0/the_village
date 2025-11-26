@@ -1,3 +1,8 @@
+<!-- Marqueur de connexion pour JavaScript -->
+<% if user_signed_in? %>
+  <div data-user-signed-in="true" style="display: none;"></div>
+<% end %>
+
 <!-- SVG Gradient Definitions -->
 <svg width="0" height="0" style="position: absolute;">
   <defs>
@@ -39,7 +44,7 @@
               </svg>
             </div>
             <div>
-              <div class="stat-value"><%= @events.count %></div>
+              <div class="stat-value"><%= @stats[:total] %></div>
               <div class="stat-label">Événements</div>
             </div>
           </div>
@@ -57,7 +62,7 @@
               </svg>
             </div>
             <div>
-              <div class="stat-value"><%= @events.where('date >= ?', Date.today).count %></div>
+              <div class="stat-value"><%= @stats[:upcoming] %></div>
               <div class="stat-label">À venir</div>
             </div>
           </div>
@@ -77,7 +82,7 @@
               </svg>
             </div>
             <div>
-              <div class="stat-value"><%= @events.sum(:participations_count) rescue 0 %></div>
+              <div class="stat-value"><%= @stats[:participants] %></div>
               <div class="stat-label">Participants</div>
             </div>
           </div>
@@ -95,7 +100,7 @@
               </svg>
             </div>
             <div>
-              <div class="stat-value"><%= @events.select(:place).distinct.count rescue 0 %></div>
+              <div class="stat-value"><%= @stats[:locations] %></div>
               <div class="stat-label">Lieux</div>
             </div>
           </div>
@@ -146,6 +151,10 @@
               <% @events.each do |event| %>
                 <%= render "event_card", event: event %>
               <% end %>
+            </div>
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4">
+              <%= paginate @events %>
             </div>
           <% else %>
             <!-- Empty State -->
@@ -229,6 +238,142 @@ document.addEventListener('keydown', function(e) {
     document.body.style.overflow = '';
   }
 });
+
+// Gestion des inscriptions aux événements
+function isUserSignedIn() {
+  // Vérifie si l'élément data-user-signed-in existe dans le DOM
+  const marker = document.querySelector('[data-user-signed-in]');
+  return marker !== null;
+}
+
+async function handleEventRegistration(button) {
+  // Vérifier si l'utilisateur est connecté
+  if (!isUserSignedIn()) {
+    window.VillageAlert.warning("Vous devez vous connecter pour vous inscrire à un événement.", { autoHide: true, duration: 4000 });
+    return;
+  }
+
+  const eventId = button.dataset.eventId;
+  const isRegistered = button.dataset.registered === 'true';
+  const participants = button.dataset.participants || '';
+  const participantsCount = parseInt(button.dataset.participantsCount) || 0;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+  if (isRegistered) {
+    // Demander confirmation pour se désinscrire
+    const confirmed = await window.VillageAlert.confirm(
+      "Voulez-vous vraiment vous désinscrire de cet événement ?",
+      {
+        danger: true,
+        confirmText: "Se désinscrire",
+        cancelText: "Annuler"
+      }
+    );
+
+    if (confirmed) {
+      try {
+        const response = await fetch(`/events/${eventId}/unregister`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Vérifier si la réponse est OK avant de parser le JSON
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          window.VillageAlert.error(data.message || "Une erreur est survenue");
+          return;
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          window.VillageAlert.success(data.message);
+          // Mettre à jour le bouton
+          button.textContent = "S'inscrire";
+          button.dataset.registered = 'false';
+          button.classList.remove('btn-registered');
+          button.classList.add('btn-register');
+          // Mettre à jour le compteur
+          updateParticipantsCount(eventId, data.participants_count);
+          // Mettre à jour les data-attributes pour les futures interactions
+          button.dataset.participantsCount = data.participants_count;
+          button.dataset.participants = data.participants_names || '';
+        } else {
+          window.VillageAlert.error(data.message);
+        }
+      } catch (error) {
+        window.VillageAlert.error("Une erreur est survenue");
+      }
+    }
+  } else {
+    // Construire le message avec la liste des participants
+    let message = "Voulez-vous vous inscrire à cet événement ?";
+    if (participantsCount > 0 && participants) {
+      message += `\n\nParticipants actuels (${participantsCount}) :\n${participants}`;
+    } else {
+      message += "\n\nSoyez le premier à vous inscrire !";
+    }
+
+    const confirmed = await window.VillageAlert.confirm(
+      message,
+      {
+        confirmText: "S'inscrire",
+        cancelText: "Annuler"
+      }
+    );
+
+    if (confirmed) {
+      try {
+        const response = await fetch(`/events/${eventId}/register`, {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Vérifier si la réponse est OK avant de parser le JSON
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          window.VillageAlert.error(data.message || "Une erreur est survenue");
+          return;
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          window.VillageAlert.success(data.message);
+          // Mettre à jour le bouton
+          button.textContent = "Inscrit";
+          button.dataset.registered = 'true';
+          button.classList.remove('btn-register');
+          button.classList.add('btn-registered');
+          // Mettre à jour le compteur
+          updateParticipantsCount(eventId, data.participants_count);
+          // Mettre à jour les data-attributes pour les futures interactions
+          button.dataset.participantsCount = data.participants_count;
+          button.dataset.participants = data.participants_names || '';
+        } else {
+          window.VillageAlert.error(data.message);
+        }
+      } catch (error) {
+        window.VillageAlert.error("Une erreur est survenue");
+      }
+    }
+  }
+}
+
+function updateParticipantsCount(eventId, count) {
+  const countSpan = document.querySelector(`#participants-count-${eventId} .count-value`);
+  if (countSpan) {
+    countSpan.textContent = count;
+  }
+}
 </script>
 
 <!-- Leaflet JS -->
@@ -413,33 +558,6 @@ document.addEventListener('keydown', function(e) {
     color: #6B7280;
   }
 
-  /* View toggle tabs */
-  .view-toggle {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  }
-
-  .view-tab {
-    background: transparent;
-    border: none;
-    color: #6B7280;
-    font-weight: 500;
-    font-size: 13px;
-    transition: all 0.3s ease;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-  }
-
-  .view-tab:hover {
-    color: #667eea;
-  }
-
-  .view-tab.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
-    border-radius: 0.5rem;
-  }
-
   /* Empty state */
   .empty-state-icon {
     width: 80px;
@@ -544,6 +662,13 @@ document.addEventListener('keydown', function(e) {
   }
 
   /* Event card styles */
+  .event-title {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .event-card {
     border: 1px solid rgba(102, 126, 234, 0.15) !important;
     transition: all 0.3s ease;
@@ -568,20 +693,51 @@ document.addEventListener('keydown', function(e) {
   }
 
   .btn-status {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    color: #667eea;
     border: none;
     font-weight: 500;
-  }
-
-  .btn-status:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
-    color: #764ba2;
+    transition: all 0.3s ease;
   }
 
   .btn-status:focus {
     outline: none;
     box-shadow: none;
+  }
+
+  /* Bouton S'inscrire */
+  .btn-register {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
+    border: 1px solid rgba(102, 126, 234, 0.25);
+  }
+
+  .btn-register:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    color: #764ba2;
+    border-color: rgba(102, 126, 234, 0.4);
+  }
+
+  /* Bouton Inscrit (déjà inscrit) */
+  .btn-registered {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .btn-registered:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  /* Bouton Complet (événement plein) */
+  .btn-full {
+    background: rgba(156, 163, 175, 0.15);
+    color: #9ca3af;
+    cursor: not-allowed;
+  }
+
+  .btn-full:hover {
+    background: rgba(156, 163, 175, 0.15);
+    color: #9ca3af;
   }
 
   .btn-edit-event {

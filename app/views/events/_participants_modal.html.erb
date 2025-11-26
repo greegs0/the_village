@@ -1,3 +1,4 @@
+<% participants_count = event.participants.count %>
 <div class="village-dialog" id="participantsModal<%= event.id %>" style="display: none;">
   <div class="village-dialog-backdrop" onclick="VillageModal.close('participantsModal<%= event.id %>')"></div>
   <div class="village-dialog-container">
@@ -5,21 +6,23 @@
       <div class="village-dialog-header border-0 p-4 pb-2">
         <div>
           <h5 class="fw-semibold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Participants inscrits</h5>
-          <p class="text-secondary small mb-0"><%= event.participations_count || 0 %> participant<%= (event.participations_count || 0) > 1 ? 's' : '' %> inscrit<%= (event.participations_count || 0) > 1 ? 's' : '' %></p>
+          <p class="text-secondary small mb-0"><%= participants_count %> participant<%= participants_count > 1 ? 's' : '' %> inscrit<%= participants_count > 1 ? 's' : '' %> / <%= event.max_participations %> places</p>
         </div>
         <button type="button" class="btn-close" onclick="VillageModal.close('participantsModal<%= event.id %>')" aria-label="Close"></button>
       </div>
       <div class="village-dialog-body p-4 pt-2">
-        <% participants = generate_fake_participants(event.participations_count || 0) %>
-        <% if participants.any? %>
+        <% if event.participants.any? %>
           <ul class="list-group list-group-flush">
-            <% participants.each do |participant| %>
+            <% event.participants.each do |participant| %>
               <li class="list-group-item d-flex align-items-center gap-3 px-0" style="border-color: rgba(102, 126, 234, 0.1) !important;">
                 <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                  <span class="fw-medium text-white"><%= participant.split.map(&:first).join %></span>
+                  <span class="fw-medium text-white"><%= participant.name.split.map(&:first).join.upcase %></span>
                 </div>
                 <div>
-                  <div class="fw-medium"><%= participant %></div>
+                  <div class="fw-medium"><%= participant.name %></div>
+                  <% if participant.email.present? %>
+                    <small class="text-muted"><%= participant.email %></small>
+                  <% end %>
                 </div>
               </li>
             <% end %>
@@ -35,6 +38,7 @@
               </svg>
             </div>
             <p class="text-secondary mb-0">Aucun participant inscrit pour le moment</p>
+            <p class="text-muted small mt-2">Soyez le premier à vous inscrire !</p>
           </div>
         <% end %>
       </div>

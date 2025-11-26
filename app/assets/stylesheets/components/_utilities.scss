@@ -1,0 +1,350 @@
+// ============================================================
+// UTILITY CLASSES
+// ============================================================
+// Classes utilitaires pour éviter les styles inline
+// Basées sur les design tokens
+// ============================================================
+
+// ============================================================
+// GRADIENT BACKGROUNDS
+// ============================================================
+
+// Primary gradient (le plus utilisé - cercles d'avatar, boutons)
+.bg-gradient-primary {
+  background: $gradient-primary !important;
+}
+
+// Light gradient background (cards, sections)
+.bg-gradient-primary-light {
+  background: $gradient-primary-light !important;
+}
+
+// Lighter gradient background
+.bg-gradient-primary-lighter {
+  background: $gradient-primary-lighter !important;
+}
+
+// Subtle gradient (very light)
+.bg-gradient-primary-subtle {
+  background: $gradient-primary-subtle !important;
+}
+
+// Logo gradient (bleu -> violet)
+.bg-gradient-logo {
+  background: $gradient-logo !important;
+}
+
+// ============================================================
+// GRADIENT TEXT
+// ============================================================
+
+.text-gradient-primary {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ============================================================
+// AVATAR / CIRCLE WITH GRADIENT
+// ============================================================
+
+.avatar-gradient {
+  background: $gradient-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: $color-white;
+  font-weight: 500;
+
+  &.avatar-sm {
+    width: $avatar-size-sm;
+    height: $avatar-size-sm;
+    font-size: 0.75rem;
+  }
+
+  &.avatar-md {
+    width: $avatar-size-md;
+    height: $avatar-size-md;
+    font-size: 0.875rem;
+  }
+
+  &.avatar-lg {
+    width: $avatar-size-lg;
+    height: $avatar-size-lg;
+    font-size: 1rem;
+  }
+
+  // Size 36px (used in event cards)
+  &.avatar-36 {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+}
+
+// ============================================================
+// ICON WRAPPERS WITH GRADIENT BACKGROUND
+// ============================================================
+
+.icon-wrapper-gradient {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $gradient-primary-light;
+  border-radius: $radius-md;
+
+  &.icon-wrapper-sm {
+    width: 32px;
+    height: 32px;
+  }
+
+  &.icon-wrapper-md {
+    width: 40px;
+    height: 40px;
+  }
+
+  &.icon-wrapper-lg {
+    width: 48px;
+    height: 48px;
+  }
+
+  &.icon-wrapper-xl {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+// ============================================================
+// BORDERS WITH GRADIENT COLORS
+// ============================================================
+
+.border-primary-light {
+  border: 1px solid rgba($color-primary, 0.2) !important;
+}
+
+.border-primary-medium {
+  border: 1px solid rgba($color-primary, 0.3) !important;
+}
+
+// ============================================================
+// PROGRESS BARS WITH GRADIENT
+// ============================================================
+
+.progress-gradient {
+  background: rgba($color-primary, 0.1);
+  border-radius: $radius-sm;
+
+  .progress-bar {
+    background: $gradient-primary;
+    border-radius: $radius-sm;
+  }
+}
+
+// ============================================================
+// BUTTONS WITH GRADIENT
+// ============================================================
+
+.btn-primary-gradient {
+  background: $gradient-primary;
+  border: none;
+  color: $color-white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transition-all-normal;
+
+  &:hover {
+    background: linear-gradient(135deg, darken($color-primary, 5%) 0%, darken($color-primary-dark, 5%) 100%);
+    color: $color-white;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.4);
+  }
+
+  &:focus {
+    box-shadow: $shadow-focus;
+  }
+}
+
+.btn-outline-gradient {
+  background: $gradient-primary-light;
+  border: 1px solid rgba($color-primary, 0.2);
+  color: $color-primary;
+  display: inline-flex;
+  align-items: center;
+  transition: $transition-all-normal;
+
+  &:hover {
+    background: $gradient-primary-lighter;
+    border-color: rgba($color-primary, 0.4);
+    color: $color-primary-dark;
+  }
+}
+
+// ============================================================
+// ALERTS / NOTICES WITH GRADIENT
+// ============================================================
+
+.alert-gradient {
+  background: $gradient-primary-light;
+  border: 1px solid rgba($color-primary, 0.15);
+  border-radius: $radius-md;
+  color: $color-primary;
+}
+
+// ============================================================
+// TASK / EVENT ITEMS WITH GRADIENT BACKGROUND
+// ============================================================
+
+.item-gradient {
+  background: $gradient-primary-subtle;
+  border: 1px solid rgba($color-primary, 0.12);
+  border-radius: $radius-sm;
+  transition: $transition-all-fast;
+
+  &:hover {
+    border-color: rgba($color-primary, 0.25);
+  }
+}
+
+// ============================================================
+// TABS WITH GRADIENT
+// ============================================================
+
+.tab-gradient {
+  background: transparent;
+  border: none;
+  color: $color-gray;
+  font-weight: 500;
+  transition: $transition-all-normal;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  &.active {
+    background: $gradient-primary !important;
+    color: $color-white !important;
+    border-radius: $radius-sm;
+  }
+}
+
+// ============================================================
+// EMPTY STATE CONTAINERS
+// ============================================================
+
+.empty-state-gradient {
+  background: $gradient-primary-subtle;
+  border: 1px dashed rgba($color-primary, 0.2);
+  border-radius: $radius-sm;
+}
+
+// ============================================================
+// VIEW TOGGLE TABS (Liste/Carte)
+// ============================================================
+
+.view-toggle {
+  background: $gradient-primary-subtle;
+}
+
+.view-tab {
+  background: transparent;
+  border: none;
+  color: $color-gray;
+  font-weight: 500;
+  font-size: 13px;
+  transition: $transition-all-normal;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  &:focus,
+  &:active {
+    color: $color-primary;
+    box-shadow: none;
+  }
+
+  &.active {
+    background: $gradient-primary !important;
+    color: $color-white !important;
+    border-radius: $radius-sm;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: $color-white !important;
+    }
+  }
+}
+
+// ============================================================
+// DROPDOWN WITH GRADIENT STYLING
+// ============================================================
+
+.dropdown-gradient {
+  .dropdown-toggle {
+    background: $gradient-primary-light;
+    border: 1px solid rgba($color-primary, 0.2);
+    color: $color-primary;
+    transition: $transition-all-fast;
+
+    &:hover, &:focus {
+      background: $gradient-primary-lighter;
+      border-color: rgba($color-primary, 0.3);
+      color: $color-primary-dark;
+    }
+
+    &::after {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .dropdown-menu {
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: $radius-lg;
+    box-shadow: $shadow-card;
+    padding: 0.5rem 0;
+
+    .dropdown-header {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 1rem 0.25rem;
+      color: $color-gray;
+    }
+
+    .dropdown-divider {
+      border-color: rgba($color-primary, 0.15);
+      margin: 0.25rem 0;
+    }
+
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      transition: $transition-all-fast;
+      color: $color-gray-dark;
+
+      &:hover {
+        background: $gradient-primary-light;
+        color: $color-primary;
+      }
+
+      &.active {
+        background: $gradient-primary;
+        color: $color-white;
+
+        svg {
+          stroke: $color-white;
+        }
+      }
+
+      svg {
+        flex-shrink: 0;
+      }
+    }
+  }
+}
