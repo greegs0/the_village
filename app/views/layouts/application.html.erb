@@ -29,7 +29,7 @@
 
     <% unless action_name == "home" %>
       <!-- Mobile navbar (fixed top with logo + hamburger) -->
-      <div class="mobile-navbar">
+      <div class="mobile-navbar" data-controller="sidebar">
         <%= link_to families_path, class: "mobile-navbar-brand" do %>
           <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="mobile-logo-svg">
             <defs>
@@ -61,7 +61,7 @@
       <%= render 'shared/sidebar' %>
 
       <!-- Mobile overlay -->
-      <div class="sidebar-overlay" data-action="click->sidebar#closeFromOverlay"></div>
+      <div class="sidebar-overlay" data-controller="sidebar" data-action="click->sidebar#closeFromOverlay"></div>
     <% end %>
 
     <!-- Main content wrapper -->

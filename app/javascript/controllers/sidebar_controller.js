@@ -12,8 +12,15 @@ export default class extends Controller {
   }
 
   // Toggle sidebar on mobile
-  toggle() {
-    this.element.classList.toggle('open')
+  toggle(event) {
+    console.log("Toggle clicked!")
+    // Find the sidebar element
+    const sidebar = document.querySelector('.app-sidebar')
+    if (sidebar) {
+      sidebar.classList.toggle('open')
+      console.log("Sidebar toggled, open:", sidebar.classList.contains('open'))
+    }
+
     const overlay = document.querySelector('.sidebar-overlay')
     if (overlay) {
       overlay.classList.toggle('active')
@@ -28,7 +35,12 @@ export default class extends Controller {
   }
 
   close() {
-    this.element.classList.remove('open')
+    // Find the sidebar element
+    const sidebar = document.querySelector('.app-sidebar')
+    if (sidebar) {
+      sidebar.classList.remove('open')
+    }
+
     const overlay = document.querySelector('.sidebar-overlay')
     if (overlay) {
       overlay.classList.remove('active')
