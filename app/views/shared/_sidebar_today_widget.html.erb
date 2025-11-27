@@ -20,8 +20,7 @@
             <%= button_to toggle_status_family_task_path(current_user.family, task),
                 method: :patch,
                 class: "task-checkbox #{task.status ? 'checked' : ''}",
-                data: { turbo_frame: "_top" },
-                form: { data: { turbo: true } } do %>
+                form: { data: { turbo_stream: true } } do %>
               <% if task.status %>
                 <i class="fas fa-check"></i>
               <% end %>

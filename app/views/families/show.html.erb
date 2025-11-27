@@ -345,91 +345,13 @@
   </div>
 
   <!-- Task Progress Chart -->
-  <div class="card stat-card rounded-4 mb-4">
-    <div class="card-body p-3 p-md-4">
-      <h5 class="mb-1 dashboard-section-title">Progression des tâches hebdomadaires</h5>
-      <p class="text-secondary small mb-4">
-        <% if @weekly_total > 0 %>
-          Votre famille a complété <%= @weekly_percentage %>% des tâches cette semaine
-        <% else %>
-          Aucune tâche planifiée cette semaine
-        <% end %>
-      </p>
-
-      <div class="row align-items-center mb-4">
-        <div class="col-md-6">
-          <div class="text-center mb-3">
-            <div class="position-relative d-inline-block">
-              <%
-                circumference = 502
-                completed_pct = @weekly_total > 0 ? (@weekly_completed.to_f / @weekly_total * 100).round : 0
-                ongoing_pct = @weekly_total > 0 ? (@weekly_ongoing.to_f / @weekly_total * 100).round : 0
-                overdue_pct = @weekly_total > 0 ? (@weekly_overdue.to_f / @weekly_total * 100).round : 0
-
-                completed_length = (circumference * completed_pct / 100).round
-                ongoing_length = (circumference * ongoing_pct / 100).round
-                overdue_length = (circumference * overdue_pct / 100).round
-
-                completed_offset = 0
-                ongoing_offset = circumference - completed_length
-                overdue_offset = circumference - completed_length - ongoing_length
-              %>
-              <svg width="180" height="180" viewBox="0 0 200 200">
-                <defs>
-                  <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#667eea"/>
-                    <stop offset="100%" style="stop-color:#764ba2"/>
-                  </linearGradient>
-                </defs>
-                <!-- Fond -->
-                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(102, 126, 234, 0.08)" stroke-width="16"/>
-                <!-- En retard -->
-                <% if overdue_pct > 0 %>
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(102, 126, 234, 0.15)" stroke-width="16"
-                          stroke-dasharray="<%= overdue_length %> <%= circumference - overdue_length %>"
-                          stroke-dashoffset="<%= overdue_offset %>" transform="rotate(-90 100 100)"/>
-                <% end %>
-                <!-- En cours -->
-                <% if ongoing_pct > 0 %>
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(102, 126, 234, 0.4)" stroke-width="16"
-                          stroke-dasharray="<%= ongoing_length %> <%= circumference - ongoing_length %>"
-                          stroke-dashoffset="<%= ongoing_offset %>" transform="rotate(-90 100 100)"/>
-                <% end %>
-                <!-- Complétées -->
-                <% if completed_pct > 0 %>
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="url(#progressGradient)" stroke-width="16"
-                          stroke-dasharray="<%= completed_length %> <%= circumference - completed_length %>"
-                          stroke-dashoffset="<%= completed_offset %>" transform="rotate(-90 100 100)" stroke-linecap="round"/>
-                <% end %>
-              </svg>
-              <div class="position-absolute top-50 start-50 translate-middle text-center">
-                <div class="h2 mb-0 stat-number"><%= @weekly_percentage %>%</div>
-                <small class="text-muted">Complétées</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle" style="width: 14px; height: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-              <span class="ms-2 small"><strong><%= @weekly_completed %></strong> Complétées</span>
-            </div>
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle" style="width: 14px; height: 14px; background: rgba(102, 126, 234, 0.4);"></div>
-              <span class="ms-2 small"><strong><%= @weekly_ongoing %></strong> En cours</span>
-            </div>
-            <div class="d-flex align-items-center">
-              <div class="rounded-circle" style="width: 14px; height: 14px; background: rgba(102, 126, 234, 0.15);"></div>
-              <span class="ms-2 small"><strong><%= @weekly_overdue %></strong> En retard</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <%= link_to "Gérer les tâches", family_tasks_path(@family), class: "btn btn-primary w-100" %>
-    </div>
-  </div>
+  <%= render "families/weekly_task_progress",
+             family: @family,
+             weekly_completed: @weekly_completed,
+             weekly_ongoing: @weekly_ongoing,
+             weekly_overdue: @weekly_overdue,
+             weekly_total: @weekly_total,
+             weekly_percentage: @weekly_percentage %>
 </div>
 
 

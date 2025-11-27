@@ -1,0 +1,60 @@
+<div id="global-distribution" class="card stat-card rounded-4 h-100">
+  <div class="card-body p-3 p-md-4 d-flex flex-column">
+    <h6 class="mb-1 dashboard-section-title">Répartition globale de toutes les tâches</h6>
+    <p class="text-secondary small mb-4">Qui en fait le plus depuis le début de l'année ?</p>
+
+    <% if tasks_by_person.any? && total_tasks_count > 0 %>
+      <% colors = ["#7684ffff", "#F0ABFC", "#FDA4AF", "#ffe181ff", "#75e79fff", "#7DD3FC"] %>
+      <div class="text-center flex-grow-1 d-flex flex-column justify-content-center">
+        <!-- Camembert avec Stimulus -->
+        <%
+          labels = tasks_by_person.map do |data|
+            data[:person].name if data[:total_tasks] > 0
+          end.compact
+
+          chart_data = tasks_by_person.map do |data|
+            data[:total_tasks] if data[:total_tasks] > 0
+          end.compact
+
+          background_color = tasks_by_person.map.with_index do |data, index|
+            colors[index % 6] if data[:total_tasks] > 0
+          end.compact
+
+          pie_data = {
+            labels: labels,
+            datasets: [{
+              data: chart_data,
+              backgroundColor: background_color
+            }]
+          }
+        %>
+
+        <div style="max-width: 300px; margin: 0 auto 2rem;">
+          <canvas id="pieChart" data-controller="chart" data-chart-data-value="<%= pie_data.to_json %>"></canvas>
+        </div>
+
+        <!-- Légende -->
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <% tasks_by_person.each_with_index do |data, index| %>
+            <% if data[:total_tasks] > 0 %>
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle" style="width: 12px; height: 12px; background: <%= colors[index % colors.length] %>;"></div>
+                <span class="ms-2 small"><%= data[:person].name %> (<%= data[:total_tasks] %>)</span>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="text-center py-4">
+        <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="url(#iconGradient)" stroke-width="1.5"></circle>
+            <path d="M12 6v6l4 2" stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <p class="text-muted mb-0">Aucune tâche assignée pour le moment</p>
+      </div>
+    <% end %>
+  </div>
+</div>
