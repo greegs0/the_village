@@ -1,0 +1,12 @@
+<ul id="task-tabs" class="nav nav-pills p-1 mb-4 rounded-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);" role="tablist">
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link active w-100 task-tab" data-bs-toggle="pill" data-bs-target="#ongoing" type="button">
+      En cours (<%= ongoing_count %>)
+    </button>
+  </li>
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link w-100 task-tab" data-bs-toggle="pill" data-bs-target="#completed" type="button">
+      Terminées (<%= completed_count %>)
+    </button>
+  </li>
+</ul>

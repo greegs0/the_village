@@ -88,14 +88,67 @@ class TasksController < ApplicationController
       format.turbo_stream {
         # Reload sidebar data for updated counts
         load_sidebar_data
-        render turbo_stream: turbo_stream.replace(
-          "sidebar-today-widget",
-          partial: "shared/sidebar_today_widget",
-          locals: {
-            sidebar_today_tasks: @sidebar_today_tasks,
-            sidebar_today_events: @sidebar_today_events
-          }
-        )
+        # Calculate statistics for all panels
+        load_tasks_statistics
+
+        streams = [
+          turbo_stream.replace(
+            "sidebar-today-widget",
+            partial: "shared/sidebar_today_widget",
+            locals: {
+              sidebar_today_tasks: @sidebar_today_tasks,
+              sidebar_today_events: @sidebar_today_events
+            }
+          )
+        ]
+
+        # Add task page specific updates if coming from tasks page
+        if request.referer&.include?("/tasks")
+          streams += [
+            turbo_stream.replace(
+              "tasks-by-person",
+              partial: "tasks/tasks_by_person",
+              locals: { tasks_by_person: @tasks_by_person }
+            ),
+            turbo_stream.replace(
+              "global-distribution",
+              partial: "tasks/global_distribution",
+              locals: { tasks_by_person: @tasks_by_person, total_tasks_count: @family.tasks.count }
+            ),
+            turbo_stream.replace(
+              "individual-contribution",
+              partial: "tasks/individual_contribution",
+              locals: { tasks_by_person: @tasks_by_person }
+            ),
+            turbo_stream.replace(
+              "task-tabs",
+              partial: "tasks/task_tabs",
+              locals: {
+                ongoing_count: @family.tasks.where(status: [false, nil]).count,
+                completed_count: @family.tasks.where(status: true).count
+              }
+            )
+          ]
+        end
+
+        # Add dashboard specific updates if coming from families page (dashboard)
+        if request.referer&.match?(/\/families(\/\d+)?(\?|$)/)
+          load_weekly_task_stats
+          streams << turbo_stream.replace(
+            "weekly-task-progress",
+            partial: "families/weekly_task_progress",
+            locals: {
+              family: @family,
+              weekly_completed: @weekly_completed,
+              weekly_ongoing: @weekly_ongoing,
+              weekly_overdue: @weekly_overdue,
+              weekly_total: @weekly_total,
+              weekly_percentage: @weekly_percentage
+            }
+          )
+        end
+
+        render turbo_stream: streams
       }
     end
   end
@@ -141,5 +194,36 @@ class TasksController < ApplicationController
                                   .order(time: :asc)
                                   .limit(3)
     @sidebar_today_events_count = @sidebar_today_events.count
+  end
+
+  def load_tasks_statistics
+    people = @family.people
+    tasks_stats = @family.tasks.group(:assignee_id, :status).count
+    @tasks_by_person = people.map do |person|
+      total = (tasks_stats[[person.id, true]] || 0) + (tasks_stats[[person.id, false]] || 0)
+      completed = tasks_stats[[person.id, true]] || 0
+      {
+        person: person,
+        total_tasks: total,
+        completed_tasks: completed,
+        percentage: total > 0 ? (completed.to_f / total * 100).round : 0
+      }
+    end
+  end
+
+  def load_weekly_task_stats
+    week_start = Date.today.beginning_of_week
+    week_end = Date.today.end_of_week
+    weekly_tasks = @family.tasks.where(target_date: week_start..week_end)
+
+    @weekly_completed = weekly_tasks.where(status: true).count
+    @weekly_overdue = weekly_tasks.where(status: [false, nil])
+                                  .where("target_date < ?", Date.today)
+                                  .count
+    @weekly_ongoing = weekly_tasks.where(status: [false, nil])
+                                  .where("target_date >= ?", Date.today)
+                                  .count
+    @weekly_total = weekly_tasks.count
+    @weekly_percentage = @weekly_total > 0 ? ((@weekly_completed.to_f / @weekly_total) * 100).round : 0
   end
 end
