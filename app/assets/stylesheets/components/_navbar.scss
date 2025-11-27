@@ -108,7 +108,7 @@
         width: 0;
         height: 2px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        transition: all 0.3s ease;
+        transition: all 0.4s ease;
         transform: translateX(-50%);
       }
 
@@ -140,7 +140,7 @@
           width: 80%;
           height: 2px;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          transition: all 0.3s ease;
+          transition: all 0.4s ease;
           transform: translateX(-50%);
         }
 
@@ -165,7 +165,7 @@
 
       .dropdown-item {
         padding: $spacing-xs $spacing-md;
-        transition: all 0.2s ease;
+        transition: all 0.4s ease;
         border-radius: $radius-sm;
         font-weight: 500;
         position: relative;
@@ -179,7 +179,7 @@
           width: 0;
           height: 2px;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          transition: all 0.3s ease;
+          transition: all 0.4s ease;
         }
 
         &:hover {

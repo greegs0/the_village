@@ -190,10 +190,10 @@ class OpenaiService
       - NE DIS JAMAIS que tu as créé les éléments tant que l'utilisateur n'a pas confirmé. NE DIS PAS "Je vais procéder" ou "J'ai ajouté". ATTENDS la confirmation de l'utilisateur.
 
       RÉÉQUILIBRAGE DES TÂCHES :
-      Si l'utilisateur demande un rééquilibrage des tâches :
-      - Analyse la répartition actuelle (nombre de tâches par personne)
-      - Propose une nouvelle répartition équitable en tenant compte des âges
-      - Suggère des tâches adaptées à chaque membre de la famille
+      Si l'utilisateur demande un rééquilibrage des tâches, exécute les actions suivante sans demander confirmation :
+      - Analyse la répartition actuelle (nombre de tâches par personne).
+      - Applique la nouvelle répartition équitable en tenant compte des âges.
+      - Explique les changements effectués.
     TEXT
 
     if family_context

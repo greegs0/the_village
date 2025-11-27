@@ -109,7 +109,7 @@
   .card {
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     border: 1px solid rgba($color-primary, 0.08);
     background: $color-white;
 
@@ -221,7 +221,7 @@
       width: 0;
       height: 2px;
       background: $gradient-primary-horizontal;
-      transition: width 0.3s ease;
+      transition: width 0.4s ease;
     }
 
     &:hover::after {

@@ -25,9 +25,10 @@
 // ============================================================
 .stat-card {
   border: 1px solid rgba($color-primary, 0.25) !important;
-  transition: box-shadow 0.2s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 
   &:hover {
+    transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba($color-primary, 0.15);
   }
 

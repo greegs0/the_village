@@ -154,13 +154,13 @@ $headers-font: "Nunito", "Helvetica", "sans-serif";
 // TRANSITIONS & ANIMATIONS
 // ============================================================
 
-$transition-fast: 0.2s ease;
-$transition-normal: 0.3s ease;
+$transition-fast: 0.4s ease;
+$transition-normal: 0.4s ease;
 
-$transition-bg: background-color 0.2s ease;
-$transition-all-fast: all 0.2s ease;
-$transition-all-normal: all 0.3s ease;
-$transition-transform: transform 0.2s ease, box-shadow 0.2s ease;
+$transition-bg: background-color 0.4s ease;
+$transition-all-fast: all 0.4s ease;
+$transition-all-normal: all 0.4s ease;
+$transition-transform: transform 0.4s ease, box-shadow 0.4s ease;
 
 // Transform values
 $transform-hover-up: translateY(-4px);
@@ -225,12 +225,23 @@ $opacity-blur: 0.6;
   box-shadow: $shadow-card;
 }
 
-// Mixin pour le hover state standard - sans flottement
+// Mixin pour le hover state standard - avec léger soulèvement
 @mixin hover-lift {
-  transition: box-shadow 0.2s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 
   &:hover {
+    transform: translateY(-3px);
     box-shadow: $shadow-hover;
+  }
+}
+
+// Mixin pour le hover state léger (boutons)
+@mixin hover-lift-sm {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover-sm;
   }
 }
 
