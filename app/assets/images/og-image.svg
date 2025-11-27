@@ -1,0 +1,133 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Dégradé de fond principal -->
+    <linearGradient id="ogBgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Dégradé subtil pour overlay -->
+    <linearGradient id="overlayGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.2" />
+    </linearGradient>
+    
+    <!-- Pattern décoratif -->
+    <pattern id="dots" patternUnits="userSpaceOnUse" width="40" height="40">
+      <circle cx="20" cy="20" r="2" fill="#ffffff" opacity="0.1"/>
+    </pattern>
+  </defs>
+  
+  <!-- Fond avec dégradé -->
+  <rect width="1200" height="630" fill="url(#ogBgGradient)"/>
+  
+  <!-- Pattern de points subtil -->
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  
+  <!-- Overlay pour profondeur -->
+  <rect width="1200" height="630" fill="url(#overlayGrad)"/>
+  
+  <!-- Formes décoratives en arrière-plan -->
+  <circle cx="100" cy="100" r="200" fill="#ffffff" opacity="0.05"/>
+  <circle cx="1100" cy="530" r="250" fill="#ffffff" opacity="0.05"/>
+  <circle cx="900" cy="50" r="150" fill="#ffffff" opacity="0.03"/>
+  
+  <!-- Village illustré à gauche -->
+  <g transform="translate(80, 180)">
+    <!-- Maison centrale grande -->
+    <path d="M 80 100 L 150 40 L 220 100 L 220 200 L 80 200 Z" fill="#ffffff" opacity="0.95"/>
+    <rect x="130" y="140" width="40" height="60" fill="#667eea" opacity="0.4" rx="3"/>
+    <circle cx="115" cy="80" r="10" fill="#667eea" opacity="0.6"/>
+    <circle cx="185" cy="80" r="10" fill="#667eea" opacity="0.6"/>
+    
+    <!-- Maison gauche -->
+    <path d="M 0 130 L 50 85 L 100 130 L 100 200 L 0 200 Z" fill="#ffffff" opacity="0.8"/>
+    <rect x="35" y="155" width="30" height="45" fill="#764ba2" opacity="0.4" rx="2"/>
+    <circle cx="50" cy="110" r="6" fill="#764ba2" opacity="0.5"/>
+    
+    <!-- Maison droite -->
+    <path d="M 200 130 L 250 85 L 300 130 L 300 200 L 200 200 Z" fill="#ffffff" opacity="0.8"/>
+    <rect x="235" y="155" width="30" height="45" fill="#4F46E5" opacity="0.4" rx="2"/>
+    <circle cx="250" cy="110" r="6" fill="#4F46E5" opacity="0.5"/>
+    
+    <!-- Arbres stylisés -->
+    <ellipse cx="30" cy="210" rx="20" ry="12" fill="#10b981" opacity="0.6"/>
+    <rect x="28" y="210" width="4" height="15" fill="#059669" opacity="0.8"/>
+    
+    <ellipse cx="270" cy="210" rx="20" ry="12" fill="#10b981" opacity="0.6"/>
+    <rect x="268" y="210" width="4" height="15" fill="#059669" opacity="0.8"/>
+    
+    <!-- Sol / chemin -->
+    <ellipse cx="150" cy="215" rx="120" ry="15" fill="#ffffff" opacity="0.2"/>
+  </g>
+  
+  <!-- Texte principal -->
+  <g transform="translate(480, 200)">
+    <!-- The Village -->
+    <text x="0" y="80" font-family="'Segoe UI', Arial, sans-serif" font-size="90" font-weight="700" fill="#ffffff" letter-spacing="-2">
+      The Village
+    </text>
+    
+    <!-- Ligne séparatrice -->
+    <rect x="0" y="110" width="120" height="4" fill="#ffffff" opacity="0.6" rx="2"/>
+    
+    <!-- Tagline -->
+    <text x="0" y="170" font-family="'Segoe UI', Arial, sans-serif" font-size="32" fill="#ffffff" opacity="0.9" letter-spacing="1">
+      Gestion familiale &amp; communautaire
+    </text>
+    
+    <!-- Slogan -->
+    <text x="0" y="230" font-family="'Georgia', serif" font-size="26" fill="#ffffff" opacity="0.7" font-style="italic">
+      "It takes a village to build a happy family"
+    </text>
+  </g>
+  
+  <!-- Icônes features en bas -->
+  <g transform="translate(500, 450)">
+    <!-- Feature 1: Tâches -->
+    <g transform="translate(0, 0)">
+      <circle cx="20" cy="20" r="25" fill="#ffffff" opacity="0.2"/>
+      <text x="20" y="28" font-size="24" text-anchor="middle">✓</text>
+      <text x="20" y="70" font-family="Arial" font-size="14" fill="#ffffff" opacity="0.8" text-anchor="middle">Tâches</text>
+    </g>
+    
+    <!-- Feature 2: Calendrier -->
+    <g transform="translate(120, 0)">
+      <circle cx="20" cy="20" r="25" fill="#ffffff" opacity="0.2"/>
+      <text x="20" y="28" font-size="24" text-anchor="middle">📅</text>
+      <text x="20" y="70" font-family="Arial" font-size="14" fill="#ffffff" opacity="0.8" text-anchor="middle">Calendrier</text>
+    </g>
+    
+    <!-- Feature 3: Famille -->
+    <g transform="translate(240, 0)">
+      <circle cx="20" cy="20" r="25" fill="#ffffff" opacity="0.2"/>
+      <text x="20" y="28" font-size="24" text-anchor="middle">👨‍👩‍👧</text>
+      <text x="20" y="70" font-family="Arial" font-size="14" fill="#ffffff" opacity="0.8" text-anchor="middle">Famille</text>
+    </g>
+    
+    <!-- Feature 4: Stats -->
+    <g transform="translate(360, 0)">
+      <circle cx="20" cy="20" r="25" fill="#ffffff" opacity="0.2"/>
+      <text x="20" y="28" font-size="24" text-anchor="middle">📊</text>
+      <text x="20" y="70" font-family="Arial" font-size="14" fill="#ffffff" opacity="0.8" text-anchor="middle">Analytics</text>
+    </g>
+  </g>
+  
+  <!-- Petit coeur décoratif -->
+  <g transform="translate(1050, 280)">
+    <path d="M 0 10 Q 0 0 10 0 Q 20 0 20 10 Q 20 20 10 30 Q 0 20 0 10" fill="#f87171" opacity="0.8"/>
+  </g>
+  
+  <!-- URL en bas -->
+  <text x="1100" y="590" font-family="'Segoe UI', Arial" font-size="18" fill="#ffffff" opacity="0.6" text-anchor="end">
+    the-village.website
+  </text>
+  
+  <!-- Badge Le Wagon discret -->
+  <g transform="translate(50, 570)">
+    <text font-family="Arial" font-size="14" fill="#ffffff" opacity="0.4">
+      Projet Le Wagon 2025
+    </text>
+  </g>
+</svg>
