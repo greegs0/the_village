@@ -11,7 +11,7 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 1001; // Au-dessus de la sidebar
+  z-index: 1050; // Au-dessus de la sidebar et navbar mobile
 }
 
 .chat-widget-button {
@@ -118,8 +118,9 @@
   position: fixed;
   bottom: 100px;
   right: 24px;
-  z-index: 1001; // Au-dessus de la sidebar
+  z-index: 1050; // Au-dessus de la sidebar et navbar mobile
   width: 380px;
+  height: 600px;
   max-height: 600px;
   border-radius: 16px;
   overflow: hidden;
@@ -153,7 +154,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: 600px;
 
   @media (max-width: 768px) {
     max-height: calc(100vh - 120px);
@@ -176,8 +176,7 @@
   overflow-y: auto;
   padding: 16px;
   background: #f9fafb;
-  min-height: 300px;
-  max-height: 400px;
+  min-height: 200px;
   scroll-behavior: smooth;
 
   @media (max-width: 768px) {
