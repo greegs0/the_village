@@ -23,10 +23,6 @@ export const CHAT_CONSTANTS = {
   TIME_FORMAT_OPTIONS: { hour: '2-digit', minute: '2-digit' },
   TIME_LOCALE: 'fr-FR',
 
-  // Assets
-  ASSISTANT_AVATAR_PATH: '/assets/village-assistant-avatar.svg',
-  ASSISTANT_ICON_PATH: '/assets/village-assistant-icon-v2.svg',
-
   // Messages
   WELCOME_MESSAGE: 'Bonjour ! Je suis l\'assistant de The Village. Comment puis-je vous aider aujourd\'hui ?',
   LOADING_MESSAGE: 'L\'assistant rédige sa réponse...',

@@ -1,5 +1,7 @@
 <% if user_signed_in? && controller_name != 'families' %>
-  <div data-controller="chat-widget">
+  <div data-controller="chat-widget"
+       data-chat-widget-avatar-url-value="<%= asset_path('village-assistant-avatar.svg') %>"
+       data-chat-widget-icon-url-value="<%= asset_path('village-assistant-icon-v2.svg') %>">
     <!-- Chat Widget Button -->
     <div class="chat-widget-launcher">
       <!-- Popup notification -->
