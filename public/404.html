@@ -1,67 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>The page you were looking for doesn't exist (404)</title>
+  <meta charset="UTF-8">
+  <title>Page introuvable (404) - The Village</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-  .rails-default-error-page {
-    background-color: #EFEFEF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .rails-default-error-page div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
-  }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(233, 213, 255, 0.1) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #354152;
+      padding: 20px;
+    }
 
-  .rails-default-error-page div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+    .error-container {
+      background: white;
+      border-radius: 16px;
+      padding: 64px 48px;
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.1);
+    }
 
-  .rails-default-error-page h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
-  }
+    .assistant-icon {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 32px;
+    }
 
-  .rails-default-error-page div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+    .error-code {
+      font-size: 96px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+      line-height: 1;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #697282;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 16px;
+      color: #717182;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .fun-message {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+      padding: 16px 24px;
+      border-radius: 10px;
+      margin: 32px 0;
+      font-size: 15px;
+      color: #495565;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .error-container {
+        padding: 48px 32px;
+      }
+
+      .error-code {
+        font-size: 72px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+      }
+
+      .assistant-icon {
+        width: 140px;
+        height: 140px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .error-container {
+        padding: 40px 24px;
+      }
+
+      .error-code {
+        font-size: 64px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .assistant-icon {
+        width: 120px;
+        height: 120px;
+      }
+    }
   </style>
 </head>
 
-<body class="rails-default-error-page">
-  <!-- This file lives in public/404.html -->
-  <div class="dialog">
-    <div>
-      <h1>The page you were looking for doesn't exist.</h1>
-      <p>You may have mistyped the address or the page may have moved.</p>
+<body>
+  <div class="error-container">
+    <svg class="assistant-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bgGrad2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#faf5ff;stop-opacity:1" />
+        </radialGradient>
+        <linearGradient id="houseAI" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+
+      <circle cx="100" cy="100" r="95" fill="url(#bgGrad2)"/>
+
+      <circle cx="100" cy="100" r="75" fill="none" stroke="#e9d5ff" stroke-width="3"/>
+      <circle cx="100" cy="100" r="70" fill="none" stroke="#c4b5fd" stroke-width="2" opacity="0.6"/>
+
+      <g transform="translate(50, 55)">
+        <path d="M 25 25 L 50 5 L 75 25 L 75 60 L 25 60 Z" fill="url(#houseAI)" stroke="#4F46E5" stroke-width="3"/>
+        <rect x="40" y="40" width="20" height="20" fill="#ffffff" opacity="0.9" rx="2"/>
+
+        <!-- Yeux confus (X_X) -->
+        <line x1="38" y1="19" x2="46" y2="25" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="46" y1="19" x2="38" y2="25" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="54" y1="19" x2="62" y2="25" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="62" y1="19" x2="54" y2="25" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- Bouche perplexe -->
+        <path d="M 38 34 Q 50 32 62 34" stroke="#4F46E5" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- Points d'interrogation qui flottent -->
+      <g opacity="0.6">
+        <text x="35" y="50" font-family="Arial" font-size="24" fill="#a78bfa" font-weight="bold">?</text>
+        <text x="155" y="80" font-family="Arial" font-size="20" fill="#a78bfa" font-weight="bold">?</text>
+        <text x="25" y="140" font-family="Arial" font-size="18" fill="#c4b5fd" font-weight="bold">?</text>
+        <text x="165" y="145" font-family="Arial" font-size="22" fill="#c4b5fd" font-weight="bold">?</text>
+      </g>
+
+      <g transform="translate(135, 130)">
+        <rect x="-18" y="-10" width="36" height="20" rx="10" fill="#4F46E5" opacity="0.95"/>
+        <text x="0" y="4" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">AI</text>
+      </g>
+    </svg>
+
+    <div class="error-code">404</div>
+    <h1>Page introuvable</h1>
+    <p class="subtitle">Même mon IA n'arrive pas à la trouver...</p>
+
+    <div class="fun-message">
+      "J'ai cherché partout dans le village, mais cette page semble avoir déménagé sans laisser d'adresse. Peut-être qu'elle est partie en vacances ?"
     </div>
-    <p>If you are the application owner check the logs for more information.</p>
+
+    <p>L'adresse que vous avez demandée n'existe pas ou a été déplacée.<br>Retournons ensemble à la page d'accueil.</p>
+
+    <a href="/" class="btn">Retour au village</a>
   </div>
 </body>
 </html>
