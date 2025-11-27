@@ -4,6 +4,10 @@ import { CHAT_CONSTANTS } from "config/chat_constants"
 // Connects to data-controller="chat-widget"
 export default class extends Controller {
   static targets = ["modal", "messages", "input", "form", "popup"]
+  static values = {
+    avatarUrl: String,
+    iconUrl: String
+  }
 
   connect() {
     // Récupérer l'ID du chat depuis localStorage (persistance entre pages)
@@ -223,7 +227,7 @@ export default class extends Controller {
     loadingDiv.innerHTML = `
       <div class="chat-widget-loader">
         <div class="loader-icon-wrapper">
-          <img src="${CHAT_CONSTANTS.ASSISTANT_ICON_PATH}" alt="Assistant" class="loader-icon">
+          <img src="${this.iconUrlValue}" alt="Assistant" class="loader-icon">
           <div class="loader-spinner"></div>
         </div>
         <span class="loader-text">${CHAT_CONSTANTS.LOADING_MESSAGE}</span>
@@ -240,7 +244,7 @@ export default class extends Controller {
     messageDiv.className = CHAT_CONSTANTS.MESSAGE_CONTAINER
     messageDiv.innerHTML = `
       <div class="${CHAT_CONSTANTS.MESSAGE_AVATAR}">
-        <img src="${CHAT_CONSTANTS.ASSISTANT_AVATAR_PATH}" alt="Assistant" style="width: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px; height: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px;">
+        <img src="${this.avatarUrlValue}" alt="Assistant" style="width: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px; height: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px;">
       </div>
       <div class="${CHAT_CONSTANTS.MESSAGE_CONTENT}">
         <div class="${CHAT_CONSTANTS.MESSAGE_BUBBLE_ASSISTANT}">
