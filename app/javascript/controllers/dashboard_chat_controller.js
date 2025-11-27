@@ -4,6 +4,10 @@ import { CHAT_CONSTANTS } from "config/chat_constants"
 // Connects to data-controller="dashboard-chat"
 export default class extends Controller {
   static targets = ["messages", "input", "form"]
+  static values = {
+    avatarUrl: String,
+    iconUrl: String
+  }
 
   connect() {
     this.isLoading = false
@@ -106,7 +110,7 @@ export default class extends Controller {
     messageDiv.innerHTML = `
       <div class="me-2">
         <div class="d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">
-          <img src="${CHAT_CONSTANTS.ASSISTANT_AVATAR_PATH}" alt="Assistant" style="width: 28px; height: 28px;">
+          <img src="${this.avatarUrlValue}" alt="Assistant" style="width: 28px; height: 28px;">
         </div>
       </div>
       <div class="flex-grow-1" style="max-width: 70%;">
@@ -127,7 +131,7 @@ export default class extends Controller {
     loadingDiv.innerHTML = `
       <div class="chat-widget-loader">
         <div class="loader-icon-wrapper">
-          <img src="${CHAT_CONSTANTS.ASSISTANT_ICON_PATH}" alt="Assistant" class="loader-icon">
+          <img src="${this.iconUrlValue}" alt="Assistant" class="loader-icon">
           <div class="loader-spinner"></div>
         </div>
         <span class="loader-text">${CHAT_CONSTANTS.LOADING_MESSAGE}</span>

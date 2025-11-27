@@ -127,7 +127,9 @@
   <!-- Village Assistant Chat -->
   <div class="row g-4 mb-4">
     <!-- Main Chat Area (3/4) -->
-    <div class="col-lg-9" data-controller="dashboard-chat">
+    <div class="col-lg-9" data-controller="dashboard-chat"
+         data-dashboard-chat-avatar-url-value="<%= asset_path('village-assistant-avatar.svg') %>"
+         data-dashboard-chat-icon-url-value="<%= asset_path('village-assistant-icon-v2.svg') %>">
       <div class="card border-0 rounded-4 overflow-hidden shadow-sm">
         <div class="card-header village-assistant-header border-0 p-3">
           <div class="d-flex align-items-center justify-content-between">
