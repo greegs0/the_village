@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { CHAT_CONSTANTS } from "../config/chat_constants"
+import { CHAT_CONSTANTS } from "config/chat_constants"
 
 // Connects to data-controller="chat-widget"
 export default class extends Controller {

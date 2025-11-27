@@ -9,3 +9,5 @@ pin "bootstrap", to: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/boots
 pin "@popperjs/core", to: "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/esm/popper.min.js", preload: true
 pin "chart.js", to: "https://ga.jspm.io/npm:chart.js@4.4.2/dist/chart.js"
 pin "@kurkle/color", to: "https://ga.jspm.io/npm:@kurkle/color@0.3.2/dist/color.esm.js"
+# config/importmap.rb
+pin "config/chat_constants", to: "config/chat_constants.js"
