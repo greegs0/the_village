@@ -29,7 +29,7 @@ export const CHAT_CONSTANTS = {
 
   // Messages
   WELCOME_MESSAGE: 'Bonjour ! Je suis l\'assistant de The Village. Comment puis-je vous aider aujourd\'hui ?',
-  API_PENDING_MESSAGE: 'Merci pour votre message ! L\'intégration de l\'API est en cours. Pour accéder à toutes les fonctionnalités, rendez-vous sur la page principale du chat.',
+  LOADING_MESSAGE: 'L\'assistant rédige sa réponse...',
 
   // Delays
   RESPONSE_DELAY_MS: 1000,
