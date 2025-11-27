@@ -24,10 +24,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="<%= 'with-sidebar' unless action_name == 'home' %>">
+  <body class="<%= 'with-sidebar' if action_name != 'home' && show_sidebar? %>">
     <%= render "shared/village_alert" %>
 
-    <% unless action_name == "home" %>
+    <% if action_name != "home" && show_sidebar? %>
       <!-- Mobile navbar (fixed top with logo + hamburger) -->
       <div class="mobile-navbar" data-controller="sidebar">
         <%= link_to families_path, class: "mobile-navbar-brand" do %>

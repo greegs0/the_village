@@ -1,4 +1,9 @@
 module ApplicationHelper
+  # Vérifie si l'utilisateur peut voir la sidebar (connecté + a une famille)
+  def show_sidebar?
+    user_signed_in? && current_user.family.present?
+  end
+
   # Convertit le markdown basique en HTML (bold, italic, listes)
   def simple_markdown(text)
     return "" if text.blank?
