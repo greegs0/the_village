@@ -10,6 +10,11 @@ class ChatsController < ApplicationController
   def show
     @messages = @chat.messages.chronological
     @message = Message.new
+
+    respond_to do |format|
+      format.html
+      format.json { render json: { chat: @chat, messages: @messages } }
+    end
   end
 
   # POST /chats

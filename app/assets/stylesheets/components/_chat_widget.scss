@@ -233,6 +233,55 @@
 }
 
 // ============================================================
+// CHAT WIDGET LOADER (Indicateur de chargement)
+// ============================================================
+.chat-widget-loader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+
+  .loader-icon-wrapper {
+    position: relative;
+    width: 40px;
+    height: 40px;
+
+    .loader-icon {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .loader-spinner {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      width: 48px;
+      height: 48px;
+      --b: 3px;
+      border-radius: 50%;
+      background: conic-gradient(#0000 10%, $color-primary) content-box;
+      -webkit-mask:
+        repeating-conic-gradient(#0000 0deg, #000 1deg 20deg, #0000 21deg 36deg),
+        radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b)));
+      -webkit-mask-composite: destination-in;
+      mask-composite: intersect;
+      animation: spin 1s infinite steps(10);
+    }
+  }
+
+  .loader-text {
+    font-size: 13px;
+    color: #6b7280;
+    font-style: italic;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(1turn); }
+}
+
+// ============================================================
 // RESPONSIVE
 // ============================================================
 @media (max-width: 768px) {

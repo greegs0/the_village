@@ -127,7 +127,7 @@
   <!-- Village Assistant Chat -->
   <div class="row g-4 mb-4">
     <!-- Main Chat Area (3/4) -->
-    <div class="col-lg-9">
+    <div class="col-lg-9" data-controller="dashboard-chat">
       <div class="card border-0 rounded-4 overflow-hidden shadow-sm">
         <div class="card-header village-assistant-header border-0 p-3">
           <div class="d-flex align-items-center justify-content-between">
@@ -149,7 +149,7 @@
             <% end %>
           </div>
         </div>
-        <div class="card-body p-3 bg-white messages-container" id="messagesContainer" style="height: 400px; overflow-y: auto;">
+        <div class="card-body p-3 bg-white messages-container" data-dashboard-chat-target="messages" style="height: 400px; overflow-y: auto;">
           <% if @messages.any? %>
             <% @messages.each do |message| %>
               <div class="d-flex mb-3 <%= message.from_assistant? ? '' : 'justify-content-end' %>">
@@ -196,8 +196,8 @@
         <div class="card-footer bg-white border-0 p-3">
           <div class="input-gradient-border">
             <div class="input-inner">
-              <%= form_with model: @message, url: chat_messages_path(@current_chat), method: :post, local: true, class: "d-flex align-items-center gap-2", id: "chatForm" do |f| %>
-                <%= f.text_field :content, class: "form-control form-control-sm bg-transparent border-0 flex-grow-1 chat-input-no-focus", placeholder: "Posez une question à votre Village Assistant...", style: "font-size: 13px; padding: 6px 8px; color: #374151;", id: "messageInput", autofocus: true %>
+              <%= form_with model: @message, url: chat_messages_path(@current_chat), method: :post, local: true, class: "d-flex align-items-center gap-2", data: { dashboard_chat_target: "form", action: "submit->dashboard-chat#sendMessage keydown->dashboard-chat#handleKeydown" } do |f| %>
+                <%= f.text_field :content, class: "form-control form-control-sm bg-transparent border-0 flex-grow-1 chat-input-no-focus", placeholder: "Posez une question à votre Village Assistant...", style: "font-size: 13px; padding: 6px 8px; color: #374151;", data: { dashboard_chat_target: "input" }, autofocus: true %>
                 <%= f.button type: "submit", class: "btn btn-sm rounded-circle d-flex align-items-center justify-content-center", style: "width: 28px; height: 28px; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" do %>
                   <span style="font-size: 14px; color: white;">➤</span>
                 <% end %>
@@ -430,35 +430,6 @@
   </div>
 </div>
 
-<script>
-  // Auto-scroll vers le bas des messages au chargement de la page
-  document.addEventListener('DOMContentLoaded', function() {
-    const messagesContainer = document.getElementById('messagesContainer');
-    if (messagesContainer) {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    // Focus automatique sur l'input
-    const messageInput = document.getElementById('messageInput');
-    if (messageInput) {
-      messageInput.focus();
-    }
-  });
-
-  // Raccourci clavier: Enter pour envoyer, Shift+Enter pour nouvelle ligne
-  const messageInput = document.getElementById('messageInput');
-  if (messageInput) {
-    messageInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        const form = document.getElementById('chatForm');
-        if (form && messageInput.value.trim() !== '') {
-          form.requestSubmit();
-        }
-      }
-    });
-  }
-</script>
 
 <style>
   /* Remove double border on chat input focus */

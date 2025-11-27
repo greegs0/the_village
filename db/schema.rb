@@ -114,7 +114,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_26_153843) do
     t.string "assigned_to"
     t.string "event_icon"
     t.string "badge_class"
-    t.boolean "reminders_enabled"
+    t.boolean "reminders_enabled", default: false
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.string "address"

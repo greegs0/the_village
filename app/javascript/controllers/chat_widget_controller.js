@@ -3,18 +3,38 @@ import { CHAT_CONSTANTS } from "../config/chat_constants"
 
 // Connects to data-controller="chat-widget"
 export default class extends Controller {
-  static targets = ["modal", "messages", "input", "form"]
+  static targets = ["modal", "messages", "input", "form", "popup"]
 
   connect() {
+    // Récupérer l'ID du chat depuis localStorage (persistance entre pages)
+    this.currentChatId = localStorage.getItem('widget_chat_id')
+    this.isLoading = false
+
+    // Si un chat existe, charger ses messages
+    if (this.currentChatId) {
+      this.loadChatMessages()
+    }
+
     // Auto-focus sur l'input si la modal est ouverte
     if (this.hasModalTarget && this.modalTarget.style.display === 'block') {
       this.inputTarget.focus()
       this.scrollToBottom()
     }
+  }
 
-    // Stocker l'ID du chat actif (sera initialisé au premier message)
+  // Headers communs pour les requêtes fetch
+  get fetchHeaders() {
+    return {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+      'Accept': 'application/json'
+    }
+  }
+
+  // Réinitialiser le chat (localStorage + state)
+  resetChat() {
+    localStorage.removeItem('widget_chat_id')
     this.currentChatId = null
-    this.isLoading = false
   }
 
   // Ouvrir/fermer la modal
@@ -91,20 +111,10 @@ export default class extends Controller {
 
   // Créer un nouveau chat
   async createChat() {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
-
     const response = await fetch('/chats', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken,
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        chat: {
-          title: 'Nouvelle conversation'
-        }
-      })
+      headers: this.fetchHeaders,
+      body: JSON.stringify({ chat: { title: 'Nouvelle conversation' } })
     })
 
     if (!response.ok) {
@@ -113,6 +123,9 @@ export default class extends Controller {
 
     const data = await response.json()
     this.currentChatId = data.chat.id
+
+    // Persister l'ID du chat dans localStorage
+    localStorage.setItem('widget_chat_id', this.currentChatId)
 
     // Supprimer le message de bienvenue par défaut et ajouter le message personnalisé
     this.messagesTarget.innerHTML = ''
@@ -125,20 +138,10 @@ export default class extends Controller {
 
   // Envoyer un message à l'API
   async postMessage(messageText) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
-
     const response = await fetch(`/chats/${this.currentChatId}/messages`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken,
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        message: {
-          content: messageText
-        }
-      })
+      headers: this.fetchHeaders,
+      body: JSON.stringify({ message: { content: messageText } })
     })
 
     if (!response.ok) {
@@ -146,6 +149,35 @@ export default class extends Controller {
     }
 
     return await response.json()
+  }
+
+  // Charger les messages d'un chat existant
+  async loadChatMessages() {
+    try {
+      const response = await fetch(`/chats/${this.currentChatId}`, {
+        headers: { 'Accept': 'application/json' }
+      })
+
+      if (!response.ok) {
+        this.resetChat()
+        return
+      }
+
+      const data = await response.json()
+
+      // Vider les messages par défaut et afficher l'historique
+      this.messagesTarget.innerHTML = ''
+      data.messages.forEach(message => {
+        if (message.role === 'user') {
+          this.addUserMessage(message.content)
+        } else {
+          this.addAssistantMessage(message.content)
+        }
+      })
+    } catch (error) {
+      console.error('Erreur lors du chargement des messages:', error)
+      this.resetChat()
+    }
   }
 
   // Raccourci Enter
@@ -174,8 +206,36 @@ export default class extends Controller {
     this.scrollToBottom()
   }
 
-  // Ajouter un message assistant
+  // Ajouter un message assistant (avec formatage markdown)
   addAssistantMessage(text) {
+    const messageDiv = this.createAssistantBubble(
+      `<p class="mb-1">${this.simpleMarkdown(text)}</p>
+       <small class="text-muted" style="font-size: 11px;">${this.getCurrentTime()}</small>`
+    )
+    this.messagesTarget.appendChild(messageDiv)
+    this.scrollToBottom()
+  }
+
+  // Ajouter un indicateur de chargement avec spinner
+  addLoadingIndicator() {
+    const loadingDiv = document.createElement('div')
+    loadingDiv.className = CHAT_CONSTANTS.MESSAGE_CONTAINER
+    loadingDiv.innerHTML = `
+      <div class="chat-widget-loader">
+        <div class="loader-icon-wrapper">
+          <img src="${CHAT_CONSTANTS.ASSISTANT_ICON_PATH}" alt="Assistant" class="loader-icon">
+          <div class="loader-spinner"></div>
+        </div>
+        <span class="loader-text">${CHAT_CONSTANTS.LOADING_MESSAGE}</span>
+      </div>
+    `
+    this.messagesTarget.appendChild(loadingDiv)
+    this.scrollToBottom()
+    return loadingDiv
+  }
+
+  // Créer une bulle de message assistant (structure commune)
+  createAssistantBubble(innerContent) {
     const messageDiv = document.createElement('div')
     messageDiv.className = CHAT_CONSTANTS.MESSAGE_CONTAINER
     messageDiv.innerHTML = `
@@ -184,13 +244,11 @@ export default class extends Controller {
       </div>
       <div class="${CHAT_CONSTANTS.MESSAGE_CONTENT}">
         <div class="${CHAT_CONSTANTS.MESSAGE_BUBBLE_ASSISTANT}">
-          <p class="mb-1">${this.escapeHtml(text)}</p>
-          <small class="text-muted" style="font-size: 11px;">${this.getCurrentTime()}</small>
+          ${innerContent}
         </div>
       </div>
     `
-    this.messagesTarget.appendChild(messageDiv)
-    this.scrollToBottom()
+    return messageDiv
   }
 
   // Scroll vers le bas
@@ -213,22 +271,25 @@ export default class extends Controller {
     return div.innerHTML
   }
 
-  // Ajouter un indicateur de chargement (simple et DRY)
-  addLoadingIndicator() {
-    const loadingDiv = document.createElement('div')
-    loadingDiv.className = CHAT_CONSTANTS.MESSAGE_CONTAINER
-    loadingDiv.innerHTML = `
-      <div class="${CHAT_CONSTANTS.MESSAGE_AVATAR}">
-        <img src="${CHAT_CONSTANTS.ASSISTANT_AVATAR_PATH}" alt="Assistant" style="width: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px; height: ${CHAT_CONSTANTS.AVATAR_SIZE_MD}px;">
-      </div>
-      <div class="${CHAT_CONSTANTS.MESSAGE_CONTENT}">
-        <div class="${CHAT_CONSTANTS.MESSAGE_BUBBLE_ASSISTANT}">
-          <p class="mb-0" style="opacity: 0.6;">...</p>
-        </div>
-      </div>
-    `
-    this.messagesTarget.appendChild(loadingDiv)
-    this.scrollToBottom()
-    return loadingDiv
+  // Convertit le markdown basique en HTML (équivalent de simple_markdown en Ruby)
+  simpleMarkdown(text) {
+    if (!text) return ''
+
+    // Échapper le HTML d'abord pour la sécurité
+    let escaped = this.escapeHtml(text)
+
+    // Convertir **texte** en <strong>texte</strong>
+    escaped = escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+
+    // Convertir *texte* en <em>texte</em>
+    escaped = escaped.replace(/\*(.+?)\*/g, '<em>$1</em>')
+
+    // Convertir les retours à la ligne en <br>
+    escaped = escaped.replace(/\n/g, '<br>')
+
+    // Convertir les listes à puces (- item) en • item
+    escaped = escaped.replace(/^- (.+)/gm, '• $1')
+
+    return escaped
   }
 }
