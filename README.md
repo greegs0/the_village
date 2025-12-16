@@ -64,7 +64,6 @@ Un assistant IA intégré pour aider à planifier, organiser et répondre aux qu
 | 💎 Ruby | 3.3.5 |
 | 🐘 Base de données | PostgreSQL |
 | 🔐 Authentification | Devise |
-| 🎨 Frontend | Bootstrap 5.3 |
 | ⚡ JavaScript | Stimulus.js, Turbo Rails |
 | 🗺️ Cartes | Leaflet.js |
 | 📊 Graphiques | Chart.js |
